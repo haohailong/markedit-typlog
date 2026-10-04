@@ -1,0 +1,110 @@
+# MarkEdit → Typlog
+
+简体中文 · [繁體中文](README.zh-Hant.md) · [English](README.en.md)
+
+界面支持简体中文、繁体中文和英文，按 macOS 首选语言列表选择支持的语言；没有匹配时使用英文。修改系统语言后重新启动 MarkEdit。菜单、设置、推送、进度与错误提示都会切换语言，文章、标签、站点名和作者名保持原样。
+
+从 MarkEdit 当前文档读取正文和图片，上传图片、创建或更新 Typlog 草稿、设置作者并打开后台编辑页。无需 Textpack，也不依赖其他 MarkEdit 扩展。原文及其本地图片保持不变。
+
+## 安装与首次配置
+
+1. 在 Finder 中复制 `dist/markedit-typlog.js`，再从 MarkEdit 的 **Extensions → Open Documents Folder** 打开配置目录，进入 `scripts` 并粘贴（没有该文件夹时创建一个）。目标路径为 `~/Library/Containers/app.cyan.markedit/Data/Documents/scripts/`。也可运行 `Install.command`；若终端被 macOS 阻止访问应用数据，使用上述 Finder 方法即可。
+2. 重新启动 MarkEdit。
+3. 选择 **Extensions / 扩展 → Typlog → 修改发布配置…**。填写 API Token，点击「读取账号与站点」：账号 username 自动获取；只有一个可访问的活跃站点时自动选中，多个站点时从下拉框选择。Site ID 和 slug 自动填入。站点与作者配置会保留；默认明文保存，亦可选择密码加密。
+4. 登录 Typlog 后，在 [API 密钥页面](https://typlog.com/account/tokens)，点击「+ 新密钥」，输入名称，权限勾选 `profile` 和 `site` 复选框，可生成新 API Token，将其复制到配置窗口。自动读取 username 需要 `profile`。站点仍需在 **Settings → Integrations** 启用 XML-RPC。旧 Token 如果不能读取账号或站点列表，界面会分别提示，并保留已有配置；也可切换到「手动配置」。
+5. 选中站点后自动获取本站作者。只有一位作者时自动填入；多位作者时点击「选择文章作者…」勾选，自动填写 ID。勾选「不设作者」可保持留空，刷新或重启不会重新填入。切换站点时重新读取对应作者。
+6. 选择 **Typlog → 推送为草稿…**。快捷键为 **Control–Option–Command–Shift–T**。
+
+首次使用本地图片时，从 MarkEdit 的 **File → Grant Folder Access** 授权写作与图片所在目录。这是 MarkEdit 的原生目录授权，配置窗口提供提示；其公开 API 不提供代替用户选择授权目录的接口。
+
+作者 ID 留空则不设作者，亦可在推送至草稿后到后台自行添加；填写一个或多个数字时，通过 REST API 设置 `primary_authors`。打开配置时会查询已填 ID 对应的姓名和 username；提示优先显示「姓名 (@username)」，没有姓名时显示 username。推送前会读取本站作者列表并核对 ID，错误 ID 会在上传、建稿前提示。作者设置后再次读取文章核验结果。所有站点和作者标识都来自你的配置。
+
+配置保存在 `~/Library/Containers/app.cyan.markedit/Data/Documents/typlog-publisher/config.json`。**v0.3.1 起默认明文保存 Token**，首次保存或使用旧版明文配置时会提醒，确认一次后无需反复提醒或解锁。能读取配置文件及其备份的人可能取得 Token，请勿分享配置文件。MarkEdit 当前公开 API 没有钥匙串读写接口。
+
+密码加密是可选设置，明文保存无需设置密码。请使用为此扩展单独设置的本机加密密码，与 Typlog 账号登录密码无关；设置或更改它不会修改 Typlog 登录密码。加密用于防止配置文件中的 Token 被直接读取，使用时仍需在应用内存中解密。
+
+如需加密，在配置的「Token 保存」标签页勾选「使用独立密码加密本机 Token」，保存时设置至少 12 个字符的本机加密密码。密码及密钥不会写入文件；加密采用 Web Crypto AES-256-GCM 与 PBKDF2-SHA-256（600,000 次迭代、随机盐，每次保存使用新 IV）。**每次退出 MarkEdit 后再次打开，或打开新的文档窗口时，都需要输入本机加密密码**；同一窗口内无需每次推送都解锁。
+
+改回明文：打开发布配置，在「Token 保存」取消勾选加密并保存，输入当前本机加密密码并确认明文提醒。如果本次打开设置时已输入密码，则不会重复询问。取消或密码错误不会修改原加密记录。升级不会自动将已有加密 Token 改为明文。
+
+替换 Token：在「Token 保存」点击「替换 Token…」，填写新 Token 后重新读取账号与站点并保存。忘记密码时，可在解锁窗口选择重新配置，直接填写新 Token，或点击「删除本机 Token…」。已解锁时也可在「Token 保存」删除。删除本机记录不会撤销 Typlog 上的 Token，已有草稿关联保留；撤销需在 Typlog 后台操作。
+
+输入框遮挡 Token，扩展不记录或回显 Token；安装器限制配置目录权限。站点与账号信息仍是普通文本。磁盘备份及历史快照不随保存方式切换或本机删除而清除。可以分享本项目的扩展脚本；请勿分享整个 MarkEdit 配置目录。
+
+设置窗口使用「自动配置 / 手动配置 / Token 保存」标签页，切换时替换表单，避免展开设置把页面撑长。「使用说明」始终可见，介绍 XML-RPC、图片目录授权与加密保存。推送确认窗口逐项列出文章信息。所有表单支持英文换行、窄窗口、深色模式和键盘操作。Typlog 菜单与窗口使用根据官方 T 字形重绘的单色线图。
+
+## 图片
+
+先保存 Markdown 文档，再使用标准图片引用，例如：
+
+```markdown
+# 文章标题
+
+![图注](images/photo.jpg "优先显示的图注")
+
+![另一张图片](<images/中文 文件名.png>)
+```
+
+- 自动读取相对于文档目录的图片，也支持绝对路径、`file://`、`~/` 和参考式图片链接。TextBundle 包内的 `assets/` 路径按包目录解析。由其他 MarkEdit 扩展粘贴并保存为本地文件的图片也可读取。
+- 支持 JPEG、PNG、GIF、WebP。内嵌 base64 图片也会上传；网络图片地址保留原样。
+- 文档内多次引用同一个本地文件，只上传一次。代码块和行内代码中的图片语法不会被当作图片上传。
+- HTML `<img>` 的宽高属性会保留并转换为对应样式；也兼容旧快捷指令在图片 title 中附带尺寸的写法，例如 `![替代文字](images/photo.jpg "图注\" width=\"320px\" height=\"auto")`。独立图片生成居中的 `<figure>` 和 `<figcaption>`，图注优先取 `title`，其次取 `alt`；两者都没有时仅生成 figure。
+- HTML 模式支持 `<img src="…">`；含本地路径的 `srcset` 会提示改用单一 `src`，不会把本地路径悄悄推送出去。
+- 图片读取失败时，在 MarkEdit 的 **File / 文件 → Grant Folder Access / 授予文件夹访问权限** 中授权文档和图片所在目录，然后重试。
+- 原来 Textpack 使用的 `typlog-media://photo.jpg` 也可读取文档目录下的 `photo.jpg`，无需重新打包。
+
+Markdown 转换使用随扩展打包的 markdown-it，与 Apple 的富文本转换器可能有排版差异。表格、图片尺寸、图注和特殊 Markdown 内容应在 Typlog 后台预览；数学、Mermaid 等额外渲染功能未包含。
+
+## 标题、标签与 HTML
+
+每次推送前都会显示可编辑的标题和标签框。标题默认值按以下顺序获取：开头 Metadata 的非空 `title` → 正文第一个 H1 → 留空手工填写。H1 支持 `# 标题` 和 Setext 写法，代码块中的 `#` 不会成为标题。作为默认标题使用的开头 H1 不会重复进入正文；正文后面的 H1 保留。兼容原快捷指令的元数据格式：
+
+```markdown
+:::typlog-shortcut
+title: 文章标题
+tag: 写作
+tag: 生活
+format: markdown
+:::
+
+正文。
+```
+
+也支持开头只有 `:::` 的元数据块。元数据块不会提交为正文。`format: html` 可直接提交 HTML 正文。`tag:` 可重复，`tags:` 也可用，支持中文逗号 `，` 和英文逗号 `,`（推送对话框里的标签输入框也一样），重复标签会去重；写一个空 `tag:` 表示明确不需要标签。
+
+## 推送与恢复
+
+点击「推送为草稿…」后，第一个窗口显示标题、标签和「完成后自动打开文章编辑页面」。复选框首次默认选中，点击「继续」后记住本次选择；勾选时完成后直接打开后台，取消勾选则显示完成提示。
+
+随后确认窗口会列出站点、标题、标签、图片数量和作者姓名，并明确显示本次是「新建草稿」还是「更新已有草稿」。确认前只查询作者、检查草稿状态和读取本地图片；确认后才上传或修改文章。
+
+v0.1.4 起按站点 slug、Site ID 和已保存文档的完整路径建立关联，记录后台 Post ID；不是只看文件名，也不以标题或正文判断新旧文章。首次使用 `metaWeblog.newPost`；此后修改正文、标题、标签或图片再推送，会通过 `metaWeblog.editPost` 更新原来的 Post。两者均设置 `post_status=draft`、`publish=false`。相同图片复用已上传的地址，内容改变的图片重新上传。若本地内容和作者没有改变，仅继续使用原草稿，不覆盖后台的手动修改。指定作者会更新原草稿的作者；留空则不设置或清除已有作者。
+
+草稿 ID 和图片进度保存在本地 `document-*.json`，不含 Token。文章已发布、删除或无法确认草稿状态时会停止，不自动新建替代文章。更新失败可重试同一草稿；作者设置失败也会保留已创建或更新的草稿 ID。创建请求超时或返回丢失时，下次要求先核对后台：填写已有草稿 ID 恢复，或在确认未生成后重新创建。无法保存本地记录时会停止建稿。
+
+旧版 `push-*.json` 在当前内容能匹配时自动迁移。若升级前已经改过正文，或文档改名、移动，无法自动匹配原记录；可在第一个窗口展开「关联已有草稿」，填写后台已有草稿的 ID，之后仍更新这份草稿。改用另一个站点也会建立独立关联。
+
+从 v0.1.0 更新后，若之前的 `Window.fetch` 错误触发了恢复提示，请先查看后台是否存在草稿；没有则选择「已确认没有生成，重新创建」。新版本已修复 WebKit 对原生 fetch 接收者的要求。更新只替换脚本，保留现有账号配置和推送记录。
+
+不要在多个窗口中同时推送同一文档。首次使用需通过自己的配置和测试文章验证 Typlog 账户的实际权限。
+
+## 开发与验证
+
+```sh
+npm ci --ignore-scripts
+npm test
+npm run build
+```
+
+61 项自动化测试通过，包括三种语言的启动、完整翻译覆盖、占位符、错误分类和标签分隔。自动化测试使用模拟 Typlog 响应，不读取真实 Token，不调用真实账户，不发布文章。涵盖图片读取、XML 编码、创建草稿、作者请求、配置持久化、取消、重复推送与失败恢复。
+
+参考：
+
+- [MarkEdit API](https://github.com/MarkEdit-app/MarkEdit-api)
+- [MarkEdit 自定义及目录权限](https://github.com/MarkEdit-app/MarkEdit/wiki/Customization)
+- [Typlog XML-RPC 配置](https://docs.typlog.com/en/article/marsedit/)
+- [Typlog API](https://api.typlog.com/)
+
+## 许可证
+
+项目代码采用 [MIT License](LICENSE)。打包依赖的许可证见 [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)。Typlog 名称及品牌标识仍受其各自权利约束，MIT 不授予商标权。

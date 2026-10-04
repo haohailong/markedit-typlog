@@ -1,0 +1,802 @@
+{
+  "API Token": [
+    "API Token",
+    "API 權杖"
+  ],
+  "元数据缺少结束的 :::。": [
+    "Metadata is missing its closing :::.",
+    "中繼資料缺少結束的 :::。"
+  ],
+  "format 只能是 markdown 或 html。": [
+    "format must be markdown or html.",
+    "format 只能是 markdown 或 html。"
+  ],
+  "不支持远程 file:// 图片。": [
+    "Remote file:// images are not supported.",
+    "不支援遠端 file:// 圖片。"
+  ],
+  "本地图片文件名中的 # 或 ? 请写成 %23 或 %3F。": [
+    "Encode # and ? in local image filenames as %23 and %3F.",
+    "本機圖片檔名中的 # 或 ? 請寫成 %23 或 %3F。"
+  ],
+  "不支持的图片地址协议。": [
+    "This image URL scheme is not supported.",
+    "不支援的圖片網址協定。"
+  ],
+  "图片地址包含无效的百分号编码。": [
+    "The image URL contains invalid percent encoding.",
+    "圖片網址包含無效的百分比編碼。"
+  ],
+  "无效的图片路径。": [
+    "Invalid image path.",
+    "無效的圖片路徑。"
+  ],
+  "请先保存 Markdown 文档，以便定位相对路径图片。": [
+    "Save the Markdown document first to locate images with relative paths.",
+    "請先儲存 Markdown 文件，以便定位相對路徑圖片。"
+  ],
+  "srcset 中有本地图片。请先使用单一 img src 图片链接。": [
+    "srcset contains local images. Use a single img src instead.",
+    "srcset 中有本機圖片。請先使用單一 img src 圖片連結。"
+  ],
+  "正文中有图片缺少 src 地址。": [
+    "An image in the document has no src URL.",
+    "內文中有圖片缺少 src 網址。"
+  ],
+  "内嵌图片只支持 base64 编码的 JPEG、PNG、GIF、WebP。": [
+    "Embedded images must be base64 JPEG, PNG, GIF, or WebP.",
+    "內嵌圖片只支援 base64 編碼的 JPEG、PNG、GIF、WebP。"
+  ],
+  "不支持图片格式：{name}（支持 JPEG、PNG、GIF、WebP）。": [
+    "Unsupported image: {name}. Use JPEG, PNG, GIF, or WebP.",
+    "不支援圖片格式：{name}（支援 JPEG、PNG、GIF、WebP）。"
+  ],
+  "无法读取图片：{name}。请在 MarkEdit「文件 → 授予文件夹访问权限」中选择图片所在目录。": [
+    "Cannot read image: {name}. In MarkEdit, choose File → Grant Folder Access and select its folder.",
+    "無法讀取圖片：{name}。請在 MarkEdit「檔案 → 授予檔案夾存取權限」中選擇圖片所在目錄。"
+  ],
+  "图片扩展名和实际 MIME 类型不一致：{name}": [
+    "The file extension and MIME type do not match: {name}",
+    "圖片副檔名與實際 MIME 類型不一致：{name}"
+  ],
+  "不支持此图片类型。": [
+    "This image type is not supported.",
+    "不支援此圖片類型。"
+  ],
+  "Typlog 返回了无效的 XML 响应。": [
+    "Typlog returned an invalid XML response.",
+    "Typlog 傳回了無效的 XML 回應。"
+  ],
+  "Typlog 响应缺少 value。": [
+    "The Typlog response is missing a value.",
+    "Typlog 回應缺少 value。"
+  ],
+  "Typlog XML-RPC 错误 {code}：{message}": [
+    "Typlog XML-RPC error {code}: {message}",
+    "Typlog XML-RPC 錯誤 {code}：{message}"
+  ],
+  "请填写有效的站点 slug（后台地址中 admin/ 后面的名称）。": [
+    "Enter a valid site slug: the name after admin/ in the dashboard URL.",
+    "請填寫有效的網站 slug（後台網址中 admin/ 後面的名稱）。"
+  ],
+  "Site ID 应为正整数。": [
+    "site ID must be a positive integer.",
+    "網站 ID 應為正整數。"
+  ],
+  "用户名和 API Token 不能为空。": [
+    "Username and API Token are required.",
+    "使用者名稱與 API 權杖不能留空。"
+  ],
+  "Token 中不能含有换行。": [
+    "The Token cannot contain line breaks.",
+    "權杖中不能含有換行。"
+  ],
+  "作者 ID 请填写数字；多位作者用逗号分隔。": [
+    "Enter numeric author IDs, separated by commas.",
+    "作者 ID 請填寫數字；多位作者用逗號分隔。"
+  ],
+  "作者 ID 应为正整数。": [
+    "Author IDs must be positive integers.",
+    "作者 ID 應為正整數。"
+  ],
+  "无法创建 Typlog 的本地配置目录。": [
+    "Cannot create the local Typlog settings folder.",
+    "無法建立 Typlog 的本機設定目錄。"
+  ],
+  "无法读取本地配置／推送记录。": [
+    "Cannot read local settings or draft records.",
+    "無法讀取本機設定／推送紀錄。"
+  ],
+  "本地配置／推送记录损坏，请从配置菜单检查。": [
+    "Local settings or draft records are damaged. Check publishing settings.",
+    "本機設定／推送紀錄損毀，請從設定選單檢查。"
+  ],
+  "无法保存本地配置／推送记录；操作已停止。": [
+    "Cannot save local settings or draft records. The operation has stopped.",
+    "無法儲存本機設定／推送紀錄；操作已停止。"
+  ],
+  "所选作者不属于此站点，请重新选择作者。": [
+    "The selected author does not belong to this site. Choose an author again.",
+    "所選作者不屬於此站台，請重新選擇作者。"
+  ],
+  "请检查 Token 和 {scope} 权限。": [
+    "Check the Token and its {scope} permission.",
+    "請檢查權杖與 {scope} 權限。"
+  ],
+  "请检查站点配置及请求内容。": [
+    "Check the site settings and request content.",
+    "請檢查站台設定與請求內容。"
+  ],
+  "Typlog 请求失败（HTTP {status}）。": [
+    "Typlog request failed (HTTP {status}). ",
+    "Typlog 請求失敗（HTTP {status}）。"
+  ],
+  "Typlog 读取请求超时，请重试。": [
+    "The Typlog read request timed out. Try again.",
+    "Typlog 讀取請求逾時，請重試。"
+  ],
+  "Typlog 请求超时。请先检查后台是否已生成草稿。": [
+    "The Typlog request timed out. Check the dashboard for an existing draft before retrying.",
+    "Typlog 請求逾時。請先檢查後台是否已產生草稿。"
+  ],
+  "Typlog 返回了无法读取的数据。": [
+    "Typlog returned unreadable data.",
+    "Typlog 傳回了無法讀取的資料。"
+  ],
+  "Typlog 未返回有效的账号用户名。": [
+    "Typlog did not return a valid account username.",
+    "Typlog 未傳回有效的帳號使用者名稱。"
+  ],
+  "Typlog 返回的站点列表格式不正确。": [
+    "Typlog returned an invalid site list.",
+    "Typlog 傳回的網站清單格式不正確。"
+  ],
+  "站点列表包含无效的 ID 或 slug。": [
+    "The site list contains an invalid ID or slug.",
+    "網站清單包含無效的 ID 或 slug。"
+  ],
+  "Typlog 返回了无法读取的作者列表。": [
+    "Typlog returned an unreadable author list.",
+    "Typlog 傳回了無法讀取的作者清單。"
+  ],
+  "Typlog 返回的作者列表格式不正确。": [
+    "Typlog returned an invalid author list.",
+    "Typlog 傳回的作者清單格式不正確。"
+  ],
+  "作者列表包含无效的作者 ID。": [
+    "The author list contains an invalid author ID.",
+    "作者清單包含無效的作者 ID。"
+  ],
+  "图片上传响应缺少有效的 URL。": [
+    "The image upload response has no valid URL.",
+    "圖片上傳回應缺少有效的 URL。"
+  ],
+  "图片上传响应不是安全的 HTTPS 地址。": [
+    "The image upload response is not a secure HTTPS URL.",
+    "圖片上傳回應不是安全的 HTTPS 網址。"
+  ],
+  "创建请求没有返回有效文章 ID。请先检查 Typlog 后台。": [
+    "The create request returned no valid post ID. Check the Typlog dashboard first.",
+    "建立請求未傳回有效的文章 ID。請先檢查 Typlog 後台。"
+  ],
+  "关联文章（ID {id}）已不是草稿，请到后台编辑。本次未更新，也未新建文章。": [
+    "Post {id} is no longer a draft. Edit it in the dashboard. No post was updated or created.",
+    "關聯文章（ID {id}）已不是草稿，請到後台編輯。本次未更新，也未建立文章。"
+  ],
+  "无法确认关联文章（ID {id}）的草稿状态，请到后台检查。本次未更新，也未新建文章。": [
+    "Cannot confirm that post {id} is a draft. Check the dashboard. No post was updated or created.",
+    "無法確認關聯文章（ID {id}）的草稿狀態，請到後台檢查。本次未更新，也未建立文章。"
+  ],
+  "Typlog 未确认草稿更新成功，请到后台检查；重试会继续更新同一草稿。": [
+    "Typlog did not confirm the update. Check the dashboard; retrying will use the same draft.",
+    "Typlog 未確認草稿更新成功，請到後台檢查；重試會繼續更新同一草稿。"
+  ],
+  "作者设置请求已发送，但无法确认结果。": [
+    "The author request was sent, but its result could not be verified. ",
+    "作者設定請求已送出，但無法確認結果。"
+  ],
+  "后台返回的作者与所选作者不一致，请重试或到后台检查。": [
+    "The returned authors do not match your selection. Retry or check the dashboard.",
+    "後台傳回的作者與所選作者不一致，請重試或到後台檢查。"
+  ],
+  "未命名作者（ID {id}）": [
+    "Unnamed author (ID {id})",
+    "未命名作者（ID {id}）"
+  ],
+  "作者 ID {id} 不在本站作者列表中，请从「修改发布配置 → 选择文章作者」重新选择。": [
+    "Author ID {id} is not on this site. Choose an author in Publishing Settings → Choose Authors.",
+    "作者 ID {id} 不在本站作者清單中，請從「修改發佈設定 → 選擇文章作者」重新選擇。"
+  ],
+  "操作未完成。": [
+    "The operation did not complete.",
+    "操作未完成。"
+  ],
+  "[Token 已隐藏]": [
+    "[Token hidden]",
+    "[權杖已隱藏]"
+  ],
+  "请先保存当前文档，再推送草稿。": [
+    "Save the current document before sending a draft.",
+    "請先儲存目前文件，再推送草稿。"
+  ],
+  "上传图片 {current} / {total}：{name}": [
+    "Uploading image {current} of {total}: {name}",
+    "上傳圖片 {current} / {total}：{name}"
+  ],
+  "更新已有草稿（ID {id}）…": [
+    "Updating draft {id}…",
+    "更新已有草稿（ID {id}）…"
+  ],
+  "创建 Typlog 草稿…": [
+    "Creating a Typlog draft…",
+    "建立 Typlog 草稿…"
+  ],
+  "设置文章作者…": [
+    "Setting post authors…",
+    "設定文章作者…"
+  ],
+  "草稿已保存（ID {id}），但作者设置失败。再次推送会继续设置作者，不会重复建稿。": [
+    "Draft {id} was saved, but setting authors failed. Retry to finish setting authors without creating another post.",
+    "草稿已儲存（ID {id}），但作者設定失敗。再次推送會繼續設定作者，不會重複建立草稿。"
+  ],
+  "草稿已更新": [
+    "Draft updated",
+    "草稿已更新"
+  ],
+  "草稿已创建": [
+    "Draft created",
+    "草稿已建立"
+  ],
+  "好": [
+    "OK",
+    "好"
+  ],
+  "当前窗口已有一个 Typlog 操作正在进行。": [
+    "A Typlog operation is already running in this window.",
+    "目前視窗已有一個 Typlog 操作正在進行。"
+  ],
+  "Typlog 操作未完成": [
+    "Typlog Operation Incomplete",
+    "Typlog 操作未完成"
+  ],
+  "配置已保存": [
+    "Settings Saved",
+    "設定已儲存"
+  ],
+  "之后可从「扩展 → Typlog → 推送为草稿」使用，也可以随时修改配置。": [
+    "Use Extensions → Typlog → Send as Draft. You can change these settings at any time.",
+    "之後可從「擴充功能 → Typlog → 推送為草稿」使用，也可以隨時修改設定。"
+  ],
+  "当前文档为空。": [
+    "The current document is empty.",
+    "目前文件為空。"
+  ],
+  "正在核对文章作者…": [
+    "Checking post authors…",
+    "正在核對文章作者…"
+  ],
+  "正在读取文章和图片…": [
+    "Reading the document and images…",
+    "正在讀取文章與圖片…"
+  ],
+  "核对已有草稿…": [
+    "Checking the existing draft…",
+    "核對已有草稿…"
+  ],
+  "上次创建请求的结果不确定": [
+    "Previous Draft Creation Is Uncertain",
+    "上次建立請求的結果不確定"
+  ],
+  "请先查看 Typlog 后台。若草稿已生成，填写文章 ID 继续；只有确认没有生成时，才重新创建。": [
+    "Check the Typlog dashboard first. If the draft exists, enter its post ID. Create again only after confirming that no draft was created.",
+    "請先查看 Typlog 後台。若草稿已產生，填寫文章 ID 繼續；只有確認未產生時，才重新建立。"
+  ],
+  "填写已有文章 ID": [
+    "Enter Existing Post ID",
+    "填寫已有文章 ID"
+  ],
+  "已确认没有生成，重新创建": [
+    "No Draft Exists — Create Again",
+    "已確認未產生，重新建立"
+  ],
+  "取消": [
+    "Cancel",
+    "取消"
+  ],
+  "已有草稿的文章 ID": [
+    "Existing Draft ID",
+    "已有草稿的文章 ID"
+  ],
+  "后台文章地址最后的数字": [
+    "The number at the end of the post's dashboard URL",
+    "後台文章網址最後的數字"
+  ],
+  "文章 ID 必须是正整数。": [
+    "Post ID must be a positive integer.",
+    "文章 ID 必須是正整數。"
+  ],
+  "继续处理此草稿？": [
+    "Continue with This Draft?",
+    "繼續處理此草稿？"
+  ],
+  "\n作者：": [
+    "\nAuthors: ",
+    "\n作者："
+  ],
+  "不设作者": [
+    "No author",
+    "不設作者"
+  ],
+  "继续": [
+    "Continue",
+    "繼續"
+  ],
+  "原草稿已准备好": [
+    "Existing Draft Ready",
+    "原草稿已準備好"
+  ],
+  "Typlog 草稿已准备好": [
+    "Typlog Draft Ready",
+    "Typlog 草稿已準備好"
+  ],
+  "文章 ID：{id}\n作者：{authors}\n可从 Typlog 后台继续编辑。": [
+    "Post ID: {id}\nAuthors: {authors}\nContinue editing in the Typlog dashboard.",
+    "文章 ID：{id}\n作者：{authors}\n可從 Typlog 後台繼續編輯。"
+  ],
+  "推送为草稿…": [
+    "Send as Draft…",
+    "推送為草稿…"
+  ],
+  "修改发布配置…": [
+    "Publishing Settings…",
+    "修改發佈設定…"
+  ],
+  "打开 Typlog 后台": [
+    "Open Typlog Dashboard",
+    "開啟 Typlog 後台"
+  ],
+  "Typlog 发布配置": [
+    "Typlog Publishing Settings",
+    "Typlog 發佈設定"
+  ],
+  "选择站点和作者。配置保存后可随时修改。": [
+    "Choose a site and authors. You can change these settings later.",
+    "選擇網站與作者。儲存後可隨時修改設定。"
+  ],
+  "账号用户名": [
+    "Account username",
+    "帳號使用者名稱"
+  ],
+  "自动读取登录账号的 username，与作者资料的 username 可能不同。": [
+    "Your account username may differ from an author's username.",
+    "自動讀取登入帳號的 username，可能與作者資料中的 username 不同。"
+  ],
+  "站点 slug": [
+    "Site slug",
+    "網站 slug"
+  ],
+  "作者 ID（可选）": [
+    "Author IDs (optional)",
+    "作者 ID（選填）"
+  ],
+  "由作者选择自动填入；手填多位作者时用逗号分隔。": [
+    "Filled by author selection. Separate manually entered IDs with commas.",
+    "由作者選擇自動填入；手動填寫多位作者時用逗號分隔。"
+  ],
+  "保存配置": [
+    "Save Settings",
+    "儲存設定"
+  ],
+  "请先读取账号与站点，或切换到手动配置填写账号和站点信息。": [
+    "Read your account and sites first, or enter them under Manual Settings.",
+    "請先讀取帳號與網站，或切換至手動設定填寫帳號與網站資訊。"
+  ],
+  "API 密钥页面": [
+    "tokens",
+    "API 權杖頁面"
+  ],
+  "获取 API Token：": [
+    "Get an API Token: ",
+    "取得 API 權杖："
+  ],
+  "登录 Typlog 后，在 ": [
+    "Sign in to Typlog. On the ",
+    "登入 Typlog 後，在 "
+  ],
+  "，点击「+ 新密钥」，输入名称，权限勾选 profile 和 site 复选框，可生成新 API Token，将其复制到这里。": [
+    " page, click “+ New token”, enter a name, and select the profile and site permission checkboxes. Generate an API Token and paste it here.",
+    "，點選「+ 新權杖」，輸入名稱，權限勾選 profile 和 site 核取方塊，即可產生新 API 權杖，將其複製到這裡。"
+  ],
+  "读取账号与站点": [
+    "Read Account & Sites",
+    "讀取帳號與網站"
+  ],
+  "站点": [
+    "Site",
+    "網站"
+  ],
+  "作者": [
+    "Authors",
+    "作者"
+  ],
+  "选择文章作者…": [
+    "Choose Authors…",
+    "選擇文章作者…"
+  ],
+  "从本站作者中勾选。仅有一位时自动选中；留空可在后台添加。": [
+    "Select site authors, or add them later in the dashboard.",
+    "從本站作者中勾選。只有一位時自動選取；留空可在後台新增。"
+  ],
+  "手动配置": [
+    "Manual Settings",
+    "手動設定"
+  ],
+  "使用说明": [
+    "Usage & Privacy",
+    "使用說明"
+  ],
+  "站点需在 Settings → Integrations 启用 XML-RPC。首次读取图片，在 File → Grant Folder Access 授权图片目录。": [
+    "Enable XML-RPC in the site's Settings → Integrations. To read local images, choose File → Grant Folder Access in MarkEdit and allow access to their folder.",
+    "網站需在 Settings → Integrations 啟用 XML-RPC。首次讀取圖片，在 File → Grant Folder Access 授權圖片目錄。"
+  ],
+  "未选择作者": [
+    "No authors selected",
+    "尚未選擇作者"
+  ],
+  "请先读取并选择站点，或切换到手动配置填写站点信息。": [
+    "Read and choose a site first, or enter it under Manual Settings.",
+    "請先讀取並選擇網站，或切換至手動設定填寫網站資訊。"
+  ],
+  "正在获取本站作者…": [
+    "Reading this site's authors…",
+    "正在取得本站作者…"
+  ],
+  "本站暂无作者，不设作者。": [
+    "This site has no authors. No author will be set.",
+    "本站目前沒有作者，不設作者。"
+  ],
+  "唯一站点，已自动选中。": [
+    "Your only site was selected automatically.",
+    "唯一網站，已自動選取。"
+  ],
+  "请选择站点…": [
+    "Choose a site…",
+    "請選擇網站…"
+  ],
+  "请先读取账号与站点": [
+    "Read your account and sites first",
+    "請先讀取帳號與網站"
+  ],
+  "请填写有效的 API Token。": [
+    "Enter a valid API Token.",
+    "請填寫有效的 API 權杖。"
+  ],
+  "正在读取账号和站点…": [
+    "Reading account and sites…",
+    "正在讀取帳號與網站…"
+  ],
+  "账号：@{username}": [
+    "Account: @{username}",
+    "帳號：@{username}"
+  ],
+  "账号：@{username}（已保存）": [
+    "Account: @{username} (saved)",
+    "帳號：@{username}（已儲存）"
+  ],
+  "账号用户名未获取，可切换到手动配置填写。": [
+    "Account username unavailable. Enter it under Manual Settings.",
+    "未取得帳號使用者名稱，可切換至手動設定填寫。"
+  ],
+  "读取 username 需要 profile 权限；也可在「手动配置」中填写。": [
+    "Reading username requires profile permission. You can also enter it under Manual Settings.",
+    "讀取 username 需要 profile 權限；也可在「手動設定」中填寫。"
+  ],
+  "账号读取失败：": [
+    "Could not read account: ",
+    "帳號讀取失敗："
+  ],
+  "请选择一个站点。": [
+    "Choose a site.",
+    "請選擇一個網站。"
+  ],
+  "此 Token 未返回可访问的活跃站点，请检查 site 权限或账号站点状态。": [
+    "No accessible active sites were returned. Check site permission and the account's sites.",
+    "此權杖未傳回可存取的啟用中網站，請檢查 site 權限或帳號站台狀態。"
+  ],
+  "读取站点列表失败：": [
+    "Could not read sites: ",
+    "讀取網站清單失敗："
+  ],
+  " 请检查 site 权限。": [
+    " Check site permission.",
+    " 請檢查 site 權限。"
+  ],
+  "（已保存的站点）": [
+    " (saved site)",
+    "（已儲存的網站）"
+  ],
+  "暂时使用已保存的站点配置，可重试或手动修改。": [
+    "Using saved site settings. Retry or edit them manually.",
+    "暫時使用已儲存的網站設定，可重試或手動修改。"
+  ],
+  "读取未完成，可重试或切换到手动配置。": [
+    "Reading did not complete. Retry or use Manual Settings.",
+    "讀取未完成，可重試或切換至手動設定。"
+  ],
+  "获取作者失败：": [
+    "Could not read authors: ",
+    "取得作者失敗："
+  ],
+  "正在使用手动填写的账号和站点配置。": [
+    "Using manually entered account and site settings.",
+    "正在使用手動填寫的帳號與網站設定。"
+  ],
+  "更新已有草稿？": [
+    "Update Existing Draft?",
+    "更新已有草稿？"
+  ],
+  "新建草稿？": [
+    "Create Draft?",
+    "建立草稿？"
+  ],
+  "本次更新原草稿（ID {id}），不会新建 Post。": [
+    "This will update draft {id}, without creating another post.",
+    "本次更新原草稿（ID {id}），不會建立新 Post。"
+  ],
+  "本次将在所选站点中新建草稿。": [
+    "This will create a draft in the selected site.",
+    "本次將在所選網站中建立草稿。"
+  ],
+  "更新草稿": [
+    "Update Draft",
+    "更新草稿"
+  ],
+  "新建草稿": [
+    "Create Draft",
+    "建立草稿"
+  ],
+  "文章标题": [
+    "Post title",
+    "文章標題"
+  ],
+  "标签（可选）": [
+    "Tags (optional)",
+    "標籤（選填）"
+  ],
+  "无": [
+    "None",
+    "無"
+  ],
+  "本地图片": [
+    "Local images",
+    "本機圖片"
+  ],
+  "更新已有草稿": [
+    "Update Existing Draft",
+    "更新已有草稿"
+  ],
+  "推送至草稿": [
+    "Send as Draft",
+    "推送至草稿"
+  ],
+  "将用当前文档更新草稿（ID {id}）。": [
+    "The current document will update draft {id}.",
+    "將用目前文件更新草稿（ID {id}）。"
+  ],
+  "首次推送新建草稿，之后更新同一份草稿。": [
+    "The first send creates a draft. Later sends update the same draft.",
+    "首次推送建立草稿，之後更新同一份草稿。"
+  ],
+  "用英文逗号 , 或中文逗号 ， 分隔。": [
+    "Separate tags with commas (, or ，).",
+    "用英文逗號 , 或中文逗號 ， 分隔。"
+  ],
+  "完成后自动打开文章编辑页面": [
+    "Open the post editor when finished",
+    "完成後自動開啟文章編輯頁面"
+  ],
+  "已有草稿的文章 ID（可选）": [
+    "Existing draft ID (optional)",
+    "已有草稿的文章 ID（選填）"
+  ],
+  "升级前已推送，或文档改名、移动后，可填 ID 关联原草稿。": [
+    "Enter an existing draft's ID after an upgrade, file rename, or move to reconnect it.",
+    "升級前已推送，或文件改名、移動後，可填 ID 關聯原草稿。"
+  ],
+  "关联已有草稿": [
+    "Link an Existing Draft",
+    "關聯已有草稿"
+  ],
+  "文章标题不能为空。": [
+    "Post title is required.",
+    "文章標題不能留空。"
+  ],
+  "推送到 Typlog": [
+    "Sending to Typlog",
+    "推送到 Typlog"
+  ],
+  "正在准备…": [
+    "Preparing…",
+    "正在準備…"
+  ],
+  "、": [
+    ", ",
+    "、"
+  ],
+  "Site ID": [
+    "Site ID",
+    "網站 ID"
+  ],
+  "配置方式": [
+    "Configuration method",
+    "設定方式"
+  ],
+  "自动配置": [
+    "Automatic",
+    "自動設定"
+  ],
+  "这是扩展的解锁密码，不是 Typlog 登录密码。当前窗口解锁一次后可持续使用。": [
+    "This password unlocks the extension; it is separate from your Typlog login. Unlock once to keep using it in this window.",
+    "這是擴充功能的解鎖密碼，不是 Typlog 登入密碼。目前視窗解鎖一次後可持續使用。"
+  ],
+  "加密并保存": [
+    "Encrypt and Save",
+    "加密並保存"
+  ],
+  "两次输入的密码不一致。": [
+    "The passwords do not match.",
+    "兩次輸入的密碼不一致。"
+  ],
+  "重新配置时保留站点和草稿关联；保存新 Token 后替换旧的加密记录。": [
+    "Your site and draft associations are retained. Saving a new Token replaces the previous encrypted record.",
+    "重新設定時保留網站和草稿關聯；保存新 Token 後取代舊的加密記錄。"
+  ],
+  "此环境不支持安全加密，Token 未保存。请更新 MarkEdit 和 macOS。": [
+    "Secure encryption is unavailable. Token was not saved. Please update MarkEdit and macOS.",
+    "此環境不支援安全加密，Token 未保存。請更新 MarkEdit 和 macOS。"
+  ],
+  "加密记录损坏或版本不受支持，请从「修改发布配置」重新配置。": [
+    "Encrypted data is damaged or unsupported. Set up a new Token in Publishing Settings.",
+    "加密記錄損壞或版本不受支援，請從「修改發布設定」重新設定。"
+  ],
+  "请先配置站点。": [
+    "Configure a site first.",
+    "請先設定網站。"
+  ],
+  "Token 保存时会加密；重启或打开新文档窗口后需解锁。请勿分享配置文件。": [
+    "Token is encrypted when saved. Unlock each new window. Keep your settings private.",
+    "Token 保存時會加密；重新啟動或開啟新文件視窗後需解鎖。請勿分享設定檔。"
+  ],
+  "旧版配置目前仍含明文 Token。确认加密后才替换，取消会保留原配置。": [
+    "Your old settings still contain a plain-text Token. Encryption replaces them only after confirmation. Cancel keeps the original settings.",
+    "舊版設定目前仍含明文 Token。確認加密後才取代，取消會保留原設定。"
+  ],
+  "Token 保存": [
+    "Token Storage",
+    "Token 儲存"
+  ],
+  "已选择明文保存，无需解锁。可在「Token 保存」中启用加密。请勿分享配置文件。": [
+    "Plain-text storage selected; no unlocking required. Enable encryption in Token Storage. Keep your settings private.",
+    "已選擇明文儲存，無需解鎖。可在「Token 儲存」中啟用加密。請勿分享設定檔。"
+  ],
+  "替换 Token…": [
+    "Replace Token…",
+    "替換 Token…"
+  ],
+  "删除本机 Token…": [
+    "Delete Local Token…",
+    "刪除本機 Token…"
+  ],
+  "改为明文保存？": [
+    "Switch to Plain Text?",
+    "改為明文儲存？"
+  ],
+  "Token 将以明文保存在本机": [
+    "Token Will Be Saved as Plain Text",
+    "Token 將以明文儲存在本機"
+  ],
+  "Token 会保存在此 Mac 的 MarkEdit 配置文件中，未使用钥匙串或密码加密。能读取文件或备份的人可能取得 Token，请勿分享配置文件。": [
+    "Token will be stored in MarkEdit’s settings on this Mac without Keychain or password encryption. Anyone who can read the file or its backups may obtain your Token. Do not share the settings file.",
+    "Token 會儲存在此 Mac 的 MarkEdit 設定檔中，未使用鑰匙圈或密碼加密。能讀取檔案或備份的人可能取得 Token，請勿分享設定檔。"
+  ],
+  "明文保存": [
+    "Save as Plain Text",
+    "明文儲存"
+  ],
+  "删除本机 Token？": [
+    "Delete Local Token?",
+    "刪除本機 Token？"
+  ],
+  "删除后需要重新填写 Token 才能推送。站点配置和已有草稿关联保留；Typlog 上的 Token 不会被撤销。": [
+    "Enter a Token again before your next send. Site settings and existing draft associations are retained. This does not revoke the Token on Typlog.",
+    "刪除後需要重新填寫 Token 才能推送。網站設定和既有草稿關聯保留；Typlog 上的 Token 不會被撤銷。"
+  ],
+  "删除本机 Token": [
+    "Delete Local Token",
+    "刪除本機 Token"
+  ],
+  "Token 已删除": [
+    "Token Deleted",
+    "Token 已刪除"
+  ],
+  "已删除本机 Token，站点配置和草稿关联保留。Typlog 上的 Token 未被撤销。": [
+    "Local Token deleted. Site settings and draft associations are retained. The Token on Typlog has not been revoked.",
+    "已刪除本機 Token，網站設定和草稿關聯保留。Typlog 上的 Token 未被撤銷。"
+  ],
+  "使用独立密码加密本机 Token": [
+    "Encrypt local Token with a separate password",
+    "使用獨立密碼加密本機 Token"
+  ],
+  "本机加密密码": [
+    "Local encryption password",
+    "本機加密密碼"
+  ],
+  "再次输入本机加密密码": [
+    "Confirm local password",
+    "再次輸入本機加密密碼"
+  ],
+  "设置本机加密密码": [
+    "Set a Local Encryption Password",
+    "設定本機加密密碼"
+  ],
+  "可选：为本机 Token 设置独立密码，至少 12 个字符，与 Typlog 登录密码无关。加密可防止配置文件中的 Token 被直接读取。密码不会保存；忘记后可删除或替换 Token。": [
+    "Optional: create a separate password of at least 12 characters for the local Token. This is unrelated to your Typlog login password. Encryption prevents the Token from being read directly from the settings file. The password is not saved; if forgotten, you can delete or replace the Token.",
+    "可選：為本機 Token 設定獨立密碼，至少 12 個字元，與 Typlog 登入密碼無關。加密可防止設定檔中的 Token 被直接讀取。密碼不會儲存；忘記後可刪除或替換 Token。"
+  ],
+  "本机加密密码至少需要 12 个字符。": [
+    "Use at least 12 characters for the local encryption password.",
+    "本機加密密碼至少需要 12 個字元。"
+  ],
+  "输入本机加密密码": [
+    "Enter the Local Encryption Password",
+    "輸入本機加密密碼"
+  ],
+  "本机加密密码不正确或加密记录已损坏，请重试。": [
+    "Incorrect local encryption password or damaged encrypted data. Please try again.",
+    "本機加密密碼不正確或加密記錄已損壞，請重試。"
+  ],
+  "输入此前设置的本机加密密码。Token 仅在当前文档窗口的内存中解密。": [
+    "Enter the local encryption password you previously created. The Token is decrypted only in this document window’s memory.",
+    "輸入先前設定的本機加密密碼。Token 僅在目前文件視窗的記憶體中解密。"
+  ],
+  "忘记本机加密密码，改用新的 API Token 重新配置": [
+    "Forgot local encryption password: set up a new API Token",
+    "忘記本機加密密碼，改用新的 API Token 重新設定"
+  ],
+  "忘记本机加密密码时，请从「修改发布配置」删除或替换 Token。": [
+    "If you forgot the local encryption password, delete or replace the Token in Publishing Settings.",
+    "忘記本機加密密碼時，請從「修改發布設定」刪除或替換 Token。"
+  ],
+  "请输入本机加密密码。": [
+    "Enter your local encryption password.",
+    "請輸入本機加密密碼。"
+  ],
+  "已选择独立密码加密。退出 MarkEdit 后再次打开，或打开新文档窗口时需输入本机加密密码。": [
+    "Separate password encryption selected. Enter the local encryption password after restarting MarkEdit or opening a new document window.",
+    "已選擇獨立密碼加密。退出 MarkEdit 後再次開啟，或開啟新文件視窗時需輸入本機加密密碼。"
+  ],
+  "密码加密为可选设置，默认明文保存。请设置独立的本机加密密码，与 Typlog 登录密码无关；加密可防止 Token 在配置文件中被直接读取。": [
+    "Password encryption is optional; plain text is the default. Use a separate local encryption password, unrelated to your Typlog login password. Encryption prevents the Token from being read directly from the settings file.",
+    "密碼加密為可選設定，預設以明文儲存。請設定獨立的本機加密密碼，與 Typlog 登入密碼無關；加密可防止 Token 在設定檔中被直接讀取。"
+  ],
+  "取消加密并保存，验证本机加密密码后可改回明文。替换或删除 Token 不会清除草稿关联；删除本机记录不会撤销 Typlog 上的 Token。": [
+    "Turn encryption off and save to switch back to plain text after verifying the local encryption password. Replacing or deleting the Token keeps draft associations. Local deletion does not revoke the Token on Typlog.",
+    "取消加密並儲存，驗證本機加密密碼後可改回明文。替換或刪除 Token 不會清除草稿關聯；刪除本機記錄不會撤銷 Typlog 上的 Token。"
+  ],
+  "退出 MarkEdit 后再次打开，或打开新文档窗口时，需要重新输入本机加密密码。同一窗口内无需每次推送都解锁；取消不会更改原配置。": [
+    "Enter the local encryption password after restarting MarkEdit or opening a new document window. Repeated sends in the same window do not require unlocking. Cancel keeps the original settings.",
+    "退出 MarkEdit 後再次開啟，或開啟新文件視窗時，需要重新輸入本機加密密碼。同一視窗內無需每次推送都解鎖；取消不會更改原設定。"
+  ],
+  "明文保存无需设置密码。可随时在「Token 保存」中选择独立密码加密，以保护配置文件中的 Token。": [
+    "Plain-text storage needs no password. You can choose a separate encryption password in Token Storage at any time to protect the Token in the settings file.",
+    "明文儲存無需設定密碼。可隨時在「Token 儲存」中選擇獨立密碼加密，以保護設定檔中的 Token。"
+  ],
+  "请输入当前本机加密密码，以将原 Token 改为明文保存。": [
+    "Enter the current local encryption password to save the original Token as plain text.",
+    "請輸入目前本機加密密碼，以將原 Token 改為明文儲存。"
+  ],
+  "这是为此扩展设置的独立密码，与 Typlog 登录密码无关。": [
+    "This is the separate password you created for this extension, unrelated to your Typlog login password.",
+    "這是為此擴充功能設定的獨立密碼，與 Typlog 登入密碼無關。"
+  ]
+}

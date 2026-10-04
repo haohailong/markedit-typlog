@@ -1,0 +1,12 @@
+node_modules/
+.DS_Store
+*.local.json
+typlog-publisher/
+config.json
+preferences.json
+document-*.json
+push-*.json
+markedit-typlog-backup-*.js
+*.zip
+.env
+.env.*
