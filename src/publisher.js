@@ -137,7 +137,7 @@ export function authorLabel(author) {
 export function selectedAuthorLabels(authorIds, authors) {
   return splitTags(authorIds).map(id => {
     const author = authors.find(author => author.id === id);
-    if (!author) throw new Error(tr('作者 ID {id} 不在本站作者列表中，请从「修改发布配置 → 选择文章作者」重新选择。', { id }));
+    if (!author) throw new Error(tr('作者 ID {id} 不在本站作者列表中，请在发布配置的作者列表中重新选择。', { id }));
     return authorLabel(author);
   });
 }

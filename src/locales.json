@@ -203,10 +203,6 @@
     "Unnamed author (ID {id})",
     "未命名作者（ID {id}）"
   ],
-  "作者 ID {id} 不在本站作者列表中，请从「修改发布配置 → 选择文章作者」重新选择。": [
-    "Author ID {id} is not on this site. Choose an author in Publishing Settings → Choose Authors.",
-    "作者 ID {id} 不在本站作者清單中，請從「修改發佈設定 → 選擇文章作者」重新選擇。"
-  ],
   "操作未完成。": [
     "The operation did not complete.",
     "操作未完成。"
@@ -418,14 +414,6 @@
   "作者": [
     "Authors",
     "作者"
-  ],
-  "选择文章作者…": [
-    "Choose Authors…",
-    "選擇文章作者…"
-  ],
-  "从本站作者中勾选。仅有一位时自动选中；留空可在后台添加。": [
-    "Select site authors, or add them later in the dashboard.",
-    "從本站作者中勾選。只有一位時自動選取；留空可在後台新增。"
   ],
   "手动配置": [
     "Manual Settings",
@@ -810,5 +798,109 @@
   "@{username}（已保存）": [
     "@{username} (saved)",
     "@{username}（已儲存）"
+  ],
+  "刷新作者": [
+    "Refresh Authors",
+    "重新整理作者"
+  ],
+  "可勾选多位作者。勾选「不设作者」会清空选择；勾选作者会取消「不设作者」。": [
+    "Select one or more authors. No author clears all selections; selecting an author turns No author off.",
+    "可勾選多位作者。勾選「不設作者」會清空選擇；勾選作者會取消「不設作者」。"
+  ],
+  "作者 ID {id} 不在本站作者列表中，请在发布配置的作者列表中重新选择。": [
+    "Author ID {id} is not on this site. Select an author in the Publishing Settings author list.",
+    "作者 ID {id} 不在本站作者清單中，請在發佈設定的作者清單中重新選擇。"
+  ],
+  "请先输入密码，才能将已有 Token 改为明文保存。": [
+    "Enter the password before saving the existing Token as plain text.",
+    "請先輸入密碼，才能將既有 Token 改為明文儲存。"
+  ],
+  "已有 Token 已加密；无需解锁即可修改设置。": [
+    "Existing Token is encrypted; settings do not require unlocking.",
+    "既有 Token 已加密；無需解鎖即可修改設定。"
+  ],
+  "文章署名": [
+    "Author assignment",
+    "文章署名"
+  ],
+  "选择作者": [
+    "Choose authors",
+    "選擇作者"
+  ],
+  "本站作者（可多选）": [
+    "Site authors (select one or more)",
+    "本站作者（可多選）"
+  ],
+  "先选择署名方式，再勾选作者；也可直接勾选作者以启用署名。": [
+    "Choose an assignment option, then select authors. Selecting an author also enables assignment.",
+    "先選擇署名方式，再勾選作者；也可直接勾選作者以啟用署名。"
+  ],
+  "Token 默认以明文保存在本机。可选独立密码加密，防止已有 Token 被直接从配置文件读取；本机加密密码与 Typlog 登录密码无关，且不会保存。": [
+    "The Token is saved locally as plain text by default. Optional password encryption prevents the stored Token from being read directly from the settings file. The separate local password is unrelated to your Typlog login and is never saved.",
+    "Token 預設以明文儲存在本機。可選獨立密碼加密，防止既有 Token 被直接從設定檔讀取；本機加密密碼與 Typlog 登入密碼無關，且不會儲存。"
+  ],
+  "至少 12 个字符。退出应用再打开或新建文档窗口后，首次发布时需要输入此密码；打开设置无需输入。": [
+    "Use at least 12 characters. After reopening the app or opening a new document window, the first send requires this password. Opening settings does not.",
+    "至少 12 個字元。退出應用程式再開啟或新增文件視窗後，首次發布時需要輸入此密碼；開啟設定無需輸入。"
+  ],
+  "改回明文保存…": [
+    "Switch to Plain Text…",
+    "改回明文儲存…"
+  ],
+  "已有 Token 已加密保存。修改普通设置无需密码。": [
+    "The existing Token is encrypted. Editing other settings requires no password.",
+    "既有 Token 已加密儲存。修改一般設定無需密碼。"
+  ],
+  "Token 使用独立密码加密；首次发布时解锁，打开设置无需密码。": [
+    "The Token is encrypted with a separate password. Unlock on the first send; opening settings requires no password.",
+    "Token 使用獨立密碼加密；首次發布時解鎖，開啟設定無需密碼。"
+  ],
+  "Token 以明文保存在本机，无需解锁。可在「Token 保存」中启用加密。请勿分享配置文件。": [
+    "The Token is saved locally as plain text; no unlocking is required. Enable encryption in Token Storage. Keep your settings private.",
+    "Token 以明文儲存在本機，無需解鎖。可在「Token 儲存」中啟用加密。請勿分享設定檔。"
+  ],
+  "忘记本机加密密码？可直接替换新 Token，无需旧密码；不再需要发布时，可删除本机 Token。站点配置和草稿关联会保留。": [
+    "Forgot the local password? Replace the Token without the old password, or delete the local Token if you no longer need publishing. Site settings and draft associations are retained.",
+    "忘記本機加密密碼？可直接替換新 Token，無需舊密碼；不再需要發布時，可刪除本機 Token。網站設定和草稿關聯會保留。"
+  ],
+  "已有 Token 尚未解锁。发布时输入密码后可在线刷新，或替换新 Token。": [
+    "The existing Token is locked. Unlock it when sending to enable online refresh, or replace it with a new Token.",
+    "既有 Token 尚未解鎖。發布時輸入密碼後可線上重新整理，或替換新 Token。"
+  ],
+  "作者列表尚未缓存，可在手动配置中修改作者 ID。": [
+    "No author list is cached yet. Author IDs can be edited in Manual Settings.",
+    "作者列表尚未快取，可在手動設定中修改作者 ID。"
+  ],
+  "忘记本机加密密码？": [
+    "Forgot the local password?",
+    "忘記本機加密密碼？"
+  ],
+  "无法恢复旧密码或解密已有 Token。请打开发布配置，替换新 Token；不再需要发布时也可删除本机 Token。": [
+    "The old password and encrypted Token cannot be recovered. Open Publishing Settings to replace the Token, or delete the local Token if publishing is no longer needed.",
+    "無法恢復舊密碼或解密既有 Token。請開啟發布設定，替換新 Token；不再需要發布時也可刪除本機 Token。"
+  ],
+  "替换本机 Token？": [
+    "Replace the Local Token?",
+    "替換本機 Token？"
+  ],
+  "取消或尚未保存时，旧记录保留。站点配置和草稿关联不会删除；Typlog 上的旧 Token 不会被撤销。": [
+    "Cancellation or leaving without saving keeps the old record. Site settings and draft associations remain. The old Token on Typlog is not revoked.",
+    "取消或尚未儲存時，舊記錄保留。網站設定和草稿關聯不會刪除；Typlog 上的舊 Token 不會被撤銷。"
+  ],
+  "填写新 Token": [
+    "Enter New Token",
+    "填寫新 Token"
+  ],
+  "保存新 Token 后，会覆盖本机旧 Token 或加密记录，无法从此配置恢复旧 Token。请先准备有 profile 和 site 权限的新 Token。": [
+    "Saving a new Token overwrites the old local Token or encrypted record. The old Token cannot be recovered from these settings afterward. Prepare a new Token with profile and site permissions first.",
+    "儲存新 Token 後，會覆蓋本機舊 Token 或加密記錄，無法從此設定恢復舊 Token。請先準備有 profile 和 site 權限的新 Token。"
+  ],
+  "如果您不记得本机加密密码，可到 ": [
+    "If you do not remember the local password, open ",
+    "如果您不記得本機加密密碼，可到 "
+  ],
+  " 替换现有 Token。": [
+    " to replace the existing Token.",
+    " 替換現有 Token。"
   ]
 }

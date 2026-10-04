@@ -48,6 +48,12 @@ export async function decryptToken(envelope, password) {
 // Keys and decrypted Tokens remain in this window's memory, never in settings.
 export class TokenVault {
   constructor(store, prompts) { this.store = store; this.prompts = prompts; this.cache = undefined; }
+  settings(stored = {}) {
+    const { tokenVault, token, ...metadata } = stored;
+    if (!tokenVault) return { ...metadata, token: token ?? '' };
+    const cached = this.cache?.signature === JSON.stringify(tokenVault) ? this.cache.token : '';
+    return { ...metadata, token: cached, tokenLocked: !cached, hasEncryptedToken: true };
+  }
   async open(stored, { allowReset = false, forceUnlock = false } = {}) {
     this.lastOpenUsedPassword = false;
     if (!stored) return stored;
@@ -59,11 +65,12 @@ export class TokenVault {
     while (true) {
       const input = await this.prompts.unlockPassword({ allowReset, failed, rollback: forceUnlock });
       if (!input) return undefined;
+      if (input.settings) return { settings: true };
       if (input.remove && allowReset) {
         if (await this.remove(stored)) return { removed: true };
         continue;
       }
-      if (input.reset && allowReset) { this.cache = undefined; return { ...metadata, token: '' }; }
+      if (input.reset && allowReset) { this.cache = undefined; return { ...metadata, token: '', reset: true }; }
       try {
         const { token, key } = await decryptToken(tokenVault, input.password);
         this.cache = { signature, token, key, salt: decode(tokenVault.salt) };
@@ -76,8 +83,13 @@ export class TokenVault {
       }
     }
   }
-  async save(config, { encrypted = false, previous = {}, passwordVerified = false } = {}) {
-    const { token, tokenVault: ignored, encryptToken: ignoredChoice, ...metadata } = config;
+  async save(config, { encrypted = false, previous = {}, passwordVerified = false, password: suppliedPassword, preserveEncrypted = false } = {}) {
+    const { token, tokenVault: ignored, encryptToken: ignoredChoice, encryptionPassword, tokenLocked, hasEncryptedToken, hasStoredToken, preserveToken, reset, authorProfiles, ...metadata } = config;
+    if (preserveEncrypted) {
+      if (!previous.tokenVault || !encrypted) throw new Error(tr('请先输入密码，才能将已有 Token 改为明文保存。'));
+      await this.store.write('config.json', { ...metadata, ...(authorProfiles ? { authorProfiles } : {}), ...(previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}), tokenVault: previous.tokenVault });
+      return true;
+    }
     const rollback = !encrypted && previous.tokenVault && this.cache?.signature === JSON.stringify(previous.tokenVault) && token === this.cache.token;
     if (rollback && !passwordVerified) {
       const unlocked = await this.open(previous, { forceUnlock: true });
@@ -85,22 +97,22 @@ export class TokenVault {
     }
     if (!encrypted) {
       if ((previous.plainTextAcknowledged !== true) && !await this.prompts.confirmPlaintext({ rollback: Boolean(rollback) })) return false;
-      await this.store.write('config.json', { ...metadata, token, plainTextAcknowledged: true });
+      await this.store.write('config.json', { ...metadata, ...(authorProfiles ? { authorProfiles } : {}), token, plainTextAcknowledged: true });
       this.cache = undefined;
       this.legacy = false;
       return true;
     }
     let key, envelope;
-    if (this.cache) {
+    if (this.cache && suppliedPassword === undefined) {
       key = this.cache.key;
       envelope = await seal(token, key, this.cache.salt);
     } else {
-      const password = await this.prompts.createPassword({ legacy: this.legacy === true });
+      const password = suppliedPassword ?? await this.prompts.createPassword({ legacy: this.legacy === true });
       if (password === undefined) return false;
       if (password.length < 12) throw new Error(tr('本机加密密码至少需要 12 个字符。'));
       ({ key, envelope } = await encryptToken(token, password));
     }
-    await this.store.write('config.json', { ...metadata, ...(previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}), tokenVault: envelope });
+    await this.store.write('config.json', { ...metadata, ...(authorProfiles ? { authorProfiles } : {}), ...(previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}), tokenVault: envelope });
     this.cache = { signature: JSON.stringify(envelope), token, key, salt: decode(envelope.salt) };
     this.legacy = false;
     return true;

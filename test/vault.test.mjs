@@ -172,3 +172,29 @@ test('plaintext acknowledgement survives encryption, rollback, replacement, and 
   assert.equal(f.stored.token, 'replacement-test-token');
   assert.equal(notices, 1);
 });
+
+test('locked settings edits retain the exact ciphertext without asking for passwords', async () => {
+  const f = fixture(); await f.vault.save(config, { encrypted: true });
+  const original = f.stored;
+  const other = new TokenVault(f.store, { unlockPassword: async () => { throw new Error('unexpected unlock'); }, createPassword: async () => { throw new Error('unexpected password creation'); } });
+  const snapshot = other.settings(original);
+  assert.equal(snapshot.token, ''); assert.equal(snapshot.tokenLocked, true);
+  assert.equal(await other.save({ ...snapshot, authorIds: '42', encryptionPassword: 'must-not-persist' }, { encrypted: true, preserveEncrypted: true, previous: original }), true);
+  assert.deepEqual(f.stored.tokenVault, original.tokenVault);
+  assert.equal(f.stored.authorIds, '42'); assert.equal(f.stored.encryptionPassword, undefined);
+  assert.equal(f.stored.tokenLocked, undefined); assert.equal(f.stored.hasEncryptedToken, undefined);
+  await assert.rejects(other.save(snapshot, { preserveEncrypted: true, previous: original }), /请先输入密码/);
+  assert.equal((await decryptToken(f.stored.tokenVault, password)).token, config.token);
+});
+
+test('an inline password encrypts a replacement with a fresh key and is never persisted', async () => {
+  const f = fixture({ createPassword: async () => { throw new Error('no separate password window'); } });
+  const firstPassword = 'first-test-only-password';
+  await f.vault.save(config, { encrypted: true, password: firstPassword });
+  const first = f.stored;
+  await f.vault.save({ ...config, token: 'replacement-token-only', encryptionPassword: password }, { encrypted: true, password, previous: first });
+  assert.notEqual(f.stored.tokenVault.salt, first.tokenVault.salt);
+  assert.equal((await decryptToken(f.stored.tokenVault, password)).token, 'replacement-token-only');
+  await assert.rejects(decryptToken(f.stored.tokenVault, firstPassword));
+  assert.equal(f.stored.encryptionPassword, undefined);
+});

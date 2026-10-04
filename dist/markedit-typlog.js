@@ -1,4 +1,4 @@
-// MarkEdit Typlog Publisher v0.3.4 — credentials are configured in the app, never in this script.
+// MarkEdit Typlog Publisher v0.3.7 — credentials are configured in the app, never in this script.
 (() => {
   var __defProp = Object.defineProperty;
   var __export = (target, all) => {
@@ -212,10 +212,6 @@
       "Unnamed author (ID {id})",
       "\u672A\u547D\u540D\u4F5C\u8005\uFF08ID {id}\uFF09"
     ],
-    "\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u5217\u8868\u4E2D\uFF0C\u8BF7\u4ECE\u300C\u4FEE\u6539\u53D1\u5E03\u914D\u7F6E \u2192 \u9009\u62E9\u6587\u7AE0\u4F5C\u8005\u300D\u91CD\u65B0\u9009\u62E9\u3002": [
-      "Author ID {id} is not on this site. Choose an author in Publishing Settings \u2192 Choose Authors.",
-      "\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u6E05\u55AE\u4E2D\uFF0C\u8ACB\u5F9E\u300C\u4FEE\u6539\u767C\u4F48\u8A2D\u5B9A \u2192 \u9078\u64C7\u6587\u7AE0\u4F5C\u8005\u300D\u91CD\u65B0\u9078\u64C7\u3002"
-    ],
     "\u64CD\u4F5C\u672A\u5B8C\u6210\u3002": [
       "The operation did not complete.",
       "\u64CD\u4F5C\u672A\u5B8C\u6210\u3002"
@@ -427,14 +423,6 @@
     \u4F5C\u8005: [
       "Authors",
       "\u4F5C\u8005"
-    ],
-    "\u9009\u62E9\u6587\u7AE0\u4F5C\u8005\u2026": [
-      "Choose Authors\u2026",
-      "\u9078\u64C7\u6587\u7AE0\u4F5C\u8005\u2026"
-    ],
-    "\u4ECE\u672C\u7AD9\u4F5C\u8005\u4E2D\u52FE\u9009\u3002\u4EC5\u6709\u4E00\u4F4D\u65F6\u81EA\u52A8\u9009\u4E2D\uFF1B\u7559\u7A7A\u53EF\u5728\u540E\u53F0\u6DFB\u52A0\u3002": [
-      "Select site authors, or add them later in the dashboard.",
-      "\u5F9E\u672C\u7AD9\u4F5C\u8005\u4E2D\u52FE\u9078\u3002\u53EA\u6709\u4E00\u4F4D\u6642\u81EA\u52D5\u9078\u53D6\uFF1B\u7559\u7A7A\u53EF\u5728\u5F8C\u53F0\u65B0\u589E\u3002"
     ],
     \u624B\u52A8\u914D\u7F6E: [
       "Manual Settings",
@@ -819,6 +807,110 @@
     "@{username}\uFF08\u5DF2\u4FDD\u5B58\uFF09": [
       "@{username} (saved)",
       "@{username}\uFF08\u5DF2\u5132\u5B58\uFF09"
+    ],
+    \u5237\u65B0\u4F5C\u8005: [
+      "Refresh Authors",
+      "\u91CD\u65B0\u6574\u7406\u4F5C\u8005"
+    ],
+    "\u53EF\u52FE\u9009\u591A\u4F4D\u4F5C\u8005\u3002\u52FE\u9009\u300C\u4E0D\u8BBE\u4F5C\u8005\u300D\u4F1A\u6E05\u7A7A\u9009\u62E9\uFF1B\u52FE\u9009\u4F5C\u8005\u4F1A\u53D6\u6D88\u300C\u4E0D\u8BBE\u4F5C\u8005\u300D\u3002": [
+      "Select one or more authors. No author clears all selections; selecting an author turns No author off.",
+      "\u53EF\u52FE\u9078\u591A\u4F4D\u4F5C\u8005\u3002\u52FE\u9078\u300C\u4E0D\u8A2D\u4F5C\u8005\u300D\u6703\u6E05\u7A7A\u9078\u64C7\uFF1B\u52FE\u9078\u4F5C\u8005\u6703\u53D6\u6D88\u300C\u4E0D\u8A2D\u4F5C\u8005\u300D\u3002"
+    ],
+    "\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u5217\u8868\u4E2D\uFF0C\u8BF7\u5728\u53D1\u5E03\u914D\u7F6E\u7684\u4F5C\u8005\u5217\u8868\u4E2D\u91CD\u65B0\u9009\u62E9\u3002": [
+      "Author ID {id} is not on this site. Select an author in the Publishing Settings author list.",
+      "\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u6E05\u55AE\u4E2D\uFF0C\u8ACB\u5728\u767C\u4F48\u8A2D\u5B9A\u7684\u4F5C\u8005\u6E05\u55AE\u4E2D\u91CD\u65B0\u9078\u64C7\u3002"
+    ],
+    "\u8BF7\u5148\u8F93\u5165\u5BC6\u7801\uFF0C\u624D\u80FD\u5C06\u5DF2\u6709 Token \u6539\u4E3A\u660E\u6587\u4FDD\u5B58\u3002": [
+      "Enter the password before saving the existing Token as plain text.",
+      "\u8ACB\u5148\u8F38\u5165\u5BC6\u78BC\uFF0C\u624D\u80FD\u5C07\u65E2\u6709 Token \u6539\u70BA\u660E\u6587\u5132\u5B58\u3002"
+    ],
+    "\u5DF2\u6709 Token \u5DF2\u52A0\u5BC6\uFF1B\u65E0\u9700\u89E3\u9501\u5373\u53EF\u4FEE\u6539\u8BBE\u7F6E\u3002": [
+      "Existing Token is encrypted; settings do not require unlocking.",
+      "\u65E2\u6709 Token \u5DF2\u52A0\u5BC6\uFF1B\u7121\u9700\u89E3\u9396\u5373\u53EF\u4FEE\u6539\u8A2D\u5B9A\u3002"
+    ],
+    \u6587\u7AE0\u7F72\u540D: [
+      "Author assignment",
+      "\u6587\u7AE0\u7F72\u540D"
+    ],
+    \u9009\u62E9\u4F5C\u8005: [
+      "Choose authors",
+      "\u9078\u64C7\u4F5C\u8005"
+    ],
+    "\u672C\u7AD9\u4F5C\u8005\uFF08\u53EF\u591A\u9009\uFF09": [
+      "Site authors (select one or more)",
+      "\u672C\u7AD9\u4F5C\u8005\uFF08\u53EF\u591A\u9078\uFF09"
+    ],
+    "\u5148\u9009\u62E9\u7F72\u540D\u65B9\u5F0F\uFF0C\u518D\u52FE\u9009\u4F5C\u8005\uFF1B\u4E5F\u53EF\u76F4\u63A5\u52FE\u9009\u4F5C\u8005\u4EE5\u542F\u7528\u7F72\u540D\u3002": [
+      "Choose an assignment option, then select authors. Selecting an author also enables assignment.",
+      "\u5148\u9078\u64C7\u7F72\u540D\u65B9\u5F0F\uFF0C\u518D\u52FE\u9078\u4F5C\u8005\uFF1B\u4E5F\u53EF\u76F4\u63A5\u52FE\u9078\u4F5C\u8005\u4EE5\u555F\u7528\u7F72\u540D\u3002"
+    ],
+    "Token \u9ED8\u8BA4\u4EE5\u660E\u6587\u4FDD\u5B58\u5728\u672C\u673A\u3002\u53EF\u9009\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\uFF0C\u9632\u6B62\u5DF2\u6709 Token \u88AB\u76F4\u63A5\u4ECE\u914D\u7F6E\u6587\u4EF6\u8BFB\u53D6\uFF1B\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u4E0E Typlog \u767B\u5F55\u5BC6\u7801\u65E0\u5173\uFF0C\u4E14\u4E0D\u4F1A\u4FDD\u5B58\u3002": [
+      "The Token is saved locally as plain text by default. Optional password encryption prevents the stored Token from being read directly from the settings file. The separate local password is unrelated to your Typlog login and is never saved.",
+      "Token \u9810\u8A2D\u4EE5\u660E\u6587\u5132\u5B58\u5728\u672C\u6A5F\u3002\u53EF\u9078\u7368\u7ACB\u5BC6\u78BC\u52A0\u5BC6\uFF0C\u9632\u6B62\u65E2\u6709 Token \u88AB\u76F4\u63A5\u5F9E\u8A2D\u5B9A\u6A94\u8B80\u53D6\uFF1B\u672C\u6A5F\u52A0\u5BC6\u5BC6\u78BC\u8207 Typlog \u767B\u5165\u5BC6\u78BC\u7121\u95DC\uFF0C\u4E14\u4E0D\u6703\u5132\u5B58\u3002"
+    ],
+    "\u81F3\u5C11 12 \u4E2A\u5B57\u7B26\u3002\u9000\u51FA\u5E94\u7528\u518D\u6253\u5F00\u6216\u65B0\u5EFA\u6587\u6863\u7A97\u53E3\u540E\uFF0C\u9996\u6B21\u53D1\u5E03\u65F6\u9700\u8981\u8F93\u5165\u6B64\u5BC6\u7801\uFF1B\u6253\u5F00\u8BBE\u7F6E\u65E0\u9700\u8F93\u5165\u3002": [
+      "Use at least 12 characters. After reopening the app or opening a new document window, the first send requires this password. Opening settings does not.",
+      "\u81F3\u5C11 12 \u500B\u5B57\u5143\u3002\u9000\u51FA\u61C9\u7528\u7A0B\u5F0F\u518D\u958B\u555F\u6216\u65B0\u589E\u6587\u4EF6\u8996\u7A97\u5F8C\uFF0C\u9996\u6B21\u767C\u5E03\u6642\u9700\u8981\u8F38\u5165\u6B64\u5BC6\u78BC\uFF1B\u958B\u555F\u8A2D\u5B9A\u7121\u9700\u8F38\u5165\u3002"
+    ],
+    "\u6539\u56DE\u660E\u6587\u4FDD\u5B58\u2026": [
+      "Switch to Plain Text\u2026",
+      "\u6539\u56DE\u660E\u6587\u5132\u5B58\u2026"
+    ],
+    "\u5DF2\u6709 Token \u5DF2\u52A0\u5BC6\u4FDD\u5B58\u3002\u4FEE\u6539\u666E\u901A\u8BBE\u7F6E\u65E0\u9700\u5BC6\u7801\u3002": [
+      "The existing Token is encrypted. Editing other settings requires no password.",
+      "\u65E2\u6709 Token \u5DF2\u52A0\u5BC6\u5132\u5B58\u3002\u4FEE\u6539\u4E00\u822C\u8A2D\u5B9A\u7121\u9700\u5BC6\u78BC\u3002"
+    ],
+    "Token \u4F7F\u7528\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\uFF1B\u9996\u6B21\u53D1\u5E03\u65F6\u89E3\u9501\uFF0C\u6253\u5F00\u8BBE\u7F6E\u65E0\u9700\u5BC6\u7801\u3002": [
+      "The Token is encrypted with a separate password. Unlock on the first send; opening settings requires no password.",
+      "Token \u4F7F\u7528\u7368\u7ACB\u5BC6\u78BC\u52A0\u5BC6\uFF1B\u9996\u6B21\u767C\u5E03\u6642\u89E3\u9396\uFF0C\u958B\u555F\u8A2D\u5B9A\u7121\u9700\u5BC6\u78BC\u3002"
+    ],
+    "Token \u4EE5\u660E\u6587\u4FDD\u5B58\u5728\u672C\u673A\uFF0C\u65E0\u9700\u89E3\u9501\u3002\u53EF\u5728\u300CToken \u4FDD\u5B58\u300D\u4E2D\u542F\u7528\u52A0\u5BC6\u3002\u8BF7\u52FF\u5206\u4EAB\u914D\u7F6E\u6587\u4EF6\u3002": [
+      "The Token is saved locally as plain text; no unlocking is required. Enable encryption in Token Storage. Keep your settings private.",
+      "Token \u4EE5\u660E\u6587\u5132\u5B58\u5728\u672C\u6A5F\uFF0C\u7121\u9700\u89E3\u9396\u3002\u53EF\u5728\u300CToken \u5132\u5B58\u300D\u4E2D\u555F\u7528\u52A0\u5BC6\u3002\u8ACB\u52FF\u5206\u4EAB\u8A2D\u5B9A\u6A94\u3002"
+    ],
+    "\u5FD8\u8BB0\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF1F\u53EF\u76F4\u63A5\u66FF\u6362\u65B0 Token\uFF0C\u65E0\u9700\u65E7\u5BC6\u7801\uFF1B\u4E0D\u518D\u9700\u8981\u53D1\u5E03\u65F6\uFF0C\u53EF\u5220\u9664\u672C\u673A Token\u3002\u7AD9\u70B9\u914D\u7F6E\u548C\u8349\u7A3F\u5173\u8054\u4F1A\u4FDD\u7559\u3002": [
+      "Forgot the local password? Replace the Token without the old password, or delete the local Token if you no longer need publishing. Site settings and draft associations are retained.",
+      "\u5FD8\u8A18\u672C\u6A5F\u52A0\u5BC6\u5BC6\u78BC\uFF1F\u53EF\u76F4\u63A5\u66FF\u63DB\u65B0 Token\uFF0C\u7121\u9700\u820A\u5BC6\u78BC\uFF1B\u4E0D\u518D\u9700\u8981\u767C\u5E03\u6642\uFF0C\u53EF\u522A\u9664\u672C\u6A5F Token\u3002\u7DB2\u7AD9\u8A2D\u5B9A\u548C\u8349\u7A3F\u95DC\u806F\u6703\u4FDD\u7559\u3002"
+    ],
+    "\u5DF2\u6709 Token \u5C1A\u672A\u89E3\u9501\u3002\u53D1\u5E03\u65F6\u8F93\u5165\u5BC6\u7801\u540E\u53EF\u5728\u7EBF\u5237\u65B0\uFF0C\u6216\u66FF\u6362\u65B0 Token\u3002": [
+      "The existing Token is locked. Unlock it when sending to enable online refresh, or replace it with a new Token.",
+      "\u65E2\u6709 Token \u5C1A\u672A\u89E3\u9396\u3002\u767C\u5E03\u6642\u8F38\u5165\u5BC6\u78BC\u5F8C\u53EF\u7DDA\u4E0A\u91CD\u65B0\u6574\u7406\uFF0C\u6216\u66FF\u63DB\u65B0 Token\u3002"
+    ],
+    "\u4F5C\u8005\u5217\u8868\u5C1A\u672A\u7F13\u5B58\uFF0C\u53EF\u5728\u624B\u52A8\u914D\u7F6E\u4E2D\u4FEE\u6539\u4F5C\u8005 ID\u3002": [
+      "No author list is cached yet. Author IDs can be edited in Manual Settings.",
+      "\u4F5C\u8005\u5217\u8868\u5C1A\u672A\u5FEB\u53D6\uFF0C\u53EF\u5728\u624B\u52D5\u8A2D\u5B9A\u4E2D\u4FEE\u6539\u4F5C\u8005 ID\u3002"
+    ],
+    "\u5FD8\u8BB0\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF1F": [
+      "Forgot the local password?",
+      "\u5FD8\u8A18\u672C\u6A5F\u52A0\u5BC6\u5BC6\u78BC\uFF1F"
+    ],
+    "\u65E0\u6CD5\u6062\u590D\u65E7\u5BC6\u7801\u6216\u89E3\u5BC6\u5DF2\u6709 Token\u3002\u8BF7\u6253\u5F00\u53D1\u5E03\u914D\u7F6E\uFF0C\u66FF\u6362\u65B0 Token\uFF1B\u4E0D\u518D\u9700\u8981\u53D1\u5E03\u65F6\u4E5F\u53EF\u5220\u9664\u672C\u673A Token\u3002": [
+      "The old password and encrypted Token cannot be recovered. Open Publishing Settings to replace the Token, or delete the local Token if publishing is no longer needed.",
+      "\u7121\u6CD5\u6062\u5FA9\u820A\u5BC6\u78BC\u6216\u89E3\u5BC6\u65E2\u6709 Token\u3002\u8ACB\u958B\u555F\u767C\u5E03\u8A2D\u5B9A\uFF0C\u66FF\u63DB\u65B0 Token\uFF1B\u4E0D\u518D\u9700\u8981\u767C\u5E03\u6642\u4E5F\u53EF\u522A\u9664\u672C\u6A5F Token\u3002"
+    ],
+    "\u66FF\u6362\u672C\u673A Token\uFF1F": [
+      "Replace the Local Token?",
+      "\u66FF\u63DB\u672C\u6A5F Token\uFF1F"
+    ],
+    "\u53D6\u6D88\u6216\u5C1A\u672A\u4FDD\u5B58\u65F6\uFF0C\u65E7\u8BB0\u5F55\u4FDD\u7559\u3002\u7AD9\u70B9\u914D\u7F6E\u548C\u8349\u7A3F\u5173\u8054\u4E0D\u4F1A\u5220\u9664\uFF1BTyplog \u4E0A\u7684\u65E7 Token \u4E0D\u4F1A\u88AB\u64A4\u9500\u3002": [
+      "Cancellation or leaving without saving keeps the old record. Site settings and draft associations remain. The old Token on Typlog is not revoked.",
+      "\u53D6\u6D88\u6216\u5C1A\u672A\u5132\u5B58\u6642\uFF0C\u820A\u8A18\u9304\u4FDD\u7559\u3002\u7DB2\u7AD9\u8A2D\u5B9A\u548C\u8349\u7A3F\u95DC\u806F\u4E0D\u6703\u522A\u9664\uFF1BTyplog \u4E0A\u7684\u820A Token \u4E0D\u6703\u88AB\u64A4\u92B7\u3002"
+    ],
+    "\u586B\u5199\u65B0 Token": [
+      "Enter New Token",
+      "\u586B\u5BEB\u65B0 Token"
+    ],
+    "\u4FDD\u5B58\u65B0 Token \u540E\uFF0C\u4F1A\u8986\u76D6\u672C\u673A\u65E7 Token \u6216\u52A0\u5BC6\u8BB0\u5F55\uFF0C\u65E0\u6CD5\u4ECE\u6B64\u914D\u7F6E\u6062\u590D\u65E7 Token\u3002\u8BF7\u5148\u51C6\u5907\u6709 profile \u548C site \u6743\u9650\u7684\u65B0 Token\u3002": [
+      "Saving a new Token overwrites the old local Token or encrypted record. The old Token cannot be recovered from these settings afterward. Prepare a new Token with profile and site permissions first.",
+      "\u5132\u5B58\u65B0 Token \u5F8C\uFF0C\u6703\u8986\u84CB\u672C\u6A5F\u820A Token \u6216\u52A0\u5BC6\u8A18\u9304\uFF0C\u7121\u6CD5\u5F9E\u6B64\u8A2D\u5B9A\u6062\u5FA9\u820A Token\u3002\u8ACB\u5148\u6E96\u5099\u6709 profile \u548C site \u6B0A\u9650\u7684\u65B0 Token\u3002"
+    ],
+    "\u5982\u679C\u60A8\u4E0D\u8BB0\u5F97\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF0C\u53EF\u5230 ": [
+      "If you do not remember the local password, open ",
+      "\u5982\u679C\u60A8\u4E0D\u8A18\u5F97\u672C\u6A5F\u52A0\u5BC6\u5BC6\u78BC\uFF0C\u53EF\u5230 "
+    ],
+    " \u66FF\u6362\u73B0\u6709 Token\u3002": [
+      " to replace the existing Token.",
+      " \u66FF\u63DB\u73FE\u6709 Token\u3002"
     ]
   };
 
@@ -6784,7 +6876,7 @@
   function selectedAuthorLabels(authorIds, authors) {
     return splitTags(authorIds).map((id) => {
       const author = authors.find((author2) => author2.id === id);
-      if (!author) throw new Error(tr("\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u5217\u8868\u4E2D\uFF0C\u8BF7\u4ECE\u300C\u4FEE\u6539\u53D1\u5E03\u914D\u7F6E \u2192 \u9009\u62E9\u6587\u7AE0\u4F5C\u8005\u300D\u91CD\u65B0\u9009\u62E9\u3002", { id }));
+      if (!author) throw new Error(tr("\u4F5C\u8005 ID {id} \u4E0D\u5728\u672C\u7AD9\u4F5C\u8005\u5217\u8868\u4E2D\uFF0C\u8BF7\u5728\u53D1\u5E03\u914D\u7F6E\u7684\u4F5C\u8005\u5217\u8868\u4E2D\u91CD\u65B0\u9009\u62E9\u3002", { id }));
       return authorLabel(author);
     });
   }
@@ -6907,7 +6999,7 @@
   h2 { margin:0; font-size:20px; line-height:1.3; font-weight:600; letter-spacing:-.3px; } .heading { display:flex; align-items:center; gap:10px; } .heading img { width:24px; height:24px; flex:none; } @media(prefers-color-scheme:dark) { .heading img { filter:invert(1); } }
   p { margin:0; } .heading + .summary { color:light-dark(#555,#c0c0c5); margin:12px 0 20px; font-size:13px; }
   label { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:center; column-gap:14px; row-gap:6px; margin:14px 0; font-weight:400; line-height:1.5; } label > span { text-align:right; } label > small { grid-column:2; }
-  input,select { display:block; min-width:0; width:100%; min-height:34px; padding:6px 10px; font:inherit; color:inherit; background:light-dark(#fff,#323235); border:1px solid #8885; border-radius:8px; } select { background:light-dark(#eeeef0,#39393c); }
+  input,select { display:block; min-width:0; width:100%; min-height:34px; padding:6px 10px; font:inherit; color:inherit; background:light-dark(#fff,#323235); border:1px solid #8885; border-radius:8px; } select { appearance:none; -webkit-appearance:none; height:36px; min-height:36px; line-height:20px; padding:7px 34px 7px 12px; border-color:transparent; background:light-dark(#eeeef0,#39393c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='16' viewBox='0 0 12 16'%3E%3Cpath d='m3 6 3-3 3 3m-6 4 3 3 3-3' fill='none' stroke='%23777' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center; }
   input:focus,select:focus { outline:3px solid #087cf050; outline-offset:1px; } small { display:block; font-weight:400; color:light-dark(#59595f,#c0c0c5); font-size:13px; line-height:1.55; }
   button { min-height:34px; border:1px solid #8885; border-radius:9px; padding:6px 14px; cursor:pointer; font:inherit; color:inherit; background:light-dark(#fff,#414145); box-shadow:0 1px 2px #0001; } button.primary { color:white; background:#087cf0; border-color:#087cf0; } button:disabled { opacity:.5; cursor:default; }
   .buttons { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; position:sticky; bottom:calc(-1 * var(--panel-padding)); z-index:1; margin:24px calc(-1 * var(--panel-padding)) calc(-1 * var(--panel-padding)); padding:16px var(--panel-padding); border-top:1px solid #8883; background:light-dark(#f6f6f8ed,#28282bef); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
@@ -6915,9 +7007,10 @@
   a,button.link { color:light-dark(#0067ce,#78bdff); } a { text-decoration:none; } a:hover { text-decoration:underline; } .note { font-size:13px; line-height:1.55; color:light-dark(#59595f,#c0c0c5); }
   .check { display:flex; align-items:flex-start; gap:9px; font-weight:400; margin:12px 0; } .check input { flex:none; width:17px; height:17px; min-height:0; margin:2px 0 0; padding:0; accent-color:#087cf0; } .check > span { text-align:left; }
   .authors { max-height:156px; overflow:auto; margin:12px 0 0 174px; border:1px solid #8884; border-radius:8px; padding:0 12px; background:light-dark(#f2f2f4,#303034); }
-  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:14px 0; } .row .field-title { font-weight:400; } button.link { background:none; border:0; padding:0; box-shadow:none; } button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
-  .configuration { width:640px; padding:0; overflow:hidden; display:flex; flex-direction:column; transition:height .24s cubic-bezier(.22,.61,.36,1); }
-  .configuration > .heading { padding:12px 28px 4px; flex:none; } .configuration h2 { font-size:18px; } .configuration > .summary { display:none; }
+  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:14px 0; } .row .field-title { font-weight:400; } button.link { text-align:left; background:none; border:0; padding:0; box-shadow:none; } button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
+  .configuration-backdrop { align-items:flex-start; padding-top:clamp(12px,3vh,28px); padding-bottom:20px; }
+  .configuration { max-height:calc(100vh - clamp(12px,3vh,28px) - 20px); transform-origin:top center; width:640px; padding:0; overflow:hidden; display:flex; flex-direction:column; transition:height .24s cubic-bezier(.22,.61,.36,1); }
+  .configuration > .heading { justify-content:center; padding:14px 28px 10px; flex:none; } .configuration > .heading img { width:22px; height:22px; } .configuration h2 { font-size:18px; line-height:26px; letter-spacing:0; } .configuration:lang(zh-Hans) h2 { font-family:"PingFang SC","PingFang TC",-apple-system,sans-serif; } .configuration:lang(zh-Hant) h2 { font-family:"PingFang TC","PingFang SC",-apple-system,sans-serif; } .configuration > .summary { display:none; }
   .tabs { display:flex; justify-content:center; gap:8px; flex:none; padding:4px 24px 10px; border-bottom:1px solid #8883; background:light-dark(#f7f7f9,#29292d); }
   .tabs button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:120px; max-width:180px; min-height:58px; padding:5px 12px; border:1px solid transparent; background:none; box-shadow:none; color:light-dark(#606067,#b9b9c1); font-size:13px; line-height:1.3; transition:color .15s ease,background .15s ease,box-shadow .15s ease; }
   .tabs svg { width:26px; height:26px; flex:none; } .tabs button[aria-selected=true] { color:light-dark(#007aff,#72baff); background:linear-gradient(160deg,#ffffffb0,#ffffff28); border-color:#8883; box-shadow:inset 0 1px 0 #ffffff70,0 2px 8px #00000008; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
@@ -6927,11 +7020,10 @@
   .configuration .buttons { position:static; flex:none; margin:0; padding:16px 28px; } .configuration > .error { flex:none; padding:0 28px 14px; margin:0; }
   .settings-group { padding:0; margin:0; } .token-group { padding-bottom:16px; border-bottom:1px solid #8883; margin-bottom:16px; } .token-group > label { margin:0; } .token-help { margin-top:8px; }
   .tab-stage { display:flow-root; } [role=tabpanel]:not([hidden]) { animation:pane-in .18s ease-out; }
-  .connection-row { display:flex; align-items:center; gap:12px; margin:0 0 20px; } .author-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 6px; }
-  .connection-controls { flex:1; min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; } .connection-controls .status { flex:1; margin:0; min-width:90px; } .connection-controls button { flex:none; }
-  .configuration [role=tabpanel] > label { margin:0 0 20px; } .configuration [role=tabpanel] > label:last-child { margin-bottom:0; } .author-heading button { min-height:0; } .configuration .author-group { margin-top:20px; } .configuration .authors { margin-left:0; }
-  .author-help,.author-options { margin-left:0; } .author-options { justify-content:flex-start; margin:12px 0 0; gap:8px 16px; } .author-options .check { margin:0; } .author-options .status { margin:0; min-width:0; overflow-wrap:anywhere; }
-  .security-group { padding:0; } .configuration .security-group > .check { margin:0 0 8px; } .security-group .row { justify-content:flex-start; gap:10px; margin:14px 0; }
+  .connection-row { display:flex; align-items:flex-start; gap:12px; margin:0 0 20px; } .author-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 6px; }
+  .connection-controls { flex:1; min-width:0; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:10px 14px; } .connection-controls .status { padding-top:6px; margin:0; min-width:0; overflow-wrap:anywhere; } .connection-row > .field-title { padding-top:6px; } .connection-controls button { grid-column:2; grid-row:1; }
+  .configuration [role=tabpanel] > label { margin:0 0 20px; } .configuration [role=tabpanel] > label:last-child { margin-bottom:0; } .author-heading button { min-height:0; } .configuration .author-group { margin-top:20px; } .configuration .authors { margin:0; padding:0; border:0; border-radius:0; max-height:none; overflow:visible; background:none; } .author-choices { margin-top:10px; border:0; background:none; } .author-choices .check { margin:8px 0; padding:0; } .author-choices .check:last-child { margin-bottom:0; } .author-choices[aria-disabled=true] { opacity:.5; } .author-labels { display:flex; align-items:center; flex-wrap:wrap; gap:8px 18px; } .author-labels .check { margin:0; font-weight:400; } .author-status { margin-top:8px; overflow-wrap:anywhere; } .password-fields { margin:14px 0 18px; padding:14px 16px; border:1px solid #8883; border-radius:10px; background:light-dark(#f2f2f4,#303034); } .password-fields label { margin:0 0 12px; } .password-fields label:last-of-type { margin-bottom:8px; } .security-status { margin:0 0 12px; } .recovery-help { margin-top:16px; } .author-status { margin-top:8px; overflow-wrap:anywhere; }
+  .security-group { padding:0; } .security-group > .rollback-action { display:block; margin-top:18px; } .recovery-navigation { margin-top:14px; font-size:13px; line-height:1.55; color:light-dark(#59595f,#c0c0c5); } .configuration .security-group > .check { margin:0 0 8px; } .security-group .row { justify-content:flex-start; gap:10px; margin:14px 0; }
   .configuration > .usage { flex:none; margin:0; padding:12px 28px 14px; } .usage { padding-top:14px; border-top:1px solid #8883; margin-top:14px; } .usage h3 { font-size:13px; font-weight:600; margin:0 0 7px; } .usage p { font-size:13px; color:light-dark(#59595f,#c0c0c5); line-height:1.55; margin:7px 0 0; }
   details { margin-top:16px; border:1px solid #8883; border-radius:10px; background:light-dark(#f4f4f6,#303034); } summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 16px; font-size:14px; } summary::-webkit-details-marker { display:none; } summary::after { content:''; width:6px; height:6px; border-top:1.4px solid #888; border-right:1.4px solid #888; transform:rotate(45deg); flex:none; transition:transform .15s; } details[open] > summary::after { transform:rotate(135deg); } .details-body { padding:4px 16px 16px; border-top:1px solid #8882; } .details-body label { grid-template-columns:140px minmax(0,1fr); } .details-body label:last-child { margin-bottom:0; }
   .review { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:baseline; gap:12px 14px; margin:18px 0 0; padding:18px; background:light-dark(#f1f1f3,#303034); border-radius:10px; } .review dt { text-align:right; color:light-dark(#59595f,#c0c0c5); } .review dd { margin:0; overflow-wrap:anywhere; }
@@ -6939,7 +7031,7 @@
   @keyframes spin { to { transform:rotate(360deg); } } @keyframes pane-in { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } } @keyframes dialog-in { from { opacity:0; transform:scale(.99); } to { opacity:1; transform:scale(1); } }
   @media(prefers-reduced-motion:reduce) { *,*::after { animation:none !important; transition:none !important; } } @media(prefers-reduced-transparency:reduce) { .buttons { background:light-dark(#f6f6f8,#28282b); backdrop-filter:none; -webkit-backdrop-filter:none; } .tabs button[aria-selected=true] { background:light-dark(#fff,#414145); backdrop-filter:none; -webkit-backdrop-filter:none; } }
   @media(prefers-contrast:more) { small,.note,.usage p,.review dt,.heading + .summary { color:light-dark(#333,#eee); } input,select,button { border-color:light-dark(#555,#aaa); } }
-  @media(max-width:520px) { .backdrop { padding:12px; } .panel { --panel-padding:20px; max-height:calc(100vh - 24px); } .configuration-content { padding:18px 20px; } .configuration > .heading { padding:16px 20px 6px; } .tabs { padding:8px 12px 12px; gap:3px; } .tabs button { min-width:0; flex:1; padding:7px 5px; font-size:12px; } label,.review,.connection-row,.author-heading,.details-body label { grid-template-columns:minmax(0,1fr); gap:6px; } label > span,.review dt,.connection-row > .field-title,.author-heading > .field-title { text-align:left; } label > small { grid-column:1; } .author-help,.author-options,.authors { margin-left:0; } .review dd + dt { margin-top:6px; } .configuration > .usage { padding:10px 20px 12px; } .tab-stage { display:flow-root; } }
+  @media(max-width:520px) { .backdrop { padding:12px; } .panel { --panel-padding:20px; max-height:calc(100vh - 24px); } .configuration-content { padding:18px 20px; } .configuration > .heading { padding:16px 20px 6px; } .tabs { padding:8px 12px 12px; gap:3px; } .tabs button { min-width:0; flex:1; padding:7px 5px; font-size:12px; } label,.review,.connection-row,.author-heading,.details-body label { grid-template-columns:minmax(0,1fr); gap:6px; } label > span,.review dt,.connection-row > .field-title,.author-heading > .field-title { text-align:left; } label > small { grid-column:1; } .author-help,.authors { margin-left:0; } .review dd + dt { margin-top:6px; } .configuration > .usage { padding:10px 20px 12px; } .tab-stage { display:flow-root; } }
 `;
   function form({ title, description, fields, submitLabel, note, validate, initial = {}, mount }) {
     return new Promise((resolve) => {
@@ -7073,7 +7165,8 @@
         const content = body.offsetHeight + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
         const chrome = [...panel.children].filter((child) => child !== section).reduce((height, child) => height + child.offsetHeight, 4);
         if (content + chrome <= 2) return;
-        const limit = Math.max(120, view.innerHeight - (view.innerWidth <= 520 ? 24 : 40));
+        const backdropStyle = view.getComputedStyle(panel.parentElement);
+        const limit = Math.max(120, view.innerHeight - parseFloat(backdropStyle.paddingTop) - parseFloat(backdropStyle.paddingBottom));
         panel.style.height = Math.ceil(Math.min(content + chrome, limit)) + "px";
       });
     }
@@ -7130,6 +7223,7 @@
       listAuthors: (config2) => new Client(config2).listAuthors(),
       ...services
     };
+    let existingEncrypted = Boolean(initial.hasEncryptedToken), locked = Boolean(initial.tokenLocked), authorProfiles = initial.authorProfiles, siteCache = initial.siteCache;
     let verifiedToken = initial.username && initial.siteId && initial.slug ? String(initial.token ?? "").trim() : "";
     return form({
       title: tr("Typlog \u53D1\u5E03\u914D\u7F6E"),
@@ -7141,15 +7235,31 @@
         { name: "slug", label: tr("\u7AD9\u70B9 slug") },
         { name: "siteId", label: tr("Site ID"), inputMode: "numeric" },
         { name: "authorIds", label: tr("\u4F5C\u8005 ID\uFF08\u53EF\u9009\uFF09"), help: tr("\u7531\u4F5C\u8005\u9009\u62E9\u81EA\u52A8\u586B\u5165\uFF1B\u624B\u586B\u591A\u4F4D\u4F5C\u8005\u65F6\u7528\u9017\u53F7\u5206\u9694\u3002") },
-        { name: "encryptToken", label: tr("\u4F7F\u7528\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\u672C\u673A Token"), type: "checkbox" }
+        { name: "encryptToken", label: tr("\u4F7F\u7528\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\u672C\u673A Token"), type: "checkbox" },
+        { name: "encryptionPassword", label: tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801"), type: "password" },
+        { name: "encryptionConfirmation", label: tr("\u518D\u6B21\u8F93\u5165\u672C\u673A\u52A0\u5BC6\u5BC6\u7801"), type: "password" }
       ],
       submitLabel: tr("\u4FDD\u5B58\u914D\u7F6E"),
       validate: (input) => {
         if (verifiedToken !== input.token.trim()) throw new Error(tr("\u8BF7\u5148\u8BFB\u53D6\u8D26\u53F7\u4E0E\u7AD9\u70B9\uFF0C\u6216\u5207\u6362\u5230\u624B\u52A8\u914D\u7F6E\u586B\u5199\u8D26\u53F7\u548C\u7AD9\u70B9\u4FE1\u606F\u3002"));
-        return { ...validateConfig(input), encryptToken: input.encryptToken };
+        if (input.encryptToken && !existingEncrypted) {
+          if (input.encryptionPassword.length < 12) throw new Error(tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u81F3\u5C11\u9700\u8981 12 \u4E2A\u5B57\u7B26\u3002"));
+          if (input.encryptionPassword !== input.encryptionConfirmation) throw new Error(tr("\u4E24\u6B21\u8F93\u5165\u7684\u5BC6\u7801\u4E0D\u4E00\u81F4\u3002"));
+        }
+        const validated = validateConfig({ ...input, token: locked ? "encrypted-token-retained" : input.token });
+        return {
+          ...validated,
+          token: locked ? "" : validated.token,
+          encryptToken: input.encryptToken,
+          ...existingEncrypted ? { preserveToken: true } : {},
+          ...input.encryptToken && !existingEncrypted ? { encryptionPassword: input.encryptionPassword } : {},
+          ...authorProfiles ? { authorProfiles } : {},
+          ...siteCache ? { siteCache: { ...siteCache, username: validated.username } } : {}
+        };
       },
       mount: ({ inputs, panel, finish, getValues, isClosed, setError, setLoading }) => {
         panel.classList.add("configuration");
+        panel.parentElement.classList.add("configuration-backdrop");
         const section = document.createElement("div");
         section.className = "configuration-content";
         inputs.token.closest("label").after(section);
@@ -7173,6 +7283,9 @@
           event.preventDefault();
           window.open(tokenLink.href, "_blank");
         };
+        inputs.token.disabled = existingEncrypted;
+        inputs.token.required = !existingEncrypted;
+        if (locked) inputs.token.placeholder = tr("\u5DF2\u6709 Token \u5DF2\u52A0\u5BC6\uFF1B\u65E0\u9700\u89E3\u9501\u5373\u53EF\u4FEE\u6539\u8BBE\u7F6E\u3002");
         tokenHelp.append(document.createTextNode(tr("\u767B\u5F55 Typlog \u540E\uFF0C\u5728 ")), tokenLink, document.createTextNode(tr("\uFF0C\u70B9\u51FB\u300C+ \u65B0\u5BC6\u94A5\u300D\uFF0C\u8F93\u5165\u540D\u79F0\uFF0C\u6743\u9650\u52FE\u9009 profile \u548C site \u590D\u9009\u6846\uFF0C\u53EF\u751F\u6210\u65B0 API Token\uFF0C\u5C06\u5176\u590D\u5236\u5230\u8FD9\u91CC\u3002")));
         const tabs = document.createElement("div");
         tabs.className = "tabs";
@@ -7234,7 +7347,7 @@
             }
           };
         });
-        selectTab(0);
+        selectTab(services.initialTab === "storage" ? 2 : 0);
         const connectionRow = document.createElement("div");
         connectionRow.className = "connection-row";
         automatic.append(connectionRow);
@@ -7279,29 +7392,32 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "link";
-        button.textContent = tr("\u9009\u62E9\u6587\u7AE0\u4F5C\u8005\u2026");
+        button.textContent = tr("\u5237\u65B0\u4F5C\u8005");
         authorRow.append(button);
-        const help = document.createElement("small");
-        help.className = "author-help";
-        help.textContent = tr("\u4ECE\u672C\u7AD9\u4F5C\u8005\u4E2D\u52FE\u9009\u3002\u4EC5\u6709\u4E00\u4F4D\u65F6\u81EA\u52A8\u9009\u4E2D\uFF1B\u7559\u7A7A\u53EF\u5728\u540E\u53F0\u6DFB\u52A0\u3002");
-        authorSection.append(help);
-        const authorOptions = document.createElement("div");
-        authorOptions.className = "row author-options";
-        authorSection.append(authorOptions);
+        const authorLabels = document.createElement("div");
+        authorLabels.className = "author-labels";
+        authorRow.prepend(authorLabels);
+        authorLabels.append(authorTitle);
         const noneLabel = document.createElement("label");
         noneLabel.className = "check";
         const none = document.createElement("input");
         none.type = "checkbox";
         noneLabel.append(none, document.createTextNode(tr("\u4E0D\u8BBE\u4F5C\u8005")));
-        authorOptions.append(noneLabel);
+        authorLabels.append(noneLabel);
+        const authorOptions = document.createElement("div");
+        authorOptions.className = "author-choices";
+        authorOptions.hidden = true;
+        authorOptions.setAttribute("role", "group");
+        authorOptions.setAttribute("aria-label", tr("\u4F5C\u8005"));
+        authorSection.append(authorOptions);
         const selected = document.createElement("small");
-        selected.className = "status";
+        selected.className = "author-status";
         selected.setAttribute("role", "status");
-        authorOptions.append(selected);
+        authorSection.append(selected);
         const box = document.createElement("div");
         box.className = "authors";
         box.hidden = true;
-        authorSection.append(box);
+        authorOptions.append(box);
         for (const key of ["username", "slug", "siteId", "authorIds"]) advancedBody.append(inputs[key].closest("label"));
         const siteFields = document.createElement("div");
         siteFields.className = "site-fields";
@@ -7318,15 +7434,73 @@
         instructions.append(instructionsText);
         const privacy = document.createElement("p");
         instructions.append(privacy);
+        const securityStatus = document.createElement("small");
+        securityStatus.className = "security-status";
+        security.append(securityStatus);
+        security.append(inputs.encryptToken.closest("label"));
+        const securityHelp = document.createElement("small");
+        securityHelp.textContent = tr("Token \u9ED8\u8BA4\u4EE5\u660E\u6587\u4FDD\u5B58\u5728\u672C\u673A\u3002\u53EF\u9009\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\uFF0C\u9632\u6B62\u5DF2\u6709 Token \u88AB\u76F4\u63A5\u4ECE\u914D\u7F6E\u6587\u4EF6\u8BFB\u53D6\uFF1B\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u4E0E Typlog \u767B\u5F55\u5BC6\u7801\u65E0\u5173\uFF0C\u4E14\u4E0D\u4F1A\u4FDD\u5B58\u3002");
+        security.append(securityHelp);
+        const passwordFields = document.createElement("div");
+        passwordFields.className = "password-fields";
+        security.append(passwordFields);
+        passwordFields.append(inputs.encryptionPassword.closest("label"), inputs.encryptionConfirmation.closest("label"));
+        const passwordNote = document.createElement("small");
+        passwordNote.textContent = tr("\u81F3\u5C11 12 \u4E2A\u5B57\u7B26\u3002\u9000\u51FA\u5E94\u7528\u518D\u6253\u5F00\u6216\u65B0\u5EFA\u6587\u6863\u7A97\u53E3\u540E\uFF0C\u9996\u6B21\u53D1\u5E03\u65F6\u9700\u8981\u8F93\u5165\u6B64\u5BC6\u7801\uFF1B\u6253\u5F00\u8BBE\u7F6E\u65E0\u9700\u8F93\u5165\u3002");
+        passwordFields.append(passwordNote);
+        const rollback = document.createElement("button");
+        rollback.type = "button";
+        rollback.className = "rollback-action";
+        rollback.textContent = tr("\u6539\u56DE\u660E\u6587\u4FDD\u5B58\u2026");
+        security.append(rollback);
         const updateStorage = () => {
-          privacy.textContent = inputs.encryptToken.checked ? tr("\u5DF2\u9009\u62E9\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\u3002\u9000\u51FA MarkEdit \u540E\u518D\u6B21\u6253\u5F00\uFF0C\u6216\u6253\u5F00\u65B0\u6587\u6863\u7A97\u53E3\u65F6\u9700\u8F93\u5165\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u3002") : tr("\u5DF2\u9009\u62E9\u660E\u6587\u4FDD\u5B58\uFF0C\u65E0\u9700\u89E3\u9501\u3002\u53EF\u5728\u300CToken \u4FDD\u5B58\u300D\u4E2D\u542F\u7528\u52A0\u5BC6\u3002\u8BF7\u52FF\u5206\u4EAB\u914D\u7F6E\u6587\u4EF6\u3002");
+          passwordFields.hidden = !inputs.encryptToken.checked || existingEncrypted;
+          inputs.encryptionPassword.required = inputs.encryptionConfirmation.required = false;
+          inputs.encryptToken.disabled = existingEncrypted;
+          rollback.hidden = !existingEncrypted;
+          securityStatus.textContent = existingEncrypted ? tr("\u5DF2\u6709 Token \u5DF2\u52A0\u5BC6\u4FDD\u5B58\u3002\u4FEE\u6539\u666E\u901A\u8BBE\u7F6E\u65E0\u9700\u5BC6\u7801\u3002") : "";
+          privacy.textContent = inputs.encryptToken.checked ? tr("Token \u4F7F\u7528\u72EC\u7ACB\u5BC6\u7801\u52A0\u5BC6\uFF1B\u9996\u6B21\u53D1\u5E03\u65F6\u89E3\u9501\uFF0C\u6253\u5F00\u8BBE\u7F6E\u65E0\u9700\u5BC6\u7801\u3002") : tr("Token \u4EE5\u660E\u6587\u4FDD\u5B58\u5728\u672C\u673A\uFF0C\u65E0\u9700\u89E3\u9501\u3002\u53EF\u5728\u300CToken \u4FDD\u5B58\u300D\u4E2D\u542F\u7528\u52A0\u5BC6\u3002\u8BF7\u52FF\u5206\u4EAB\u914D\u7F6E\u6587\u4EF6\u3002");
         };
         inputs.encryptToken.onchange = updateStorage;
         updateStorage();
-        security.append(inputs.encryptToken.closest("label"));
-        const securityHelp = document.createElement("small");
-        securityHelp.textContent = tr("\u5BC6\u7801\u52A0\u5BC6\u4E3A\u53EF\u9009\u8BBE\u7F6E\uFF0C\u9ED8\u8BA4\u660E\u6587\u4FDD\u5B58\u3002\u8BF7\u8BBE\u7F6E\u72EC\u7ACB\u7684\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF0C\u4E0E Typlog \u767B\u5F55\u5BC6\u7801\u65E0\u5173\uFF1B\u52A0\u5BC6\u53EF\u9632\u6B62 Token \u5728\u914D\u7F6E\u6587\u4EF6\u4E2D\u88AB\u76F4\u63A5\u8BFB\u53D6\u3002");
-        security.append(securityHelp);
+        rollback.onclick = async () => {
+          setLoading(true);
+          rollback.disabled = true;
+          setError("");
+          try {
+            const value = await api.rollbackToken?.();
+            if (value === void 0 || isClosed()) return;
+            const restoredToken = typeof value === "string" ? value : value.token;
+            if (value.siteCache) {
+              siteCache = value.siteCache;
+              sites = siteCache.sites;
+              renderSites();
+              picker.value = inputs.siteId.value;
+            }
+            if (value.username) inputs.username.value = value.username;
+            inputs.token.value = restoredToken;
+            inputs.token.disabled = false;
+            inputs.token.required = true;
+            inputs.token.placeholder = "";
+            verifiedToken = restoredToken.trim();
+            locked = false;
+            existingEncrypted = false;
+            inputs.encryptToken.checked = false;
+            updateStorage();
+            connect.disabled = button.disabled = false;
+          } catch (error2) {
+            setError(safeError(error2, { token: inputs.token.value }));
+          } finally {
+            if (!isClosed()) {
+              setLoading(false);
+              rollback.disabled = false;
+            }
+          }
+        };
+        const recoveryHelp = document.createElement("small");
+        recoveryHelp.className = "recovery-help";
+        recoveryHelp.textContent = tr("\u5FD8\u8BB0\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF1F\u53EF\u76F4\u63A5\u66FF\u6362\u65B0 Token\uFF0C\u65E0\u9700\u65E7\u5BC6\u7801\uFF1B\u4E0D\u518D\u9700\u8981\u53D1\u5E03\u65F6\uFF0C\u53EF\u5220\u9664\u672C\u673A Token\u3002\u7AD9\u70B9\u914D\u7F6E\u548C\u8349\u7A3F\u5173\u8054\u4F1A\u4FDD\u7559\u3002");
+        security.append(recoveryHelp);
         const securityActions = document.createElement("div");
         securityActions.className = "row";
         security.append(securityActions);
@@ -7334,9 +7508,19 @@
         replaceToken.type = "button";
         replaceToken.textContent = tr("\u66FF\u6362 Token\u2026");
         securityActions.append(replaceToken);
-        replaceToken.onclick = () => {
+        replaceToken.onclick = async () => {
+          if (!await (api.confirmReplacement ?? confirmTokenReplacement)() || isClosed()) return;
+          existingEncrypted = false;
+          locked = false;
+          inputs.token.disabled = false;
+          inputs.token.required = true;
+          inputs.token.placeholder = "";
           inputs.token.value = "";
+          inputs.encryptToken.checked = false;
+          inputs.encryptionPassword.value = inputs.encryptionConfirmation.value = "";
+          updateStorage();
           inputs.token.dispatchEvent(new document.defaultView.Event("input", { bubbles: true }));
+          selectTab(0);
           inputs.token.focus();
         };
         const removeToken = document.createElement("button");
@@ -7358,19 +7542,17 @@
             }
           }
         };
-        const recoveryHelp = document.createElement("small");
-        recoveryHelp.textContent = tr("\u53D6\u6D88\u52A0\u5BC6\u5E76\u4FDD\u5B58\uFF0C\u9A8C\u8BC1\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u540E\u53EF\u6539\u56DE\u660E\u6587\u3002\u66FF\u6362\u6216\u5220\u9664 Token \u4E0D\u4F1A\u6E05\u9664\u8349\u7A3F\u5173\u8054\uFF1B\u5220\u9664\u672C\u673A\u8BB0\u5F55\u4E0D\u4F1A\u64A4\u9500 Typlog \u4E0A\u7684 Token\u3002");
-        security.append(recoveryHelp);
-        let sites = [], authors, authorScope, generation = 0;
+        let sites = siteCache?.username === initial.username && Array.isArray(siteCache?.sites) ? [...siteCache.sites] : [], authors, authorScope, generation = 0;
         let wantsNone = Boolean(initial.siteId && initial.authorIds === "");
         none.checked = wantsNone;
+        let rememberedIds = initial.authorIds ?? "";
         const token = () => inputs.token.value.trim();
         const stamp = () => JSON.stringify([token(), inputs.siteId.value, inputs.slug.value]);
         const current = (ticket) => !isClosed() && ticket === generation;
         function loading(value) {
           setLoading(value);
-          connect.disabled = value;
-          button.disabled = value;
+          connect.disabled = value || locked;
+          button.disabled = value || locked;
           picker.disabled = value;
         }
         function begin() {
@@ -7387,41 +7569,62 @@
           authorScope = void 0;
           box.replaceChildren();
           box.hidden = true;
+          authorOptions.hidden = true;
+          selected.hidden = false;
           selected.textContent = "";
         }
         function updateAuthors() {
           none.checked = wantsNone;
+          authorOptions.setAttribute("aria-disabled", String(wantsNone));
           if (!authors || stamp() !== authorScope) return;
+          const ids = splitTags(wantsNone ? rememberedIds : inputs.authorIds.value);
+          if (!wantsNone) rememberedIds = inputs.authorIds.value;
+          selected.hidden = false;
           try {
-            selected.textContent = selectedAuthorLabels(inputs.authorIds.value, authors).join(tr("\u3001")) || (wantsNone ? tr("\u4E0D\u8BBE\u4F5C\u8005") : tr("\u672A\u9009\u62E9\u4F5C\u8005"));
-            selected.hidden = !box.hidden || wantsNone;
+            selectedAuthorLabels(inputs.authorIds.value, authors);
+            selected.textContent = authors.length ? "" : tr("\u672C\u7AD9\u6682\u65E0\u4F5C\u8005\uFF0C\u4E0D\u8BBE\u4F5C\u8005\u3002");
           } catch (error2) {
             selected.textContent = error2.message;
           }
-          const ids = splitTags(inputs.authorIds.value);
-          for (const check of box.querySelectorAll("input")) check.checked = ids.includes(check.value);
+          for (const check of box.querySelectorAll("input")) {
+            check.checked = ids.includes(check.value);
+            check.disabled = wantsNone;
+          }
         }
         none.onchange = () => {
+          if (none.checked) {
+            rememberedIds = inputs.authorIds.value || rememberedIds;
+            inputs.authorIds.value = "";
+          } else inputs.authorIds.value = rememberedIds || authors?.[0]?.id || "";
           wantsNone = none.checked;
-          if (wantsNone) inputs.authorIds.value = "";
-          else if (authors?.length === 1) inputs.authorIds.value = authors[0].id;
           updateAuthors();
         };
-        async function loadAuthors(ticket, show) {
+        async function loadAuthors(ticket) {
           const config2 = getValues();
           if (!/^[1-9]\d*$/.test(config2.siteId) || !config2.slug || !config2.token.trim()) throw new Error(tr("\u8BF7\u5148\u8BFB\u53D6\u5E76\u9009\u62E9\u7AD9\u70B9\uFF0C\u6216\u5207\u6362\u5230\u624B\u52A8\u914D\u7F6E\u586B\u5199\u7AD9\u70B9\u4FE1\u606F\u3002"));
           const requestedScope = stamp();
+          selected.hidden = false;
           selected.textContent = tr("\u6B63\u5728\u83B7\u53D6\u672C\u7AD9\u4F5C\u8005\u2026");
-          const result = await api.listAuthors(config2);
+          let result;
+          try {
+            result = await api.listAuthors(config2);
+          } catch (error2) {
+            if (current(ticket) && stamp() === requestedScope) selected.textContent = "";
+            throw error2;
+          }
           if (!current(ticket) || stamp() !== requestedScope) return;
+          authorProfiles = { siteId: inputs.siteId.value, slug: inputs.slug.value, authors: result };
+          renderAuthors(result, requestedScope);
+        }
+        function renderAuthors(result, requestedScope) {
           authors = result;
           authorScope = requestedScope;
           box.replaceChildren();
           if (!authors.length) {
             inputs.authorIds.value = "";
             wantsNone = true;
-            selected.textContent = tr("\u672C\u7AD9\u6682\u65E0\u4F5C\u8005\uFF0C\u4E0D\u8BBE\u4F5C\u8005\u3002");
-          } else if (authors.length === 1 && !wantsNone && !inputs.authorIds.value.trim()) inputs.authorIds.value = authors[0].id;
+          } else if (!wantsNone && !inputs.authorIds.value.trim()) inputs.authorIds.value = authors[0].id;
+          if (authors.length && !rememberedIds) rememberedIds = authors[0].id;
           for (const author of authors) {
             const label = document.createElement("label");
             label.className = "check";
@@ -7431,24 +7634,31 @@
             label.append(check, document.createTextNode(authorLabel(author)));
             box.append(label);
             check.onchange = () => {
+              if (wantsNone) return;
               inputs.authorIds.value = [...box.querySelectorAll("input:checked")].map((input) => input.value).join(", ");
-              wantsNone = !inputs.authorIds.value;
               updateAuthors();
             };
           }
-          box.hidden = !show;
+          box.hidden = authorOptions.hidden = !authors.length;
           updateAuthors();
         }
         async function chooseSite(site, ticket) {
           if (inputs.siteId.value !== site.id || inputs.slug.value !== site.slug) {
             inputs.authorIds.value = "";
+            rememberedIds = "";
             wantsNone = false;
             resetAuthors();
           }
           inputs.siteId.value = site.id;
           inputs.slug.value = site.slug;
           siteNote.textContent = "";
-          await loadAuthors(ticket, false);
+          if (locked) {
+            if (authorProfiles?.siteId === site.id && authorProfiles?.slug === site.slug) renderAuthors(authorProfiles.authors, stamp());
+            else {
+              resetAuthors();
+              selected.textContent = tr("\u4F5C\u8005\u5217\u8868\u5C1A\u672A\u7F13\u5B58\uFF0C\u53EF\u5728\u624B\u52A8\u914D\u7F6E\u4E2D\u4FEE\u6539\u4F5C\u8005 ID\u3002");
+            }
+          } else await loadAuthors(ticket);
         }
         function renderSites() {
           picker.replaceChildren();
@@ -7485,6 +7695,7 @@
             }
             if (sitesResult.status === "fulfilled") {
               sites = sitesResult.value;
+              siteCache = { username: inputs.username.value, sites };
               renderSites();
               const chosen = sites.length === 1 ? sites[0] : sites.find((site) => site.id === inputs.siteId.value && site.slug === inputs.slug.value);
               if (chosen) {
@@ -7494,6 +7705,7 @@
                 inputs.siteId.value = "";
                 inputs.slug.value = "";
                 inputs.authorIds.value = "";
+                rememberedIds = "";
                 wantsNone = false;
                 resetAuthors();
                 none.checked = false;
@@ -7501,16 +7713,17 @@
               }
             } else {
               warnings.push(tr("\u8BFB\u53D6\u7AD9\u70B9\u5217\u8868\u5931\u8D25\uFF1A") + safeError(sitesResult.reason, { token: requestedToken }) + tr(" \u8BF7\u68C0\u67E5 site \u6743\u9650\u3002"));
-              sites = [];
               renderSites();
               if (inputs.siteId.value && inputs.slug.value) {
-                const option = document.createElement("option");
-                option.value = inputs.siteId.value;
-                option.textContent = inputs.slug.value + tr("\uFF08\u5DF2\u4FDD\u5B58\u7684\u7AD9\u70B9\uFF09");
-                picker.append(option);
+                if (!sites.some((site) => site.id === inputs.siteId.value)) {
+                  const option = document.createElement("option");
+                  option.value = inputs.siteId.value;
+                  option.textContent = inputs.slug.value + tr("\uFF08\u5DF2\u4FDD\u5B58\u7684\u7AD9\u70B9\uFF09");
+                  picker.append(option);
+                }
                 picker.value = inputs.siteId.value;
                 siteNote.textContent = tr("\u6682\u65F6\u4F7F\u7528\u5DF2\u4FDD\u5B58\u7684\u7AD9\u70B9\u914D\u7F6E\uFF0C\u53EF\u91CD\u8BD5\u6216\u624B\u52A8\u4FEE\u6539\u3002");
-                await loadAuthors(ticket, false);
+                await loadAuthors(ticket);
               }
             }
             if (current(ticket) && warnings.length) setError(warnings.join("\n"));
@@ -7544,7 +7757,7 @@
         button.onclick = async () => {
           const ticket = begin();
           try {
-            await loadAuthors(ticket, true);
+            await loadAuthors(ticket);
           } catch (error2) {
             if (current(ticket)) setError(tr("\u83B7\u53D6\u4F5C\u8005\u5931\u8D25\uFF1A") + safeError(error2, { token: token() }));
           } finally {
@@ -7555,7 +7768,10 @@
           ++generation;
           loading(false);
           verifiedToken = "";
+          siteCache = void 0;
           sites = [];
+          authorProfiles = void 0;
+          rememberedIds = "";
           renderSites();
           account.textContent = "";
           siteNote.textContent = "";
@@ -7568,6 +7784,7 @@
         for (const key of ["username", "slug", "siteId", "authorIds"]) inputs[key].addEventListener("input", () => {
           if (key === "authorIds") {
             wantsNone = !inputs.authorIds.value.trim();
+            rememberedIds = inputs.authorIds.value;
             updateAuthors();
           } else {
             ++generation;
@@ -7579,7 +7796,24 @@
           }
         });
         renderSites();
-        if (initial.token) void discover();
+        if (initial.username) account.textContent = tr("@{username}", { username: initial.username });
+        if (initial.siteId && initial.slug) {
+          if (!sites.some((site) => site.id === initial.siteId)) sites.push({ id: initial.siteId, slug: initial.slug });
+          renderSites();
+          picker.value = initial.siteId;
+        }
+        if (authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug) renderAuthors(authorProfiles.authors, stamp());
+        if (locked) {
+          connect.disabled = button.disabled = true;
+          siteNote.textContent = tr("\u5DF2\u6709 Token \u5C1A\u672A\u89E3\u9501\u3002\u53D1\u5E03\u65F6\u8F93\u5165\u5BC6\u7801\u540E\u53EF\u5728\u7EBF\u5237\u65B0\uFF0C\u6216\u66FF\u6362\u65B0 Token\u3002");
+          if (!(authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug)) selected.textContent = tr("\u4F5C\u8005\u5217\u8868\u5C1A\u672A\u7F13\u5B58\uFF0C\u53EF\u5728\u624B\u52A8\u914D\u7F6E\u4E2D\u4FEE\u6539\u4F5C\u8005 ID\u3002");
+        } else if (initial.token && !siteCache) void discover();
+        else if (initial.token && !(authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug)) {
+          const ticket = begin();
+          void loadAuthors(ticket).catch((error2) => {
+            if (current(ticket)) setError(safeError(error2, { token: token() }));
+          }).finally(() => end(ticket));
+        }
         return fitConfiguration(panel, section, body);
       }
     });
@@ -7687,21 +7921,24 @@
       title: tr("\u8F93\u5165\u672C\u673A\u52A0\u5BC6\u5BC6\u7801"),
       description: failed ? tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u4E0D\u6B63\u786E\u6216\u52A0\u5BC6\u8BB0\u5F55\u5DF2\u635F\u574F\uFF0C\u8BF7\u91CD\u8BD5\u3002") : rollback ? tr("\u8BF7\u8F93\u5165\u5F53\u524D\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF0C\u4EE5\u5C06\u539F Token \u6539\u4E3A\u660E\u6587\u4FDD\u5B58\u3002") : tr("\u8F93\u5165\u6B64\u524D\u8BBE\u7F6E\u7684\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u3002Token \u4EC5\u5728\u5F53\u524D\u6587\u6863\u7A97\u53E3\u7684\u5185\u5B58\u4E2D\u89E3\u5BC6\u3002"),
       fields: [
-        { name: "password", label: tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801"), type: "password" },
-        ...allowReset ? [{ name: "reset", label: tr("\u5FD8\u8BB0\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF0C\u6539\u7528\u65B0\u7684 API Token \u91CD\u65B0\u914D\u7F6E"), type: "checkbox" }] : []
+        { name: "password", label: tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801"), type: "password" }
       ],
-      note: tr("\u8FD9\u662F\u4E3A\u6B64\u6269\u5C55\u8BBE\u7F6E\u7684\u72EC\u7ACB\u5BC6\u7801\uFF0C\u4E0E Typlog \u767B\u5F55\u5BC6\u7801\u65E0\u5173\u3002") + " " + (allowReset ? tr("\u91CD\u65B0\u914D\u7F6E\u65F6\u4FDD\u7559\u7AD9\u70B9\u548C\u8349\u7A3F\u5173\u8054\uFF1B\u4FDD\u5B58\u65B0 Token \u540E\u66FF\u6362\u65E7\u7684\u52A0\u5BC6\u8BB0\u5F55\u3002") : tr("\u5FD8\u8BB0\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u65F6\uFF0C\u8BF7\u4ECE\u300C\u4FEE\u6539\u53D1\u5E03\u914D\u7F6E\u300D\u5220\u9664\u6216\u66FF\u6362 Token\u3002")),
+      note: tr("\u8FD9\u662F\u4E3A\u6B64\u6269\u5C55\u8BBE\u7F6E\u7684\u72EC\u7ACB\u5BC6\u7801\uFF0C\u4E0E Typlog \u767B\u5F55\u5BC6\u7801\u65E0\u5173\u3002"),
       submitLabel: tr("\u7EE7\u7EED"),
       mount: ({ panel, finish }) => {
-        if (!allowReset) return;
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.textContent = tr("\u5220\u9664\u672C\u673A Token\u2026");
-        panel.querySelector(".buttons").prepend(remove);
-        remove.onclick = () => finish({ remove: true });
+        const guidance = document.createElement("p");
+        guidance.className = "recovery-navigation";
+        panel.querySelector(".note").after(guidance);
+        const link2 = document.createElement("a");
+        link2.href = "#typlog-settings";
+        link2.textContent = tr("Typlog \u53D1\u5E03\u914D\u7F6E");
+        guidance.append(document.createTextNode(tr("\u5982\u679C\u60A8\u4E0D\u8BB0\u5F97\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\uFF0C\u53EF\u5230 ")), link2, document.createTextNode(tr(" \u66FF\u6362\u73B0\u6709 Token\u3002")));
+        link2.onclick = (event) => {
+          event.preventDefault();
+          finish({ settings: true });
+        };
       },
       validate: (input) => {
-        if (input.reset) return { reset: true };
         if (!input.password) throw new Error(tr("\u8BF7\u8F93\u5165\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u3002"));
         return { password: input.password };
       }
@@ -7723,6 +7960,16 @@
       description: tr("\u5220\u9664\u540E\u9700\u8981\u91CD\u65B0\u586B\u5199 Token \u624D\u80FD\u63A8\u9001\u3002\u7AD9\u70B9\u914D\u7F6E\u548C\u5DF2\u6709\u8349\u7A3F\u5173\u8054\u4FDD\u7559\uFF1BTyplog \u4E0A\u7684 Token \u4E0D\u4F1A\u88AB\u64A4\u9500\u3002"),
       fields: [],
       submitLabel: tr("\u5220\u9664\u672C\u673A Token"),
+      validate: () => true
+    }).then(Boolean);
+  }
+  function confirmTokenReplacement() {
+    return form({
+      title: tr("\u66FF\u6362\u672C\u673A Token\uFF1F"),
+      description: tr("\u4FDD\u5B58\u65B0 Token \u540E\uFF0C\u4F1A\u8986\u76D6\u672C\u673A\u65E7 Token \u6216\u52A0\u5BC6\u8BB0\u5F55\uFF0C\u65E0\u6CD5\u4ECE\u6B64\u914D\u7F6E\u6062\u590D\u65E7 Token\u3002\u8BF7\u5148\u51C6\u5907\u6709 profile \u548C site \u6743\u9650\u7684\u65B0 Token\u3002"),
+      note: tr("\u53D6\u6D88\u6216\u5C1A\u672A\u4FDD\u5B58\u65F6\uFF0C\u65E7\u8BB0\u5F55\u4FDD\u7559\u3002\u7AD9\u70B9\u914D\u7F6E\u548C\u8349\u7A3F\u5173\u8054\u4E0D\u4F1A\u5220\u9664\uFF1BTyplog \u4E0A\u7684\u65E7 Token \u4E0D\u4F1A\u88AB\u64A4\u9500\u3002"),
+      fields: [],
+      submitLabel: tr("\u586B\u5199\u65B0 Token"),
       validate: () => true
     }).then(Boolean);
   }
@@ -7774,6 +8021,12 @@
       this.prompts = prompts;
       this.cache = void 0;
     }
+    settings(stored = {}) {
+      const { tokenVault, token, ...metadata } = stored;
+      if (!tokenVault) return { ...metadata, token: token ?? "" };
+      const cached = this.cache?.signature === JSON.stringify(tokenVault) ? this.cache.token : "";
+      return { ...metadata, token: cached, tokenLocked: !cached, hasEncryptedToken: true };
+    }
     async open(stored, { allowReset = false, forceUnlock = false } = {}) {
       this.lastOpenUsedPassword = false;
       if (!stored) return stored;
@@ -7788,13 +8041,14 @@
       while (true) {
         const input = await this.prompts.unlockPassword({ allowReset, failed, rollback: forceUnlock });
         if (!input) return void 0;
+        if (input.settings) return { settings: true };
         if (input.remove && allowReset) {
           if (await this.remove(stored)) return { removed: true };
           continue;
         }
         if (input.reset && allowReset) {
           this.cache = void 0;
-          return { ...metadata, token: "" };
+          return { ...metadata, token: "", reset: true };
         }
         try {
           const { token, key } = await decryptToken(tokenVault, input.password);
@@ -7807,8 +8061,13 @@
         }
       }
     }
-    async save(config2, { encrypted = false, previous = {}, passwordVerified = false } = {}) {
-      const { token, tokenVault: ignored, encryptToken: ignoredChoice, ...metadata } = config2;
+    async save(config2, { encrypted = false, previous = {}, passwordVerified = false, password: suppliedPassword, preserveEncrypted = false } = {}) {
+      const { token, tokenVault: ignored, encryptToken: ignoredChoice, encryptionPassword, tokenLocked, hasEncryptedToken, hasStoredToken, preserveToken, reset, authorProfiles, ...metadata } = config2;
+      if (preserveEncrypted) {
+        if (!previous.tokenVault || !encrypted) throw new Error(tr("\u8BF7\u5148\u8F93\u5165\u5BC6\u7801\uFF0C\u624D\u80FD\u5C06\u5DF2\u6709 Token \u6539\u4E3A\u660E\u6587\u4FDD\u5B58\u3002"));
+        await this.store.write("config.json", { ...metadata, ...authorProfiles ? { authorProfiles } : {}, ...previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}, tokenVault: previous.tokenVault });
+        return true;
+      }
       const rollback = !encrypted && previous.tokenVault && this.cache?.signature === JSON.stringify(previous.tokenVault) && token === this.cache.token;
       if (rollback && !passwordVerified) {
         const unlocked = await this.open(previous, { forceUnlock: true });
@@ -7816,22 +8075,22 @@
       }
       if (!encrypted) {
         if (previous.plainTextAcknowledged !== true && !await this.prompts.confirmPlaintext({ rollback: Boolean(rollback) })) return false;
-        await this.store.write("config.json", { ...metadata, token, plainTextAcknowledged: true });
+        await this.store.write("config.json", { ...metadata, ...authorProfiles ? { authorProfiles } : {}, token, plainTextAcknowledged: true });
         this.cache = void 0;
         this.legacy = false;
         return true;
       }
       let key, envelope;
-      if (this.cache) {
+      if (this.cache && suppliedPassword === void 0) {
         key = this.cache.key;
         envelope = await seal(token, key, this.cache.salt);
       } else {
-        const password = await this.prompts.createPassword({ legacy: this.legacy === true });
+        const password = suppliedPassword ?? await this.prompts.createPassword({ legacy: this.legacy === true });
         if (password === void 0) return false;
         if (password.length < 12) throw new Error(tr("\u672C\u673A\u52A0\u5BC6\u5BC6\u7801\u81F3\u5C11\u9700\u8981 12 \u4E2A\u5B57\u7B26\u3002"));
         ({ key, envelope } = await encryptToken(token, password));
       }
-      await this.store.write("config.json", { ...metadata, ...previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}, tokenVault: envelope });
+      await this.store.write("config.json", { ...metadata, ...authorProfiles ? { authorProfiles } : {}, ...previous.plainTextAcknowledged ? { plainTextAcknowledged: true } : {}, tokenVault: envelope });
       this.cache = { signature: JSON.stringify(envelope), token, key, salt: decode3(envelope.salt) };
       this.legacy = false;
       return true;
@@ -7878,18 +8137,33 @@
         currentConfig = void 0;
       }
     }
-    async function settings() {
-      const stored = await store.read("config.json", {});
-      const previous = await vault.open(stored, { allowReset: true });
-      if (!previous) return;
-      if (previous.removed) {
-        await alert(tr("Token \u5DF2\u5220\u9664"), tr("\u5DF2\u5220\u9664\u672C\u673A Token\uFF0C\u7AD9\u70B9\u914D\u7F6E\u548C\u8349\u7A3F\u5173\u8054\u4FDD\u7559\u3002Typlog \u4E0A\u7684 Token \u672A\u88AB\u64A4\u9500\u3002"));
-        return;
+    async function syncAccountCache(stored, config2) {
+      const client = new Client(config2);
+      const [account, sites] = await Promise.allSettled([client.getAccountUsername(), client.listSites()]);
+      const updates = {};
+      if (account.status === "fulfilled") updates.username = account.value;
+      if (sites.status === "fulfilled") updates.siteCache = { username: updates.username ?? config2.username, sites: sites.value };
+      if (Object.entries(updates).some(([key, value]) => JSON.stringify(stored[key]) !== JSON.stringify(value))) {
+        Object.assign(stored, updates);
+        await store.write("config.json", stored);
       }
-      const passwordVerified = vault.lastOpenUsedPassword;
+      return { ...config2, ...updates };
+    }
+    async function settings({ replace: replace2 = false, tab } = {}) {
+      const stored = await store.read("config.json", {});
+      const previous = vault.settings(stored);
+      let passwordVerified = false;
       currentConfig = previous;
-      const config2 = await configure({ ...previous, encryptToken: Boolean(stored.tokenVault && previous.token), hasStoredToken: Boolean(stored.token || stored.tokenVault) }, {
-        removeToken: async () => vault.remove(stored)
+      const config2 = await configure({ ...previous, ...replace2 ? { token: "", tokenLocked: false, hasEncryptedToken: false } : {}, encryptToken: Boolean(stored.tokenVault && !replace2), hasStoredToken: Boolean(stored.token || stored.tokenVault) }, {
+        initialTab: tab,
+        removeToken: async () => vault.remove(stored),
+        rollbackToken: async () => {
+          const unlocked = await vault.open(stored, { forceUnlock: true });
+          if (!unlocked || unlocked.settings) return;
+          const refreshed = await syncAccountCache(stored, unlocked);
+          passwordVerified = true;
+          return { token: unlocked.token, username: refreshed.username, siteCache: refreshed.siteCache };
+        }
       });
       if (!config2) return;
       if (config2.removed) {
@@ -7897,7 +8171,7 @@
         return;
       }
       currentConfig = config2;
-      if (!await vault.save(config2, { encrypted: config2.encryptToken, previous: stored, passwordVerified })) return;
+      if (!await vault.save(config2, { encrypted: config2.encryptToken, previous: stored, passwordVerified, password: config2.encryptionPassword, preserveEncrypted: config2.preserveToken })) return;
       await alert(tr("\u914D\u7F6E\u5DF2\u4FDD\u5B58"), tr("\u4E4B\u540E\u53EF\u4ECE\u300C\u6269\u5C55 \u2192 Typlog \u2192 \u63A8\u9001\u4E3A\u8349\u7A3F\u300D\u4F7F\u7528\uFF0C\u4E5F\u53EF\u4EE5\u968F\u65F6\u4FEE\u6539\u914D\u7F6E\u3002"));
       return config2;
     }
@@ -7905,9 +8179,16 @@
       const stored = await store.read("config.json", null);
       let config2;
       if (stored && (stored.token || stored.tokenVault)) {
-        const unlocked = await vault.open(stored);
+        const unlocked = await vault.open(stored, { allowReset: true });
         if (!unlocked) return;
-        config2 = validateConfig(unlocked);
+        if (unlocked.settings) {
+          await settings({ tab: "storage" });
+          return;
+        }
+        const refreshed = vault.lastOpenUsedPassword ? await syncAccountCache(stored, unlocked) : unlocked;
+        if (unlocked.reset) config2 = await settings({ replace: true });
+        else config2 = validateConfig(refreshed);
+        if (!config2) return;
         currentConfig = config2;
         if (!await vault.acknowledgePlaintext(stored, config2)) return;
       } else config2 = await settings();
@@ -7925,7 +8206,9 @@
       panel = progressPanel();
       const client = new Client(config2);
       panel.update(tr("\u6B63\u5728\u6838\u5BF9\u6587\u7AE0\u4F5C\u8005\u2026"));
-      const authors = config2.authorIds ? selectedAuthorLabels(config2.authorIds, await client.listAuthors()) : [];
+      const profiles = config2.authorIds ? await client.listAuthors() : void 0;
+      const authors = profiles ? selectedAuthorLabels(config2.authorIds, profiles) : [];
+      if (profiles) await store.write("config.json", { ...await store.read("config.json", {}), authorProfiles: { siteId: config2.siteId, slug: config2.slug, authors: profiles } });
       panel.update(tr("\u6B63\u5728\u8BFB\u53D6\u6587\u7AE0\u548C\u56FE\u7247\u2026"));
       const prepared = await prepare(host, source, { ...parsed, title: metadata.title, tags: metadata.tags });
       const target = await publicationTarget(prepared, config2, store);

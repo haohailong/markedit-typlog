@@ -310,7 +310,7 @@ test('author lookup uses site-scoped GET and only retains ID, name and username'
 });
 
 const sites = [{ id: '12', slug: 'sample-blog', name: '测试站点' }];
-const services = overrides => ({ getAccountUsername: async () => 'test-user', listSites: async () => sites, listAuthors: async () => profiles, ...overrides });
+const services = overrides => ({ getAccountUsername: async () => 'test-user', listSites: async () => sites, listAuthors: async () => profiles, confirmReplacement: async () => true, ...overrides });
 const clickButton = (root, text) => [...root.querySelectorAll('button')].find(button => button.textContent === text).click();
 const submitForm = root => root.querySelector('form').dispatchEvent(new window.Event('submit', { cancelable: true }));
 
@@ -323,9 +323,10 @@ test('Token Storage defaults to plaintext, retains encryption choice, and shows 
       assert.equal(root.querySelector('[name=encryptToken]').checked, encrypted);
       root.querySelectorAll('[role=tab]')[0].dispatchEvent(new window.KeyboardEvent('keydown', { key: 'ArrowLeft' }));
       assert.equal(root.querySelector('[name=encryptToken]').closest('[role=tabpanel]').hidden, false);
-      assert.ok(root.textContent.includes('密码加密为可选设置'));
+      assert.ok(root.textContent.includes('Token 默认以明文保存在本机'));
       assert.ok(root.textContent.includes('与 Typlog 登录密码无关'));
       const choice = root.querySelector('[name=encryptToken]'); choice.checked = !encrypted; choice.dispatchEvent(new window.Event('change'));
+      root.querySelector('[name=encryptionPassword]').value = root.querySelector('[name=encryptionConfirmation]').value = 'test-only-local-password';
       submitForm(root); assert.equal((await pending).encryptToken, !encrypted);
     }
   } finally { capture.restore(); }
@@ -337,7 +338,7 @@ test('Token replacement edits only the form and deletion can be cancelled before
     const pending = configure(config, services({ removeToken: async () => { calls++; return remove; } }));
     const root = capture.root; await tick();
     clickButton(root, 'Token 保存');
-    clickButton(root, '替换 Token…');
+    clickButton(root, '替换 Token…'); await tick();
     assert.equal(root.querySelector('[name=token]').value, '');
     assert.equal(config.token, 'test-only-never-real');
     clickButton(root, '删除本机 Token…'); await tick();
@@ -357,20 +358,51 @@ test('token alone resolves account and unique blog; author picker explains choic
     assert.equal(seen[0].siteId, '12');
     assert.equal(seen[0].username, 'test-user');
     assert.equal(root.querySelector('select').value, '12');
-    assert.ok(root.textContent.includes('仅有一位时自动选中'));
+    assert.ok(root.querySelector('.author-labels').textContent.includes('不设作者'));
     assert.equal(root.querySelector('a').href, 'https://typlog.com/account/tokens');
     assert.equal(root.querySelector('[name=token]').type, 'password');
     assert.equal(root.querySelectorAll('[role=tab]').length, 3);
     assert.equal(root.querySelector('[name=username]').closest('[role=tabpanel]').hidden, true);
     assert.equal(root.querySelectorAll('.authors input').length, 2);
-    assert.equal(root.querySelector('.authors').hidden, true);
-    clickButton(root, '选择文章作者…'); await tick();
+    assert.equal(root.querySelector('.authors').hidden, false);
+    clickButton(root, '刷新作者'); await tick();
     const choices = [...root.querySelectorAll('.authors input')];
     for (const check of choices) { check.checked = true; check.dispatchEvent(new window.Event('change')); }
     assert.equal(root.querySelector('[name=authorIds]').value, '42, 43');
-    assert.ok(root.textContent.includes('作者甲 (@alice)、@bob'));
+    assert.ok(root.textContent.includes('作者甲 (@alice)')); assert.ok(root.textContent.includes('@bob'));
     submitForm(root);
-    assert.deepEqual(await pending, { ...config, authorIds: '42, 43', encryptToken: false });
+    assert.deepEqual(await pending, { ...config, authorIds: '42, 43', encryptToken: false, authorProfiles: { siteId: '12', slug: config.slug, authors: profiles }, siteCache: { username: config.username, sites } });
+  } finally { capture.restore(); }
+});
+
+test('visible authors support multi-selection and exclusive No author state', async () => {
+  const capture = captureForm();
+  try {
+    const pending = configure(config, services()); const root = capture.root; await tick();
+    const choices = [...root.querySelectorAll('.authors input')];
+    const none = [...root.querySelectorAll('.check input')].find(input => input.parentElement.textContent === '不设作者');
+    const change = (input, checked) => { input.checked = checked; input.dispatchEvent(new window.Event('change')); };
+    assert.equal(root.querySelector('.authors').hidden, false);
+    assert.deepEqual(choices.map(input => input.checked), [true, false]);
+    assert.equal(none.checked, false);
+    change(choices[1], true);
+    assert.equal(root.querySelector('[name=authorIds]').value, '42, 43');
+    change(none, true);
+    assert.equal(root.querySelector('[name=authorIds]').value, '');
+    assert.ok(choices.every(input => input.disabled));
+    assert.deepEqual(choices.map(input => input.checked), [true, true]);
+    change(none, false);
+    assert.ok(choices.every(input => !input.disabled));
+    assert.equal(root.querySelector('[name=authorIds]').value, '42, 43');
+    change(choices[0], false); change(choices[1], false);
+    assert.equal(none.checked, false);
+    const manual = root.querySelector('[name=authorIds]'); manual.value = '42, 43'; manual.dispatchEvent(new window.Event('input'));
+    assert.equal(none.checked, false);
+    assert.deepEqual(choices.map(input => input.checked), [true, true]);
+    clickButton(root, '刷新作者'); await tick();
+    assert.equal(root.querySelector('.authors').hidden, false);
+    assert.deepEqual([...root.querySelectorAll('.authors input')].map(input => input.checked), [true, true]);
+    submitForm(root); assert.equal((await pending).authorIds, '42, 43');
   } finally { capture.restore(); }
 });
 
@@ -383,7 +415,7 @@ test('single author autofills but explicit none survives refresh, save and reope
     const none = [...root.querySelectorAll('.check input')].find(input => input.parentElement.textContent === '不设作者');
     none.checked = true; none.dispatchEvent(new window.Event('change'));
     assert.equal(root.querySelector('[name=authorIds]').value, '');
-    clickButton(root, '选择文章作者…'); await tick();
+    clickButton(root, '刷新作者'); await tick();
     assert.equal(root.querySelector('[name=authorIds]').value, '');
     submitForm(root); const saved = await pending;
     const reopened = configure(saved, single); await tick();
@@ -405,7 +437,7 @@ test('multiple sites require selection and changing blogs loads authors in the c
     picker.value = '13'; picker.dispatchEvent(new window.Event('change')); await tick();
     assert.deepEqual(seen, ['12', '13']);
     assert.equal(root.querySelector('[name=authorIds]').value, '43');
-    submitForm(root); assert.deepEqual(await pending, { ...config, siteId: '13', slug: 'second-blog', authorIds: '43', encryptToken: false });
+    submitForm(root); assert.deepEqual(await pending, { ...config, siteId: '13', slug: 'second-blog', authorIds: '43', encryptToken: false, authorProfiles: { siteId: '13', slug: 'second-blog', authors: profiles.slice(1) }, siteCache: { username: config.username, sites: many } });
   } finally { capture.restore(); }
 });
 
@@ -434,7 +466,7 @@ test('discovery failures hide token, preserve existing configuration, and allow 
     const root = capture.root; await tick();
     assert.equal(root.querySelector('[name=authorIds]').value, '42');
     assert.ok(!root.querySelector('.error').textContent.includes(config.token));
-    submitForm(root); assert.deepEqual(await pending, { ...config, encryptToken: false });
+    submitForm(root); assert.deepEqual(await pending, { ...config, encryptToken: false, authorProfiles: { siteId: '12', slug: config.slug, authors: profiles }, siteCache: { username: config.username, sites } });
     const manual = configure({}, services()); const other = capture.root;
     for (const [name, value] of [['token', config.token], ...Object.entries(config).filter(([name]) => name !== 'token')]) { other.querySelector('[name=' + name + ']').value = value; other.querySelector('[name=' + name + ']').dispatchEvent(new window.Event('input')); }
     submitForm(other); assert.equal(other.querySelector('.error').textContent, ''); assert.deepEqual(await manual, { ...config, encryptToken: false });
@@ -507,7 +539,7 @@ test('profile permission failure still lists blogs and authors, and allows manua
     assert.equal(root.querySelector('[name=authorIds]').value, '42');
     assert.match(root.querySelector('.error').textContent, /profile/);
     const username = root.querySelector('[name=username]'); username.value = config.username; username.dispatchEvent(new window.Event('input'));
-    submitForm(root); assert.deepEqual(await pending, { ...config, encryptToken: false });
+    submitForm(root); assert.deepEqual(await pending, { ...config, encryptToken: false, authorProfiles: { siteId: '12', slug: config.slug, authors: profiles.slice(0, 1) }, siteCache: { username: config.username, sites } });
   } finally { capture.restore(); }
 });
 
@@ -567,4 +599,77 @@ test('manual legacy association updates a supplied draft instead of creating a n
   assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 0);
   assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.editPost')).length, 1);
   assert.equal((await publicationTarget(prepared, config, f.store)).record.postId, '1234');
+});
+
+test('inline encryption validates passwords and locked settings preserve the encrypted Token', async () => {
+  const capture = captureForm();
+  try {
+    let pending = configure(config, services()); let root = capture.root; await tick();
+    clickButton(root, 'Token 保存');
+    const choice = root.querySelector('[name=encryptToken]'); choice.checked = true; choice.dispatchEvent(new window.Event('change'));
+    assert.equal(root.querySelector('.password-fields').hidden, false);
+    submitForm(root); assert.match(root.querySelector('.error').textContent, /至少需要 12/);
+    root.querySelector('[name=encryptionPassword]').value = 'test-local-password';
+    root.querySelector('[name=encryptionConfirmation]').value = 'different-password';
+    submitForm(root); assert.match(root.querySelector('.error').textContent, /不一致/);
+    root.querySelector('[name=encryptionConfirmation]').value = 'test-local-password';
+    submitForm(root); assert.equal((await pending).encryptionPassword, 'test-local-password');
+    let rollbacks = 0;
+    pending = configure({ ...config, token: '', tokenLocked: true, hasEncryptedToken: true, encryptToken: true, authorProfiles: { siteId: config.siteId, slug: config.slug, authors: profiles } }, services({ getAccountUsername: async () => { throw new Error('locked settings must not fetch'); }, rollbackToken: async () => { rollbacks++; return undefined; } }));
+    root = capture.root; await tick(); clickButton(root, 'Token 保存');
+    assert.equal(root.querySelector('[name=token]').disabled, true);
+    assert.equal(root.querySelector('.password-fields').hidden, true);
+    assert.equal(root.querySelector('.authors').hidden, false);
+    clickButton(root, '改回明文保存…'); await tick(); assert.equal(rollbacks, 1);
+    assert.equal(root.querySelector('[name=token]').disabled, true);
+    assert.equal(root.querySelector('[name=encryptToken]').checked, true);
+    root.querySelector('[name=authorIds]').value = '43';
+    submitForm(root); const saved = await pending;
+    assert.equal(saved.preserveToken, true); assert.equal(saved.token, ''); assert.equal(saved.authorIds, '43');
+  } finally { capture.restore(); }
+});
+
+test('cancelled replacement leaves the old Token and encryption choice untouched', async () => {
+  const capture = captureForm();
+  try {
+    const pending = configure({ ...config, hasEncryptedToken: true, encryptToken: true }, services({ confirmReplacement: async () => false }));
+    const root = capture.root; await tick(); clickButton(root, 'Token 保存');
+    clickButton(root, '替换 Token…'); await tick();
+    assert.equal(root.querySelector('[name=token]').value, config.token);
+    assert.equal(root.querySelector('[name=encryptToken]').checked, true);
+    clickButton(root, '取消'); await pending;
+  } finally { capture.restore(); }
+});
+
+test('saved account cache restores all sites before network access and supports a locked site change', async () => {
+  const capture = captureForm(); const many = [...sites, { id: '13', slug: 'second-blog', name: 'Second Site' }];
+  const siteCache = { username: config.username, sites: many };
+  try {
+    const pending = configure({ ...config, token: '', tokenLocked: true, hasEncryptedToken: true, encryptToken: true, siteCache, authorProfiles: { siteId: config.siteId, slug: config.slug, authors: profiles } }, services({ listSites: async () => { throw new Error('must use cache'); }, listAuthors: async () => { throw new Error('locked site selection must not fetch'); } }));
+    const root = capture.root; await tick(); const picker = root.querySelector('select');
+    assert.deepEqual([...picker.options].slice(1).map(o => o.textContent), ['测试站点 (sample-blog)', 'Second Site (second-blog)']);
+    assert.equal(picker.value, config.siteId);
+    picker.value = '13'; picker.dispatchEvent(new window.Event('change')); await tick();
+    assert.equal(root.querySelector('[name=siteId]').value, '13');
+    assert.equal(root.querySelector('[name=slug]').value, 'second-blog');
+    assert.equal(root.querySelector('.error').textContent, '');
+    submitForm(root); const saved = await pending;
+    assert.equal(saved.preserveToken, true); assert.deepEqual(saved.siteCache, siteCache);
+  } finally { capture.restore(); }
+});
+
+test('multiple authors default to the first and No author disables rather than changes the list', async () => {
+  const capture = captureForm();
+  try {
+    const pending = configure({ token: config.token }, services()); const root = capture.root; await tick();
+    const choices = [...root.querySelectorAll('.authors input')];
+    assert.deepEqual(choices.map(c => c.checked), [true, false]);
+    const none = root.querySelector('.author-labels input');
+    none.checked = true; none.dispatchEvent(new window.Event('change'));
+    assert.equal(root.querySelector('[name=authorIds]').value, '');
+    assert.ok(choices.every(c => c.disabled));
+    none.checked = false; none.dispatchEvent(new window.Event('change'));
+    assert.ok(choices.every(c => !c.disabled)); assert.deepEqual(choices.map(c => c.checked), [true, false]);
+    clickButton(root, '取消'); await pending;
+  } finally { capture.restore(); }
 });

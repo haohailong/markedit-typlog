@@ -11,7 +11,7 @@ const styles = `
   h2 { margin:0; font-size:20px; line-height:1.3; font-weight:600; letter-spacing:-.3px; } .heading { display:flex; align-items:center; gap:10px; } .heading img { width:24px; height:24px; flex:none; } @media(prefers-color-scheme:dark) { .heading img { filter:invert(1); } }
   p { margin:0; } .heading + .summary { color:light-dark(#555,#c0c0c5); margin:12px 0 20px; font-size:13px; }
   label { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:center; column-gap:14px; row-gap:6px; margin:14px 0; font-weight:400; line-height:1.5; } label > span { text-align:right; } label > small { grid-column:2; }
-  input,select { display:block; min-width:0; width:100%; min-height:34px; padding:6px 10px; font:inherit; color:inherit; background:light-dark(#fff,#323235); border:1px solid #8885; border-radius:8px; } select { background:light-dark(#eeeef0,#39393c); }
+  input,select { display:block; min-width:0; width:100%; min-height:34px; padding:6px 10px; font:inherit; color:inherit; background:light-dark(#fff,#323235); border:1px solid #8885; border-radius:8px; } select { appearance:none; -webkit-appearance:none; height:36px; min-height:36px; line-height:20px; padding:7px 34px 7px 12px; border-color:transparent; background:light-dark(#eeeef0,#39393c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='16' viewBox='0 0 12 16'%3E%3Cpath d='m3 6 3-3 3 3m-6 4 3 3 3-3' fill='none' stroke='%23777' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center; }
   input:focus,select:focus { outline:3px solid #087cf050; outline-offset:1px; } small { display:block; font-weight:400; color:light-dark(#59595f,#c0c0c5); font-size:13px; line-height:1.55; }
   button { min-height:34px; border:1px solid #8885; border-radius:9px; padding:6px 14px; cursor:pointer; font:inherit; color:inherit; background:light-dark(#fff,#414145); box-shadow:0 1px 2px #0001; } button.primary { color:white; background:#087cf0; border-color:#087cf0; } button:disabled { opacity:.5; cursor:default; }
   .buttons { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; position:sticky; bottom:calc(-1 * var(--panel-padding)); z-index:1; margin:24px calc(-1 * var(--panel-padding)) calc(-1 * var(--panel-padding)); padding:16px var(--panel-padding); border-top:1px solid #8883; background:light-dark(#f6f6f8ed,#28282bef); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
@@ -19,9 +19,10 @@ const styles = `
   a,button.link { color:light-dark(#0067ce,#78bdff); } a { text-decoration:none; } a:hover { text-decoration:underline; } .note { font-size:13px; line-height:1.55; color:light-dark(#59595f,#c0c0c5); }
   .check { display:flex; align-items:flex-start; gap:9px; font-weight:400; margin:12px 0; } .check input { flex:none; width:17px; height:17px; min-height:0; margin:2px 0 0; padding:0; accent-color:#087cf0; } .check > span { text-align:left; }
   .authors { max-height:156px; overflow:auto; margin:12px 0 0 174px; border:1px solid #8884; border-radius:8px; padding:0 12px; background:light-dark(#f2f2f4,#303034); }
-  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:14px 0; } .row .field-title { font-weight:400; } button.link { background:none; border:0; padding:0; box-shadow:none; } button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
-  .configuration { width:640px; padding:0; overflow:hidden; display:flex; flex-direction:column; transition:height .24s cubic-bezier(.22,.61,.36,1); }
-  .configuration > .heading { padding:12px 28px 4px; flex:none; } .configuration h2 { font-size:18px; } .configuration > .summary { display:none; }
+  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:14px 0; } .row .field-title { font-weight:400; } button.link { text-align:left; background:none; border:0; padding:0; box-shadow:none; } button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
+  .configuration-backdrop { align-items:flex-start; padding-top:clamp(12px,3vh,28px); padding-bottom:20px; }
+  .configuration { max-height:calc(100vh - clamp(12px,3vh,28px) - 20px); transform-origin:top center; width:640px; padding:0; overflow:hidden; display:flex; flex-direction:column; transition:height .24s cubic-bezier(.22,.61,.36,1); }
+  .configuration > .heading { justify-content:center; padding:14px 28px 10px; flex:none; } .configuration > .heading img { width:22px; height:22px; } .configuration h2 { font-size:18px; line-height:26px; letter-spacing:0; } .configuration:lang(zh-Hans) h2 { font-family:"PingFang SC","PingFang TC",-apple-system,sans-serif; } .configuration:lang(zh-Hant) h2 { font-family:"PingFang TC","PingFang SC",-apple-system,sans-serif; } .configuration > .summary { display:none; }
   .tabs { display:flex; justify-content:center; gap:8px; flex:none; padding:4px 24px 10px; border-bottom:1px solid #8883; background:light-dark(#f7f7f9,#29292d); }
   .tabs button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:120px; max-width:180px; min-height:58px; padding:5px 12px; border:1px solid transparent; background:none; box-shadow:none; color:light-dark(#606067,#b9b9c1); font-size:13px; line-height:1.3; transition:color .15s ease,background .15s ease,box-shadow .15s ease; }
   .tabs svg { width:26px; height:26px; flex:none; } .tabs button[aria-selected=true] { color:light-dark(#007aff,#72baff); background:linear-gradient(160deg,#ffffffb0,#ffffff28); border-color:#8883; box-shadow:inset 0 1px 0 #ffffff70,0 2px 8px #00000008; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
@@ -31,11 +32,10 @@ const styles = `
   .configuration .buttons { position:static; flex:none; margin:0; padding:16px 28px; } .configuration > .error { flex:none; padding:0 28px 14px; margin:0; }
   .settings-group { padding:0; margin:0; } .token-group { padding-bottom:16px; border-bottom:1px solid #8883; margin-bottom:16px; } .token-group > label { margin:0; } .token-help { margin-top:8px; }
   .tab-stage { display:flow-root; } [role=tabpanel]:not([hidden]) { animation:pane-in .18s ease-out; }
-  .connection-row { display:flex; align-items:center; gap:12px; margin:0 0 20px; } .author-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 6px; }
-  .connection-controls { flex:1; min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; } .connection-controls .status { flex:1; margin:0; min-width:90px; } .connection-controls button { flex:none; }
-  .configuration [role=tabpanel] > label { margin:0 0 20px; } .configuration [role=tabpanel] > label:last-child { margin-bottom:0; } .author-heading button { min-height:0; } .configuration .author-group { margin-top:20px; } .configuration .authors { margin-left:0; }
-  .author-help,.author-options { margin-left:0; } .author-options { justify-content:flex-start; margin:12px 0 0; gap:8px 16px; } .author-options .check { margin:0; } .author-options .status { margin:0; min-width:0; overflow-wrap:anywhere; }
-  .security-group { padding:0; } .configuration .security-group > .check { margin:0 0 8px; } .security-group .row { justify-content:flex-start; gap:10px; margin:14px 0; }
+  .connection-row { display:flex; align-items:flex-start; gap:12px; margin:0 0 20px; } .author-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 6px; }
+  .connection-controls { flex:1; min-width:0; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:10px 14px; } .connection-controls .status { padding-top:6px; margin:0; min-width:0; overflow-wrap:anywhere; } .connection-row > .field-title { padding-top:6px; } .connection-controls button { grid-column:2; grid-row:1; }
+  .configuration [role=tabpanel] > label { margin:0 0 20px; } .configuration [role=tabpanel] > label:last-child { margin-bottom:0; } .author-heading button { min-height:0; } .configuration .author-group { margin-top:20px; } .configuration .authors { margin:0; padding:0; border:0; border-radius:0; max-height:none; overflow:visible; background:none; } .author-choices { margin-top:10px; border:0; background:none; } .author-choices .check { margin:8px 0; padding:0; } .author-choices .check:last-child { margin-bottom:0; } .author-choices[aria-disabled=true] { opacity:.5; } .author-labels { display:flex; align-items:center; flex-wrap:wrap; gap:8px 18px; } .author-labels .check { margin:0; font-weight:400; } .author-status { margin-top:8px; overflow-wrap:anywhere; } .password-fields { margin:14px 0 18px; padding:14px 16px; border:1px solid #8883; border-radius:10px; background:light-dark(#f2f2f4,#303034); } .password-fields label { margin:0 0 12px; } .password-fields label:last-of-type { margin-bottom:8px; } .security-status { margin:0 0 12px; } .recovery-help { margin-top:16px; } .author-status { margin-top:8px; overflow-wrap:anywhere; }
+  .security-group { padding:0; } .security-group > .rollback-action { display:block; margin-top:18px; } .recovery-navigation { margin-top:14px; font-size:13px; line-height:1.55; color:light-dark(#59595f,#c0c0c5); } .configuration .security-group > .check { margin:0 0 8px; } .security-group .row { justify-content:flex-start; gap:10px; margin:14px 0; }
   .configuration > .usage { flex:none; margin:0; padding:12px 28px 14px; } .usage { padding-top:14px; border-top:1px solid #8883; margin-top:14px; } .usage h3 { font-size:13px; font-weight:600; margin:0 0 7px; } .usage p { font-size:13px; color:light-dark(#59595f,#c0c0c5); line-height:1.55; margin:7px 0 0; }
   details { margin-top:16px; border:1px solid #8883; border-radius:10px; background:light-dark(#f4f4f6,#303034); } summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 16px; font-size:14px; } summary::-webkit-details-marker { display:none; } summary::after { content:''; width:6px; height:6px; border-top:1.4px solid #888; border-right:1.4px solid #888; transform:rotate(45deg); flex:none; transition:transform .15s; } details[open] > summary::after { transform:rotate(135deg); } .details-body { padding:4px 16px 16px; border-top:1px solid #8882; } .details-body label { grid-template-columns:140px minmax(0,1fr); } .details-body label:last-child { margin-bottom:0; }
   .review { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:baseline; gap:12px 14px; margin:18px 0 0; padding:18px; background:light-dark(#f1f1f3,#303034); border-radius:10px; } .review dt { text-align:right; color:light-dark(#59595f,#c0c0c5); } .review dd { margin:0; overflow-wrap:anywhere; }
@@ -43,7 +43,7 @@ const styles = `
   @keyframes spin { to { transform:rotate(360deg); } } @keyframes pane-in { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } } @keyframes dialog-in { from { opacity:0; transform:scale(.99); } to { opacity:1; transform:scale(1); } }
   @media(prefers-reduced-motion:reduce) { *,*::after { animation:none !important; transition:none !important; } } @media(prefers-reduced-transparency:reduce) { .buttons { background:light-dark(#f6f6f8,#28282b); backdrop-filter:none; -webkit-backdrop-filter:none; } .tabs button[aria-selected=true] { background:light-dark(#fff,#414145); backdrop-filter:none; -webkit-backdrop-filter:none; } }
   @media(prefers-contrast:more) { small,.note,.usage p,.review dt,.heading + .summary { color:light-dark(#333,#eee); } input,select,button { border-color:light-dark(#555,#aaa); } }
-  @media(max-width:520px) { .backdrop { padding:12px; } .panel { --panel-padding:20px; max-height:calc(100vh - 24px); } .configuration-content { padding:18px 20px; } .configuration > .heading { padding:16px 20px 6px; } .tabs { padding:8px 12px 12px; gap:3px; } .tabs button { min-width:0; flex:1; padding:7px 5px; font-size:12px; } label,.review,.connection-row,.author-heading,.details-body label { grid-template-columns:minmax(0,1fr); gap:6px; } label > span,.review dt,.connection-row > .field-title,.author-heading > .field-title { text-align:left; } label > small { grid-column:1; } .author-help,.author-options,.authors { margin-left:0; } .review dd + dt { margin-top:6px; } .configuration > .usage { padding:10px 20px 12px; } .tab-stage { display:flow-root; } }
+  @media(max-width:520px) { .backdrop { padding:12px; } .panel { --panel-padding:20px; max-height:calc(100vh - 24px); } .configuration-content { padding:18px 20px; } .configuration > .heading { padding:16px 20px 6px; } .tabs { padding:8px 12px 12px; gap:3px; } .tabs button { min-width:0; flex:1; padding:7px 5px; font-size:12px; } label,.review,.connection-row,.author-heading,.details-body label { grid-template-columns:minmax(0,1fr); gap:6px; } label > span,.review dt,.connection-row > .field-title,.author-heading > .field-title { text-align:left; } label > small { grid-column:1; } .author-help,.authors { margin-left:0; } .review dd + dt { margin-top:6px; } .configuration > .usage { padding:10px 20px 12px; } .tab-stage { display:flow-root; } }
 `;
 
 export function form({ title, description, fields, submitLabel, note, validate, initial = {}, mount }) {
@@ -117,7 +117,8 @@ function fitConfiguration(panel, section, body) {
       const content = body.offsetHeight + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
       const chrome = [...panel.children].filter(child => child !== section).reduce((height, child) => height + child.offsetHeight, 4);
       if (content + chrome <= 2) return;
-      const limit = Math.max(120, view.innerHeight - (view.innerWidth <= 520 ? 24 : 40));
+      const backdropStyle = view.getComputedStyle(panel.parentElement);
+      const limit = Math.max(120, view.innerHeight - parseFloat(backdropStyle.paddingTop) - parseFloat(backdropStyle.paddingBottom));
       panel.style.height = Math.ceil(Math.min(content + chrome, limit)) + 'px';
     });
   }
@@ -154,6 +155,7 @@ export function configure(initial = {}, services = {}) {
     listAuthors: config => new Client(config).listAuthors(),
     ...services,
   };
+  let existingEncrypted = Boolean(initial.hasEncryptedToken), locked = Boolean(initial.tokenLocked), authorProfiles = initial.authorProfiles, siteCache = initial.siteCache;
   let verifiedToken = initial.username && initial.siteId && initial.slug ? String(initial.token ?? '').trim() : '';
   return form({
     title: tr('Typlog 发布配置'),
@@ -166,19 +168,33 @@ export function configure(initial = {}, services = {}) {
       { name: 'siteId', label: tr('Site ID'), inputMode: 'numeric' },
       { name: 'authorIds', label: tr('作者 ID（可选）'), help: tr('由作者选择自动填入；手填多位作者时用逗号分隔。') },
       { name: 'encryptToken', label: tr('使用独立密码加密本机 Token'), type: 'checkbox' },
+      { name: 'encryptionPassword', label: tr('本机加密密码'), type: 'password' },
+      { name: 'encryptionConfirmation', label: tr('再次输入本机加密密码'), type: 'password' },
     ],
 
     submitLabel: tr('保存配置'), validate: input => {
       if (verifiedToken !== input.token.trim()) throw new Error(tr('请先读取账号与站点，或切换到手动配置填写账号和站点信息。'));
-      return { ...validateConfig(input), encryptToken: input.encryptToken };
+      if (input.encryptToken && !existingEncrypted) {
+        if (input.encryptionPassword.length < 12) throw new Error(tr('本机加密密码至少需要 12 个字符。'));
+        if (input.encryptionPassword !== input.encryptionConfirmation) throw new Error(tr('两次输入的密码不一致。'));
+      }
+      const validated = validateConfig({ ...input, token: locked ? 'encrypted-token-retained' : input.token });
+      return { ...validated, token: locked ? '' : validated.token, encryptToken: input.encryptToken,
+        ...(existingEncrypted ? { preserveToken: true } : {}),
+        ...(input.encryptToken && !existingEncrypted ? { encryptionPassword: input.encryptionPassword } : {}),
+        ...(authorProfiles ? { authorProfiles } : {}),
+        ...(siteCache ? { siteCache: { ...siteCache, username: validated.username } } : {}),
+      };
     },
     mount: ({ inputs, panel, finish, getValues, isClosed, setError, setLoading }) => {
-      panel.classList.add('configuration');
+      panel.classList.add('configuration'); panel.parentElement.classList.add('configuration-backdrop');
       const section = document.createElement('div'); section.className = 'configuration-content'; inputs.token.closest('label').after(section);
       const body = document.createElement('div'); body.className = 'configuration-body'; section.append(body);
       const tokenGroup = document.createElement('div'); tokenGroup.className = 'settings-group token-group'; body.append(tokenGroup); tokenGroup.append(inputs.token.closest('label'));
       const tokenHelp = document.createElement('small'); tokenHelp.className = 'token-help'; tokenGroup.append(tokenHelp);
       const tokenLink = document.createElement('a'); tokenLink.href = 'https://typlog.com/account/tokens'; tokenLink.textContent = tr('API 密钥页面'); tokenLink.target = '_blank'; tokenLink.rel = 'noopener noreferrer'; tokenLink.setAttribute('aria-label', tr('获取 API Token：') + tokenLink.href); tokenLink.onclick = event => { event.preventDefault(); window.open(tokenLink.href, '_blank'); };
+      inputs.token.disabled = existingEncrypted; inputs.token.required = !existingEncrypted;
+      if (locked) inputs.token.placeholder = tr('已有 Token 已加密；无需解锁即可修改设置。');
       tokenHelp.append(document.createTextNode(tr('登录 Typlog 后，在 ')), tokenLink, document.createTextNode(tr('，点击「+ 新密钥」，输入名称，权限勾选 profile 和 site 复选框，可生成新 API Token，将其复制到这里。')));
       const tabs = document.createElement('div'); tabs.className = 'tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', tr('配置方式')); panel.querySelector('.heading').after(tabs);
       const stage = document.createElement('div'); stage.className = 'tab-stage'; body.append(stage);
@@ -201,7 +217,7 @@ export function configure(initial = {}, services = {}) {
           if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowLeft' ? 2 : 1)) % 3; selectTab(next); tabButtons[next].focus(); }
         };
       });
-      selectTab(0);
+      selectTab(services.initialTab === 'storage' ? 2 : 0);
       const connectionRow = document.createElement('div'); connectionRow.className = 'connection-row'; automatic.append(connectionRow);
       const accountTitle = document.createElement('span'); accountTitle.className = 'field-title'; accountTitle.textContent = tr('账号'); connectionRow.append(accountTitle);
       const connectionControls = document.createElement('div'); connectionControls.className = 'connection-controls'; connectionRow.append(connectionControls);
@@ -214,13 +230,13 @@ export function configure(initial = {}, services = {}) {
       const authorSection = document.createElement('div'); authorSection.className = 'settings-group author-group'; automatic.append(authorSection);
       const authorRow = document.createElement('div'); authorRow.className = 'row author-heading'; authorSection.append(authorRow);
       const authorTitle = document.createElement('span'); authorTitle.className = 'field-title'; authorTitle.textContent = tr('作者'); authorRow.append(authorTitle);
-      const button = document.createElement('button'); button.type = 'button'; button.className = 'link'; button.textContent = tr('选择文章作者…'); authorRow.append(button);
-      const help = document.createElement('small'); help.className = 'author-help'; help.textContent = tr('从本站作者中勾选。仅有一位时自动选中；留空可在后台添加。'); authorSection.append(help);
-      const authorOptions = document.createElement('div'); authorOptions.className = 'row author-options'; authorSection.append(authorOptions);
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'link'; button.textContent = tr('刷新作者'); authorRow.append(button);
+      const authorLabels = document.createElement('div'); authorLabels.className = 'author-labels'; authorRow.prepend(authorLabels); authorLabels.append(authorTitle);
       const noneLabel = document.createElement('label'); noneLabel.className = 'check';
-      const none = document.createElement('input'); none.type = 'checkbox'; noneLabel.append(none, document.createTextNode(tr('不设作者'))); authorOptions.append(noneLabel);
-      const selected = document.createElement('small'); selected.className = 'status'; selected.setAttribute('role', 'status'); authorOptions.append(selected);
-      const box = document.createElement('div'); box.className = 'authors'; box.hidden = true; authorSection.append(box);
+      const none = document.createElement('input'); none.type = 'checkbox'; noneLabel.append(none, document.createTextNode(tr('不设作者'))); authorLabels.append(noneLabel);
+      const authorOptions = document.createElement('div'); authorOptions.className = 'author-choices'; authorOptions.hidden = true; authorOptions.setAttribute('role', 'group'); authorOptions.setAttribute('aria-label', tr('作者')); authorSection.append(authorOptions);
+      const selected = document.createElement('small'); selected.className = 'author-status'; selected.setAttribute('role', 'status'); authorSection.append(selected);
+      const box = document.createElement('div'); box.className = 'authors'; box.hidden = true; authorOptions.append(box);
       for (const key of ['username', 'slug', 'siteId', 'authorIds']) advancedBody.append(inputs[key].closest('label'));
       const siteFields = document.createElement('div'); siteFields.className = 'site-fields'; inputs.slug.closest('label').before(siteFields);
       siteFields.append(inputs.slug.closest('label'), inputs.siteId.closest('label'));
@@ -228,13 +244,45 @@ export function configure(initial = {}, services = {}) {
       const instructionsTitle = document.createElement('h3'); instructionsTitle.textContent = tr('使用说明'); instructions.append(instructionsTitle);
       const instructionsText = document.createElement('p'); instructionsText.textContent = tr('站点需在 Settings → Integrations 启用 XML-RPC。首次读取图片，在 File → Grant Folder Access 授权图片目录。'); instructions.append(instructionsText);
       const privacy = document.createElement('p'); instructions.append(privacy);
-      const updateStorage = () => { privacy.textContent = inputs.encryptToken.checked ? tr('已选择独立密码加密。退出 MarkEdit 后再次打开，或打开新文档窗口时需输入本机加密密码。') : tr('已选择明文保存，无需解锁。可在「Token 保存」中启用加密。请勿分享配置文件。'); };
-      inputs.encryptToken.onchange = updateStorage; updateStorage();
+      const securityStatus = document.createElement('small'); securityStatus.className = 'security-status'; security.append(securityStatus);
       security.append(inputs.encryptToken.closest('label'));
-      const securityHelp = document.createElement('small'); securityHelp.textContent = tr('密码加密为可选设置，默认明文保存。请设置独立的本机加密密码，与 Typlog 登录密码无关；加密可防止 Token 在配置文件中被直接读取。'); security.append(securityHelp);
+      const securityHelp = document.createElement('small'); securityHelp.textContent = tr('Token 默认以明文保存在本机。可选独立密码加密，防止已有 Token 被直接从配置文件读取；本机加密密码与 Typlog 登录密码无关，且不会保存。'); security.append(securityHelp);
+      const passwordFields = document.createElement('div'); passwordFields.className = 'password-fields'; security.append(passwordFields);
+      passwordFields.append(inputs.encryptionPassword.closest('label'), inputs.encryptionConfirmation.closest('label'));
+      const passwordNote = document.createElement('small'); passwordNote.textContent = tr('至少 12 个字符。退出应用再打开或新建文档窗口后，首次发布时需要输入此密码；打开设置无需输入。'); passwordFields.append(passwordNote);
+      const rollback = document.createElement('button'); rollback.type = 'button'; rollback.className = 'rollback-action'; rollback.textContent = tr('改回明文保存…'); security.append(rollback);
+      const updateStorage = () => {
+        passwordFields.hidden = !inputs.encryptToken.checked || existingEncrypted;
+        inputs.encryptionPassword.required = inputs.encryptionConfirmation.required = false;
+        inputs.encryptToken.disabled = existingEncrypted;
+        rollback.hidden = !existingEncrypted;
+        securityStatus.textContent = existingEncrypted ? tr('已有 Token 已加密保存。修改普通设置无需密码。') : '';
+        privacy.textContent = inputs.encryptToken.checked ? tr('Token 使用独立密码加密；首次发布时解锁，打开设置无需密码。') : tr('Token 以明文保存在本机，无需解锁。可在「Token 保存」中启用加密。请勿分享配置文件。');
+      };
+      inputs.encryptToken.onchange = updateStorage; updateStorage();
+      rollback.onclick = async () => {
+        setLoading(true); rollback.disabled = true; setError('');
+        try {
+          const value = await api.rollbackToken?.();
+          if (value === undefined || isClosed()) return;
+          const restoredToken = typeof value === 'string' ? value : value.token;
+          if (value.siteCache) { siteCache = value.siteCache; sites = siteCache.sites; renderSites(); picker.value = inputs.siteId.value; }
+          if (value.username) inputs.username.value = value.username;
+          inputs.token.value = restoredToken; inputs.token.disabled = false; inputs.token.required = true; inputs.token.placeholder = '';
+          verifiedToken = restoredToken.trim(); locked = false; existingEncrypted = false; inputs.encryptToken.checked = false; updateStorage();
+          connect.disabled = button.disabled = false;
+        } catch (error) { setError(safeError(error, { token: inputs.token.value })); }
+        finally { if (!isClosed()) { setLoading(false); rollback.disabled = false; } }
+      };
+      const recoveryHelp = document.createElement('small'); recoveryHelp.className = 'recovery-help'; recoveryHelp.textContent = tr('忘记本机加密密码？可直接替换新 Token，无需旧密码；不再需要发布时，可删除本机 Token。站点配置和草稿关联会保留。'); security.append(recoveryHelp);
       const securityActions = document.createElement('div'); securityActions.className = 'row'; security.append(securityActions);
       const replaceToken = document.createElement('button'); replaceToken.type = 'button'; replaceToken.textContent = tr('替换 Token…'); securityActions.append(replaceToken);
-      replaceToken.onclick = () => { inputs.token.value = ''; inputs.token.dispatchEvent(new document.defaultView.Event('input', { bubbles: true })); inputs.token.focus(); };
+      replaceToken.onclick = async () => {
+        if (!await (api.confirmReplacement ?? confirmTokenReplacement)() || isClosed()) return;
+        existingEncrypted = false; locked = false; inputs.token.disabled = false; inputs.token.required = true; inputs.token.placeholder = '';
+        inputs.token.value = ''; inputs.encryptToken.checked = false; inputs.encryptionPassword.value = inputs.encryptionConfirmation.value = ''; updateStorage();
+        inputs.token.dispatchEvent(new document.defaultView.Event('input', { bubbles: true })); selectTab(0); inputs.token.focus();
+      };
       const removeToken = document.createElement('button'); removeToken.type = 'button'; removeToken.textContent = tr('删除本机 Token…'); removeToken.disabled = !(initial.hasStoredToken ?? initial.token) || !api.removeToken; securityActions.append(removeToken);
       removeToken.onclick = async () => {
         setLoading(true); removeToken.disabled = true;
@@ -242,62 +290,75 @@ export function configure(initial = {}, services = {}) {
         catch (error) { setError(safeError(error, { token: inputs.token.value })); }
         finally { if (!isClosed()) { setLoading(false); removeToken.disabled = false; } }
       };
-      const recoveryHelp = document.createElement('small'); recoveryHelp.textContent = tr('取消加密并保存，验证本机加密密码后可改回明文。替换或删除 Token 不会清除草稿关联；删除本机记录不会撤销 Typlog 上的 Token。'); security.append(recoveryHelp);
-      let sites = [], authors, authorScope, generation = 0;
+      let sites = siteCache?.username === initial.username && Array.isArray(siteCache?.sites) ? [...siteCache.sites] : [], authors, authorScope, generation = 0;
       // An existing blank author setting is deliberate and survives refresh/restart.
       let wantsNone = Boolean(initial.siteId && initial.authorIds === '');
       none.checked = wantsNone;
+      let rememberedIds = initial.authorIds ?? '';
       const token = () => inputs.token.value.trim();
       const stamp = () => JSON.stringify([token(), inputs.siteId.value, inputs.slug.value]);
       const current = ticket => !isClosed() && ticket === generation;
-      function loading(value) { setLoading(value); connect.disabled = value; button.disabled = value; picker.disabled = value; }
+      function loading(value) { setLoading(value); connect.disabled = value || locked; button.disabled = value || locked; picker.disabled = value; }
       function begin() { const ticket = ++generation; loading(true); setError(''); return ticket; }
       function end(ticket) { if (current(ticket)) loading(false); }
-      function resetAuthors() { authors = undefined; authorScope = undefined; box.replaceChildren(); box.hidden = true; selected.textContent = ''; }
+      function resetAuthors() { authors = undefined; authorScope = undefined; box.replaceChildren(); box.hidden = true; authorOptions.hidden = true; selected.hidden = false; selected.textContent = ''; }
       function updateAuthors() {
-        none.checked = wantsNone;
+        none.checked = wantsNone; authorOptions.setAttribute('aria-disabled', String(wantsNone));
         if (!authors || stamp() !== authorScope) return;
-        try { selected.textContent = selectedAuthorLabels(inputs.authorIds.value, authors).join(tr('、')) || (wantsNone ? tr('不设作者') : tr('未选择作者'));
-          selected.hidden = !box.hidden || wantsNone; }
-        catch (error) { selected.textContent = error.message; }
-        const ids = splitTags(inputs.authorIds.value);
-        for (const check of box.querySelectorAll('input')) check.checked = ids.includes(check.value);
+        const ids = splitTags(wantsNone ? rememberedIds : inputs.authorIds.value);
+        if (!wantsNone) rememberedIds = inputs.authorIds.value;
+        selected.hidden = false;
+        try {
+          selectedAuthorLabels(inputs.authorIds.value, authors);
+          selected.textContent = authors.length ? '' : tr('本站暂无作者，不设作者。');
+        } catch (error) { selected.textContent = error.message; }
+        for (const check of box.querySelectorAll('input')) { check.checked = ids.includes(check.value); check.disabled = wantsNone; }
       }
       none.onchange = () => {
-        wantsNone = none.checked;
-        if (wantsNone) inputs.authorIds.value = '';
-        else if (authors?.length === 1) inputs.authorIds.value = authors[0].id;
-        updateAuthors();
+        if (none.checked) { rememberedIds = inputs.authorIds.value || rememberedIds; inputs.authorIds.value = ''; }
+        else inputs.authorIds.value = rememberedIds || authors?.[0]?.id || '';
+        wantsNone = none.checked; updateAuthors();
       };
-      async function loadAuthors(ticket, show) {
+      async function loadAuthors(ticket) {
         const config = getValues();
         if (!/^[1-9]\d*$/.test(config.siteId) || !config.slug || !config.token.trim()) throw new Error(tr('请先读取并选择站点，或切换到手动配置填写站点信息。'));
         const requestedScope = stamp();
-        selected.textContent = tr('正在获取本站作者…');
-        const result = await api.listAuthors(config);
+        selected.hidden = false; selected.textContent = tr('正在获取本站作者…');
+        let result;
+        try { result = await api.listAuthors(config); }
+        catch (error) { if (current(ticket) && stamp() === requestedScope) selected.textContent = ''; throw error; }
         if (!current(ticket) || stamp() !== requestedScope) return;
+        authorProfiles = { siteId: inputs.siteId.value, slug: inputs.slug.value, authors: result };
+        renderAuthors(result, requestedScope);
+      }
+      function renderAuthors(result, requestedScope) {
         authors = result; authorScope = requestedScope; box.replaceChildren();
-        if (!authors.length) { inputs.authorIds.value = ''; wantsNone = true; selected.textContent = tr('本站暂无作者，不设作者。'); }
-        else if (authors.length === 1 && !wantsNone && !inputs.authorIds.value.trim()) inputs.authorIds.value = authors[0].id;
+        if (!authors.length) { inputs.authorIds.value = ''; wantsNone = true; }
+        else if (!wantsNone && !inputs.authorIds.value.trim()) inputs.authorIds.value = authors[0].id;
+        if (authors.length && !rememberedIds) rememberedIds = authors[0].id;
         for (const author of authors) {
           const label = document.createElement('label'); label.className = 'check';
           const check = document.createElement('input'); check.type = 'checkbox'; check.value = author.id;
           label.append(check, document.createTextNode(authorLabel(author))); box.append(label);
           check.onchange = () => {
+            if (wantsNone) return;
             inputs.authorIds.value = [...box.querySelectorAll('input:checked')].map(input => input.value).join(', ');
-            wantsNone = !inputs.authorIds.value; updateAuthors();
+            updateAuthors();
           };
         }
-        box.hidden = !show;
+        box.hidden = authorOptions.hidden = !authors.length;
         updateAuthors();
       }
       async function chooseSite(site, ticket) {
         if (inputs.siteId.value !== site.id || inputs.slug.value !== site.slug) {
-          inputs.authorIds.value = ''; wantsNone = false; resetAuthors();
+          inputs.authorIds.value = ''; rememberedIds = ''; wantsNone = false; resetAuthors();
         }
         inputs.siteId.value = site.id; inputs.slug.value = site.slug;
         siteNote.textContent = '';
-        await loadAuthors(ticket, false);
+        if (locked) {
+          if (authorProfiles?.siteId === site.id && authorProfiles?.slug === site.slug) renderAuthors(authorProfiles.authors, stamp());
+          else { resetAuthors(); selected.textContent = tr('作者列表尚未缓存，可在手动配置中修改作者 ID。'); }
+        } else await loadAuthors(ticket);
       }
       function renderSites() {
         picker.replaceChildren();
@@ -320,20 +381,23 @@ export function configure(initial = {}, services = {}) {
             warnings.push(/HTTP (401|403)/.test(userResult.reason?.message) ? tr('读取 username 需要 profile 权限；也可在「手动配置」中填写。') : tr('账号读取失败：') + safeError(userResult.reason, { token: requestedToken }));
           }
           if (sitesResult.status === 'fulfilled') {
-            sites = sitesResult.value; renderSites();
+            sites = sitesResult.value; siteCache = { username: inputs.username.value, sites }; renderSites();
             const chosen = sites.length === 1 ? sites[0] : sites.find(site => site.id === inputs.siteId.value && site.slug === inputs.slug.value);
             if (chosen) { picker.value = chosen.id; await chooseSite(chosen, ticket); }
             else {
-              inputs.siteId.value = ''; inputs.slug.value = ''; inputs.authorIds.value = ''; wantsNone = false; resetAuthors(); none.checked = false;
+              inputs.siteId.value = ''; inputs.slug.value = ''; inputs.authorIds.value = ''; rememberedIds = ''; wantsNone = false; resetAuthors(); none.checked = false;
               siteNote.textContent = sites.length ? tr('请选择一个站点。') : tr('此 Token 未返回可访问的活跃站点，请检查 site 权限或账号站点状态。');
             }
           } else {
             warnings.push(tr('读取站点列表失败：') + safeError(sitesResult.reason, { token: requestedToken }) + tr(' 请检查 site 权限。'));
-            sites = []; renderSites();
+            renderSites();
             if (inputs.siteId.value && inputs.slug.value) {
-              const option = document.createElement('option'); option.value = inputs.siteId.value; option.textContent = inputs.slug.value + tr('（已保存的站点）'); picker.append(option); picker.value = inputs.siteId.value;
+              if (!sites.some(site => site.id === inputs.siteId.value)) {
+                const option = document.createElement('option'); option.value = inputs.siteId.value; option.textContent = inputs.slug.value + tr('（已保存的站点）'); picker.append(option);
+              }
+              picker.value = inputs.siteId.value;
               siteNote.textContent = tr('暂时使用已保存的站点配置，可重试或手动修改。');
-              await loadAuthors(ticket, false);
+              await loadAuthors(ticket);
             }
           }
           if (current(ticket) && warnings.length) setError(warnings.join('\n'));
@@ -353,21 +417,35 @@ export function configure(initial = {}, services = {}) {
       };
       button.onclick = async () => {
         const ticket = begin();
-        try { await loadAuthors(ticket, true); }
+        try { await loadAuthors(ticket); }
         catch (error) { if (current(ticket)) setError(tr('获取作者失败：') + safeError(error, { token: token() })); }
         finally { end(ticket); }
       };
       inputs.token.addEventListener('input', () => {
-        ++generation; loading(false); verifiedToken = ''; sites = []; renderSites(); account.textContent = ''; siteNote.textContent = ''; resetAuthors();
+        ++generation; loading(false); verifiedToken = ''; siteCache = undefined; sites = []; authorProfiles = undefined; rememberedIds = ''; renderSites(); account.textContent = ''; siteNote.textContent = ''; resetAuthors();
         for (const key of ['username', 'slug', 'siteId', 'authorIds']) inputs[key].value = '';
         wantsNone = false; none.checked = false; setError('');
       });
       for (const key of ['username', 'slug', 'siteId', 'authorIds']) inputs[key].addEventListener('input', () => {
-        if (key === 'authorIds') { wantsNone = !inputs.authorIds.value.trim(); updateAuthors(); }
+        if (key === 'authorIds') { wantsNone = !inputs.authorIds.value.trim(); rememberedIds = inputs.authorIds.value; updateAuthors(); }
         else { ++generation; loading(false); verifiedToken = token(); resetAuthors(); picker.value = ''; siteNote.textContent = tr('正在使用手动填写的账号和站点配置。'); }
       });
       renderSites();
-      if (initial.token) void discover();
+      if (initial.username) account.textContent = tr('@{username}', { username: initial.username });
+      if (initial.siteId && initial.slug) {
+        if (!sites.some(site => site.id === initial.siteId)) sites.push({ id: initial.siteId, slug: initial.slug });
+        renderSites(); picker.value = initial.siteId;
+      }
+      if (authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug) renderAuthors(authorProfiles.authors, stamp());
+      if (locked) {
+        connect.disabled = button.disabled = true;
+        siteNote.textContent = tr('已有 Token 尚未解锁。发布时输入密码后可在线刷新，或替换新 Token。');
+        if (!(authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug)) selected.textContent = tr('作者列表尚未缓存，可在手动配置中修改作者 ID。');
+      } else if (initial.token && !siteCache) void discover();
+      else if (initial.token && !(authorProfiles && authorProfiles.siteId === initial.siteId && authorProfiles.slug === initial.slug)) {
+        const ticket = begin();
+        void loadAuthors(ticket).catch(error => { if (current(ticket)) setError(safeError(error, { token: token() })); }).finally(() => end(ticket));
+      }
       return fitConfiguration(panel, section, body);
     },
   });
@@ -449,16 +527,17 @@ export function unlockToken({ allowReset = false, failed = false, rollback = fal
     description: failed ? tr('本机加密密码不正确或加密记录已损坏，请重试。') : rollback ? tr('请输入当前本机加密密码，以将原 Token 改为明文保存。') : tr('输入此前设置的本机加密密码。Token 仅在当前文档窗口的内存中解密。'),
     fields: [
       { name: 'password', label: tr('本机加密密码'), type: 'password' },
-      ...(allowReset ? [{ name: 'reset', label: tr('忘记本机加密密码，改用新的 API Token 重新配置'), type: 'checkbox' }] : []),
+
     ],
-    note: tr('这是为此扩展设置的独立密码，与 Typlog 登录密码无关。') + ' ' + (allowReset ? tr('重新配置时保留站点和草稿关联；保存新 Token 后替换旧的加密记录。') : tr('忘记本机加密密码时，请从「修改发布配置」删除或替换 Token。')),
+    note: tr('这是为此扩展设置的独立密码，与 Typlog 登录密码无关。'),
     submitLabel: tr('继续'),
     mount: ({ panel, finish }) => {
-      if (!allowReset) return;
-      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = tr('删除本机 Token…'); panel.querySelector('.buttons').prepend(remove); remove.onclick = () => finish({ remove: true });
+      const guidance = document.createElement('p'); guidance.className = 'recovery-navigation'; panel.querySelector('.note').after(guidance);
+      const link = document.createElement('a'); link.href = '#typlog-settings'; link.textContent = tr('Typlog 发布配置');
+      guidance.append(document.createTextNode(tr('如果您不记得本机加密密码，可到 ')), link, document.createTextNode(tr(' 替换现有 Token。')));
+      link.onclick = event => { event.preventDefault(); finish({ settings: true }); };
     },
     validate: input => {
-      if (input.reset) return { reset: true };
       if (!input.password) throw new Error(tr('请输入本机加密密码。'));
       return { password: input.password };
     },
@@ -479,5 +558,14 @@ export function confirmTokenRemoval() {
     title: tr('删除本机 Token？'),
     description: tr('删除后需要重新填写 Token 才能推送。站点配置和已有草稿关联保留；Typlog 上的 Token 不会被撤销。'),
     fields: [], submitLabel: tr('删除本机 Token'), validate: () => true,
+  }).then(Boolean);
+}
+
+export function confirmTokenReplacement() {
+  return form({
+    title: tr('替换本机 Token？'),
+    description: tr('保存新 Token 后，会覆盖本机旧 Token 或加密记录，无法从此配置恢复旧 Token。请先准备有 profile 和 site 权限的新 Token。'),
+    note: tr('取消或尚未保存时，旧记录保留。站点配置和草稿关联不会删除；Typlog 上的旧 Token 不会被撤销。'),
+    fields: [], submitLabel: tr('填写新 Token'), validate: () => true,
   }).then(Boolean);
 }

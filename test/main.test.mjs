@@ -7,7 +7,7 @@ const bundle = (await build({ entryPoints: ['src/main.js'], bundle: true, format
 const config = { slug: 'sample-blog', siteId: '12', username: 'test-user', token: 'test-only-never-real', authorIds: '42' };
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
-async function scenario({ openAfter, cancel = false, invalid = false, initialFiles, source = '# Title\n\nBody', language = 'zh-CN' } = {}) {
+async function scenario({ openAfter, cancel = false, invalid = false, initialFiles, source = '# Title\n\nBody', language = 'zh-CN', siteList } = {}) {
   const dom = new JSDOM('', { runScripts: 'outside-only', url: 'https://editor.invalid' });
   const w = dom.window, roots = [], requests = [], opened = [], alerts = [];
   Object.defineProperty(w.navigator, 'languages', { value: [language] });
@@ -21,6 +21,8 @@ async function scenario({ openAfter, cancel = false, invalid = false, initialFil
   w.fetch = async function(url, options) {
     assert.equal(this, w);
     requests.push({ url, ...options });
+    if (url.endsWith('/user')) return new Response(JSON.stringify({ username: config.username }));
+    if (url.endsWith('/sites')) return siteList === false ? new Response('{}', { status: 403 }) : new Response(JSON.stringify(siteList ?? [{ id: 12, slug: config.slug, name: 'Example Site' }]));
     const text = url.endsWith('/authors') ? JSON.stringify(invalid ? [] : [{ id: 42, name: '作者甲', username: 'alice' }])
       : options.body?.includes('metaWeblog.editPost') ? '<methodResponse><params><param><value><boolean>1</boolean></value></param></params></methodResponse>'
       : options.method === 'POST' ? '<methodResponse><params><param><value><string>9876</string></value></param></params></methodResponse>'
@@ -132,4 +134,90 @@ test('the entry point follows system languages for menus, draft dialogs and nati
     assert.equal(result.alerts[0].title, completion);
     assert.ok(result.menu.icon.length > 100);
   }
+});
+
+test('opening and saving encrypted settings never prompts for a password or changes ciphertext', async () => {
+  const { encryptToken } = await import('../src/vault.js');
+  const { envelope } = await encryptToken(config.token, 'test-only-unlock-password');
+  const stored = { ...config, tokenVault: envelope, plainTextAcknowledged: true, authorProfiles: { siteId: config.siteId, slug: config.slug, authors: [{ id: '42', name: 'Example Writer', username: 'writer' }] } };
+  delete stored.token;
+  const dom = new JSDOM('', { runScripts: 'outside-only', url: 'https://editor.invalid' });
+  const w = dom.window, roots = [], writes = [], attach = w.Element.prototype.attachShadow;
+  w.Element.prototype.attachShadow = function(options) { const root = attach.call(this, options); roots.push(root); return root; };
+  Object.defineProperty(w.navigator, 'languages', { value: ['en'] });
+  let raw = JSON.stringify(stored), menu;
+  w.fetch = async () => { throw new Error('locked settings must not access the network'); };
+  w.MarkEdit = {
+    addMainMenuItem: value => { menu = value; }, getDirectoryPath: () => '/app/Documents',
+    getFileInfo: async () => ({}), getFileContent: async () => raw,
+    createFile: async options => { raw = options.string; writes.push(JSON.parse(raw)); return true; },
+    showAlert: async () => 0,
+  };
+  w.TextEncoder = TextEncoder; w.TextDecoder = TextDecoder;
+  w.eval(bundle);
+  try {
+    for (const authorIds of ['42', '']) {
+      const action = menu.children[1].action();
+      for (let n = 0; n < 30 && !roots.findLast(r => r.host.isConnected); n++) await tick();
+      const root = roots.findLast(r => r.host.isConnected);
+      assert.equal(root.querySelector('h2').textContent, 'Typlog Publishing Settings');
+      assert.equal(root.querySelector('[name=token]').value, '');
+      assert.equal(root.querySelector('[name=token]').disabled, true);
+      assert.equal(root.querySelectorAll('.authors input').length, 1);
+      root.querySelector('[name=authorIds]').value = authorIds;
+      root.querySelector('form').dispatchEvent(new w.Event('submit', { cancelable: true }));
+      await action;
+      const saved = JSON.parse(raw);
+      assert.equal(saved.authorIds, authorIds); assert.equal(saved.token, undefined);
+      assert.deepEqual(saved.tokenVault, envelope); assert.equal(saved.plainTextAcknowledged, true);
+    }
+    assert.equal(writes.length, 2);
+  } finally { w.close(); }
+});
+
+test('forgotten-password replacement reaches settings without decrypting or discarding the old record', async () => {
+  const { encryptToken } = await import('../src/vault.js');
+  const { envelope } = await encryptToken(config.token, 'test-only-unlock-password');
+  const stored = { ...config, tokenVault: envelope }; delete stored.token;
+  const dom = new JSDOM('', { runScripts: 'outside-only', url: 'https://editor.invalid' });
+  const w = dom.window, roots = [], attach = w.Element.prototype.attachShadow;
+  w.Element.prototype.attachShadow = function(options) { const root = attach.call(this, options); roots.push(root); return root; };
+  Object.defineProperty(w.navigator, 'languages', { value: ['en'] });
+  w.TextEncoder = TextEncoder; w.TextDecoder = TextDecoder;
+  let menu, writes = 0;
+  w.fetch = async () => { throw new Error('no requests before a replacement is supplied'); };
+  w.MarkEdit = { addMainMenuItem: value => { menu = value; }, getDirectoryPath: () => '/app/Documents', getFileInfo: async () => ({}), getFileContent: async () => JSON.stringify(stored), createFile: async () => { writes++; return true; }, showAlert: async () => { throw new Error('unexpected alert'); } };
+  w.eval(bundle);
+  const current = () => roots.findLast(r => r.host.isConnected);
+  const button = (root, text) => [...root.querySelectorAll('button')].find(b => b.textContent === text);
+  try {
+    const action = menu.children[0].action();
+    for (let n = 0; n < 30 && !current(); n++) await tick();
+    assert.equal(current().querySelector('h2').textContent, 'Enter the Local Encryption Password');
+    assert.equal(button(current(), 'Replace Token…'), undefined);
+    current().querySelector('a[href="#typlog-settings"]').click();
+    for (let n = 0; n < 30 && current()?.querySelector('h2').textContent !== 'Typlog Publishing Settings'; n++) await tick();
+    assert.equal(current().querySelector('h2').textContent, 'Typlog Publishing Settings');
+    assert.equal(current().querySelector('[role=tab][aria-selected=true]').textContent, 'Token Storage');
+    assert.equal(current().querySelector('[name=token]').disabled, true);
+    assert.equal(current().querySelector('[name=token]').value, '');
+    button(current(), 'Cancel').click(); await action;
+    assert.equal(writes, 0);
+  } finally { w.close(); }
+});
+
+test('password unlock refreshes the full site cache while preserving ciphertext and selected site', async () => {
+  const { encryptToken } = await import('../src/vault.js');
+  const { envelope } = await encryptToken(config.token, 'test-only-unlock-password');
+  const initial = { ...config, tokenVault: envelope, siteCache: { username: config.username, sites: [{ id: '12', slug: config.slug, name: 'Old Name' }] } }; delete initial.token;
+  const siteList = [{ id: 12, slug: config.slug, name: 'Renamed Site' }, { id: 13, slug: 'second-site', name: 'Second Site', unrelated: 'discard-this' }];
+  const first = await scenario({ initialFiles: new Map([['/app/Documents/typlog-publisher/config.json', JSON.stringify(initial)]]), siteList, cancel: 'metadata' });
+  const saved = JSON.parse(first.files.get('/app/Documents/typlog-publisher/config.json'));
+  assert.deepEqual(saved.tokenVault, envelope); assert.equal(saved.token, undefined);
+  assert.equal(saved.siteId, config.siteId); assert.equal(saved.slug, config.slug);
+  assert.deepEqual(saved.siteCache.sites, [{ id: '12', slug: config.slug, name: 'Renamed Site' }, { id: '13', slug: 'second-site', name: 'Second Site' }]);
+  assert.deepEqual(first.requests.map(r => r.method), ['GET', 'GET']);
+  const failed = await scenario({ initialFiles: first.files, siteList: false, cancel: 'metadata' });
+  assert.deepEqual(JSON.parse(failed.files.get('/app/Documents/typlog-publisher/config.json')), saved);
+  assert.equal(failed.alerts.length, 0);
 });
