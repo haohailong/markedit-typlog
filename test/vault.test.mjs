@@ -147,3 +147,28 @@ test('cancelled Token deletion leaves encrypted storage and its usable window ca
   assert.equal(JSON.stringify(f.stored), before);
   assert.equal(f.vault.cache.token, config.token);
 });
+
+test('plaintext acknowledgement survives encryption, rollback, replacement, and removal', async () => {
+  let notices = 0;
+  const f = fixture({ confirmPlaintext: async () => { notices++; return true; } });
+  await f.vault.save(config);
+  const plaintext = f.stored;
+  await f.vault.save(config, { encrypted: true, previous: plaintext });
+  const encrypted = f.stored;
+  let passwords = 0;
+  const other = new TokenVault(f.store, {
+    unlockPassword: async () => { passwords++; return { password }; },
+    confirmPlaintext: async () => { throw new Error('must not repeat acknowledged notice'); },
+    confirmRemoval: async () => true,
+  });
+  await other.open(encrypted);
+  await other.save(config, { previous: encrypted });
+  assert.equal(passwords, 2); // Rollback still requires password verification.
+  assert.equal(notices, 1);
+  assert.equal(f.stored.token, config.token);
+  await other.remove(f.stored);
+  assert.equal(f.stored.plainTextAcknowledged, true);
+  await other.save({ ...config, token: 'replacement-test-token' }, { previous: f.stored });
+  assert.equal(f.stored.token, 'replacement-test-token');
+  assert.equal(notices, 1);
+});

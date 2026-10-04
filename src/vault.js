@@ -84,7 +84,7 @@ export class TokenVault {
       if (!unlocked) return false;
     }
     if (!encrypted) {
-      if ((rollback || previous.plainTextAcknowledged !== true) && !await this.prompts.confirmPlaintext({ rollback: Boolean(rollback) })) return false;
+      if ((previous.plainTextAcknowledged !== true) && !await this.prompts.confirmPlaintext({ rollback: Boolean(rollback) })) return false;
       await this.store.write('config.json', { ...metadata, token, plainTextAcknowledged: true });
       this.cache = undefined;
       this.legacy = false;

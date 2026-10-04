@@ -27,13 +27,13 @@ Password encryption is optional; plain-text storage requires no password. Create
 
 To encrypt, open **Token Storage**, select **Encrypt local Token with a separate password**, and save. Create an local encryption password of at least 12 characters. Passwords and encryption keys are never written to disk. Web Crypto AES-256-GCM uses PBKDF2-SHA-256 (600,000 iterations, a random salt, and a fresh IV on each save). **Every time you quit and reopen MarkEdit, or open a new document window, you must enter the password.** Repeated sends in the same window do not require unlocking.
 
-To switch back to plain text, turn encryption off in Token Storage and save. Enter the current local encryption password and confirm the plain-text notice. If you entered the password when opening settings in that same operation, it is not requested again. Cancellation or an incorrect password leaves the encrypted record unchanged. Upgrading never automatically downgrades existing encrypted storage.
+To switch back to plain text, turn encryption off in Token Storage and save. Enter the current local encryption password. The plain-text notice appears only once; after acknowledgement it does not repeat when switching encryption modes or replacing the Token. If you entered the password when opening settings in that same operation, it is not requested again. Cancellation or an incorrect password leaves the encrypted record unchanged. Upgrading never automatically downgrades existing encrypted storage.
 
 Choose **Replace Token…** to enter a new Token, read the account and sites again, and save. If you forget the password, choose the reset option in the unlock dialog to enter a new Token, or select **Delete Local Token…**. After unlocking, deletion is also available in Token Storage. Deleting local data keeps existing draft associations and does not revoke the Token on Typlog; revocation must be done in the Typlog dashboard.
 
 The Token field is masked, and Tokens are not logged or echoed. The installer restricts directory permissions. Site and account metadata remain plain text. Changing storage mode or deleting local data does not erase previous backups or file-system snapshots. Share the extension script; do not share the whole MarkEdit settings folder.
 
-Settings use **Automatic / Manual Settings / Token Storage** tabs that replace the visible form instead of expanding the page. **Usage** is always visible, covering XML-RPC, folder authorization, and encryption. Draft confirmation displays individual post details. Forms support longer English text, narrow windows, dark mode, keyboard navigation, and reduced motion. Footer actions remain visible while scrolling. The menu and dialogs use a monochrome outline redrawn from Typlog's official T glyph.
+Settings use a top icon toolbar inspired by MarkEdit Settings: **Automatic / Manual Settings / Token Storage**. The window keeps a consistent width while its height smoothly adapts to the active tab, with a brief content fade. Settings fields align to the left: labels sit above controls, help follows its related field, and account, site and author controls are grouped together. Site slug and Site ID sit side by side as one group. All three tabs share a left alignment. Text uses 14px body and 13px help sizes. **Usage & Privacy** and footer actions stay visible; only the settings body scrolls in smaller windows. Usage covers XML-RPC, folder access and Token storage. Draft confirmation displays individual post details. All dialogs share the same form grid, typography and buttons. Longer English text, narrow windows, dark mode, keyboard navigation, reduced motion, reduced transparency and increased contrast are supported. The menu and dialogs use a monochrome outline redrawn from Typlog's official T glyph.
 
 ## Images
 
@@ -101,7 +101,7 @@ npm test
 npm run build
 ```
 
-61 automated tests cover the publishing flow and all three interface languages, translation completeness, placeholders, error classification, and comma-separated tags. They use simulated Typlog responses without reading real Tokens, accessing real accounts, or publishing articles.
+62 automated tests cover the publishing flow and all three interface languages, translation completeness, placeholders, error classification, and comma-separated tags. They use simulated Typlog responses without reading real Tokens, accessing real accounts, or publishing articles.
 
 References: [MarkEdit API](https://github.com/MarkEdit-app/MarkEdit-api), [MarkEdit customization](https://github.com/MarkEdit-app/MarkEdit/wiki/Customization), [Typlog XML-RPC](https://docs.typlog.com/en/article/marsedit/), [Typlog API](https://api.typlog.com/), [Typlog branding](https://typlog.com/brand).
 

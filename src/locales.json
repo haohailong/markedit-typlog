@@ -798,5 +798,17 @@
   "这是为此扩展设置的独立密码，与 Typlog 登录密码无关。": [
     "This is the separate password you created for this extension, unrelated to your Typlog login password.",
     "這是為此擴充功能設定的獨立密碼，與 Typlog 登入密碼無關。"
+  ],
+  "账号": [
+    "Account",
+    "帳號"
+  ],
+  "@{username}": [
+    "@{username}",
+    "@{username}"
+  ],
+  "@{username}（已保存）": [
+    "@{username} (saved)",
+    "@{username}（已儲存）"
   ]
 }

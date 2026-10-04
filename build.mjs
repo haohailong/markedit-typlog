@@ -6,5 +6,5 @@ await build({
   format: 'iife',
   target: 'safari17',
   legalComments: 'eof',
-  banner: { js: '// MarkEdit Typlog Publisher v0.3.2 — credentials are configured in the app, never in this script.' },
+  banner: { js: '// MarkEdit Typlog Publisher v0.3.4 — credentials are configured in the app, never in this script.' },
 });

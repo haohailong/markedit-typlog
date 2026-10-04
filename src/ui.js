@@ -4,25 +4,46 @@ import { splitTags, validateConfig } from './core.js';
 import { authorLabel, Client, safeError, selectedAuthorLabels } from './publisher.js';
 
 const styles = `
-  :host { all:initial; position:fixed; inset:0; z-index:2147483647; color-scheme:light dark; font:13px/1.45 -apple-system,BlinkMacSystemFont,sans-serif; color:light-dark(#242424,#eee); }
+  :host { all:initial; position:fixed; inset:0; z-index:2147483647; color-scheme:light dark; font:14px/1.5 -apple-system,BlinkMacSystemFont,sans-serif; color:light-dark(#242424,#f0f0f0); }
   * { box-sizing:border-box; } [hidden] { display:none !important; }
-  .backdrop { position:absolute; inset:0; background:#0005; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .panel { --panel-padding:24px; width:600px; max-width:100%; max-height:85vh; overflow:auto; padding:var(--panel-padding); background:light-dark(#f5f5f7,#252525); border:1px solid #8883; border-radius:14px; box-shadow:0 12px 42px #0004; }
-  .panel.configuration { max-height:calc(100vh - 40px); } .configuration [role=tabpanel] > label { margin:8px 0; } .author-options { margin:8px 0 0; } .author-options .check { margin:0; } .author-options .status { margin:0; max-width:70%; text-align:right; }
-  h2 { margin:0; font-size:18px; line-height:1.3; font-weight:600; letter-spacing:-.25px; } .heading { display:flex; align-items:center; gap:10px; } .heading img { width:24px; height:24px; flex:none; } @media(prefers-color-scheme:dark) { .heading img { filter:invert(1); } } p { margin:0; } .heading + .summary { color:light-dark(#666,#b5b5b5); margin:8px 0 16px; font-size:12px; }
-  label { display:grid; grid-template-columns:124px minmax(0,1fr); align-items:start; column-gap:14px; row-gap:5px; margin:12px 0; font-weight:500; line-height:1.4; } label > input, label > select { margin-top:-5px; } label > small { grid-column:2; }
-  input, select { display:block; min-width:0; width:100%; padding:7px 9px; font:inherit; color:inherit; background:light-dark(#fff,#333); border:1px solid #8885; border-radius:6px; }
-  input:focus, select:focus { outline:3px solid #087cf050; outline-offset:1px; } small { display:block; font-weight:400; color:light-dark(#666,#b5b5b5); font-size:12px; line-height:1.55; }
-  button { border:1px solid #8886; border-radius:6px; padding:6px 12px; cursor:pointer; font:inherit; color:inherit; background:light-dark(#fff,#444); } button.primary { color:white; background:#087cf0; border-color:#087cf0; } button:disabled { opacity:.5; cursor:default; }
-  .buttons { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; position:sticky; bottom:calc(-1 * var(--panel-padding)); z-index:1; margin:22px calc(-1 * var(--panel-padding)) calc(-1 * var(--panel-padding)); padding:16px var(--panel-padding); border-top:1px solid #8883; background:light-dark(#f5f5f7,#252525); } .error { color:light-dark(#b3261e,#ff9b94); font-size:12px; white-space:pre-line; margin-top:16px; } .error:empty, .summary:empty, small:empty { display:none; }
-  a, button.link { color:light-dark(#006ad4,#65b3ff); } a { text-decoration:none; } a:hover { text-decoration:underline; } .note { font-size:12px; color:light-dark(#626262,#b8b8b8); }
-  .check { display:flex; align-items:flex-start; gap:8px; font-weight:400; margin:12px 0; } .check input { flex:none; width:14px; height:14px; margin:3px 0 0; padding:0; accent-color:#087cf0; } .authors { max-height:160px; overflow:auto; margin:12px 0 0; border:1px solid #8884; border-radius:6px; padding:0 12px; background:light-dark(#fff,#333); }
-  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:12px 0; } .row .field-title { font-weight:600; } button.link { background:none; border:0; padding:0; } button:focus-visible, a:focus-visible, summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
-  .settings-group { padding:12px; background:light-dark(#fff,#2e2e2e); border:1px solid #8883; border-radius:10px; margin-top:10px; } .settings-group > label:first-child { margin-top:5px; } .settings-group > label:last-child { margin-bottom:5px; } .settings-group .row:first-child { margin-top:0; } .settings-group .row:last-child { margin-bottom:0; } .token-help { margin-top:10px; } .status { margin-top:10px; overflow-wrap:anywhere; } .author-group .check { margin-bottom:8px; }
-  .tabs { display:flex; gap:2px; margin-top:16px; padding:3px; border-radius:8px; background:light-dark(#e5e5e9,#191919); } .tabs button { flex:1; border:0; background:none; padding:5px 10px; } .tabs button[aria-selected=true] { background:light-dark(#fff,#494949); box-shadow:0 1px 3px #0002; } .usage { margin-top:16px; padding-top:12px; border-top:1px solid #8883; } .usage h3 { font-size:12px; font-weight:600; margin:0 0 6px; } .usage p { font-size:12px; color:light-dark(#666,#b5b5b5); line-height:1.5; margin:6px 0 0; }
-  details { margin-top:16px; border:1px solid #8883; border-radius:10px; background:light-dark(#fff,#2e2e2e); } summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 16px; font-size:13px; } summary::-webkit-details-marker { display:none; } summary::after { content:''; width:6px; height:6px; border-top:1.4px solid #888; border-right:1.4px solid #888; transform:rotate(45deg); flex:none; transition:transform .15s; } details[open] > summary::after { transform:rotate(135deg); } .details-body { padding:4px 16px 16px; border-top:1px solid #8882; } .details-body p { color:light-dark(#666,#b5b5b5); font-size:12px; line-height:1.55; margin-top:12px; } .details-body label:last-child { margin-bottom:0; }
-  .review { display:grid; grid-template-columns:124px minmax(0,1fr); gap:12px 14px; margin:18px 0 0; padding:16px; background:light-dark(#fff,#2e2e2e); border:1px solid #8883; border-radius:10px; } .review dt { color:light-dark(#666,#b5b5b5); } .review dd { margin:0; overflow-wrap:anywhere; } .progress { display:flex; align-items:center; gap:12px; margin-top:18px; } .spinner { width:18px; height:18px; flex:none; border:2px solid #8884; border-top-color:#087cf0; border-radius:50%; animation:spin .8s linear infinite; } @keyframes spin { to { transform:rotate(360deg); } } @media(prefers-reduced-motion:reduce) { .spinner { animation:none; } summary::after { transition:none; } }
-  @media(max-width:520px) { .panel { --panel-padding:20px; } label, .review { grid-template-columns:minmax(0,1fr); gap:6px; } label > small { grid-column:1; } label > input, label > select { margin-top:0; } .review dd + dt { margin-top:8px; } }
+  .backdrop { position:absolute; inset:0; background:#0003; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .panel { --panel-padding:28px; width:640px; max-width:100%; max-height:calc(100vh - 40px); overflow:auto; padding:var(--panel-padding); background:light-dark(#fcfcfd,#252527); border:1px solid #8884; border-radius:16px; box-shadow:0 18px 60px #0004,0 1px 3px #0002; animation:dialog-in .16s ease-out; }
+  h2 { margin:0; font-size:20px; line-height:1.3; font-weight:600; letter-spacing:-.3px; } .heading { display:flex; align-items:center; gap:10px; } .heading img { width:24px; height:24px; flex:none; } @media(prefers-color-scheme:dark) { .heading img { filter:invert(1); } }
+  p { margin:0; } .heading + .summary { color:light-dark(#555,#c0c0c5); margin:12px 0 20px; font-size:13px; }
+  label { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:center; column-gap:14px; row-gap:6px; margin:14px 0; font-weight:400; line-height:1.5; } label > span { text-align:right; } label > small { grid-column:2; }
+  input,select { display:block; min-width:0; width:100%; min-height:34px; padding:6px 10px; font:inherit; color:inherit; background:light-dark(#fff,#323235); border:1px solid #8885; border-radius:8px; } select { background:light-dark(#eeeef0,#39393c); }
+  input:focus,select:focus { outline:3px solid #087cf050; outline-offset:1px; } small { display:block; font-weight:400; color:light-dark(#59595f,#c0c0c5); font-size:13px; line-height:1.55; }
+  button { min-height:34px; border:1px solid #8885; border-radius:9px; padding:6px 14px; cursor:pointer; font:inherit; color:inherit; background:light-dark(#fff,#414145); box-shadow:0 1px 2px #0001; } button.primary { color:white; background:#087cf0; border-color:#087cf0; } button:disabled { opacity:.5; cursor:default; }
+  .buttons { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; position:sticky; bottom:calc(-1 * var(--panel-padding)); z-index:1; margin:24px calc(-1 * var(--panel-padding)) calc(-1 * var(--panel-padding)); padding:16px var(--panel-padding); border-top:1px solid #8883; background:light-dark(#f6f6f8ed,#28282bef); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+  .error { color:light-dark(#a5221a,#ffaca5); font-size:13px; white-space:pre-line; margin-top:14px; } .error:empty,.summary:empty,small:empty { display:none; }
+  a,button.link { color:light-dark(#0067ce,#78bdff); } a { text-decoration:none; } a:hover { text-decoration:underline; } .note { font-size:13px; line-height:1.55; color:light-dark(#59595f,#c0c0c5); }
+  .check { display:flex; align-items:flex-start; gap:9px; font-weight:400; margin:12px 0; } .check input { flex:none; width:17px; height:17px; min-height:0; margin:2px 0 0; padding:0; accent-color:#087cf0; } .check > span { text-align:left; }
+  .authors { max-height:156px; overflow:auto; margin:12px 0 0 174px; border:1px solid #8884; border-radius:8px; padding:0 12px; background:light-dark(#f2f2f4,#303034); }
+  .summary { white-space:pre-line; overflow-wrap:anywhere; } .row { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin:14px 0; } .row .field-title { font-weight:400; } button.link { background:none; border:0; padding:0; box-shadow:none; } button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid #087cf050; outline-offset:3px; }
+  .configuration { width:640px; padding:0; overflow:hidden; display:flex; flex-direction:column; transition:height .24s cubic-bezier(.22,.61,.36,1); }
+  .configuration > .heading { padding:12px 28px 4px; flex:none; } .configuration h2 { font-size:18px; } .configuration > .summary { display:none; }
+  .tabs { display:flex; justify-content:center; gap:8px; flex:none; padding:4px 24px 10px; border-bottom:1px solid #8883; background:light-dark(#f7f7f9,#29292d); }
+  .tabs button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:120px; max-width:180px; min-height:58px; padding:5px 12px; border:1px solid transparent; background:none; box-shadow:none; color:light-dark(#606067,#b9b9c1); font-size:13px; line-height:1.3; transition:color .15s ease,background .15s ease,box-shadow .15s ease; }
+  .tabs svg { width:26px; height:26px; flex:none; } .tabs button[aria-selected=true] { color:light-dark(#007aff,#72baff); background:linear-gradient(160deg,#ffffffb0,#ffffff28); border-color:#8883; box-shadow:inset 0 1px 0 #ffffff70,0 2px 8px #00000008; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  @media(prefers-color-scheme:dark) { .tabs button[aria-selected=true] { background:linear-gradient(160deg,#ffffff16,#ffffff06); } }
+  .configuration-content { flex:1 1 auto; min-height:0; overflow:auto; padding:18px 28px; scrollbar-gutter:stable; } .configuration-body { display:flow-root; } .site-fields { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:16px; margin-bottom:20px; } .configuration .site-fields label { margin:0; }
+  .configuration label:not(.check) { grid-template-columns:minmax(0,1fr); gap:6px; } .configuration label > span { text-align:left; } .configuration label > small { grid-column:1; } .configuration .field-title,.configuration label > span { font-weight:500; }
+  .configuration .buttons { position:static; flex:none; margin:0; padding:16px 28px; } .configuration > .error { flex:none; padding:0 28px 14px; margin:0; }
+  .settings-group { padding:0; margin:0; } .token-group { padding-bottom:16px; border-bottom:1px solid #8883; margin-bottom:16px; } .token-group > label { margin:0; } .token-help { margin-top:8px; }
+  .tab-stage { display:flow-root; } [role=tabpanel]:not([hidden]) { animation:pane-in .18s ease-out; }
+  .connection-row { display:flex; align-items:center; gap:12px; margin:0 0 20px; } .author-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 6px; }
+  .connection-controls { flex:1; min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; } .connection-controls .status { flex:1; margin:0; min-width:90px; } .connection-controls button { flex:none; }
+  .configuration [role=tabpanel] > label { margin:0 0 20px; } .configuration [role=tabpanel] > label:last-child { margin-bottom:0; } .author-heading button { min-height:0; } .configuration .author-group { margin-top:20px; } .configuration .authors { margin-left:0; }
+  .author-help,.author-options { margin-left:0; } .author-options { justify-content:flex-start; margin:12px 0 0; gap:8px 16px; } .author-options .check { margin:0; } .author-options .status { margin:0; min-width:0; overflow-wrap:anywhere; }
+  .security-group { padding:0; } .configuration .security-group > .check { margin:0 0 8px; } .security-group .row { justify-content:flex-start; gap:10px; margin:14px 0; }
+  .configuration > .usage { flex:none; margin:0; padding:12px 28px 14px; } .usage { padding-top:14px; border-top:1px solid #8883; margin-top:14px; } .usage h3 { font-size:13px; font-weight:600; margin:0 0 7px; } .usage p { font-size:13px; color:light-dark(#59595f,#c0c0c5); line-height:1.55; margin:7px 0 0; }
+  details { margin-top:16px; border:1px solid #8883; border-radius:10px; background:light-dark(#f4f4f6,#303034); } summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 16px; font-size:14px; } summary::-webkit-details-marker { display:none; } summary::after { content:''; width:6px; height:6px; border-top:1.4px solid #888; border-right:1.4px solid #888; transform:rotate(45deg); flex:none; transition:transform .15s; } details[open] > summary::after { transform:rotate(135deg); } .details-body { padding:4px 16px 16px; border-top:1px solid #8882; } .details-body label { grid-template-columns:140px minmax(0,1fr); } .details-body label:last-child { margin-bottom:0; }
+  .review { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:baseline; gap:12px 14px; margin:18px 0 0; padding:18px; background:light-dark(#f1f1f3,#303034); border-radius:10px; } .review dt { text-align:right; color:light-dark(#59595f,#c0c0c5); } .review dd { margin:0; overflow-wrap:anywhere; }
+  .progress { display:flex; align-items:center; gap:12px; margin-top:20px; } .spinner { width:20px; height:20px; flex:none; border:2px solid #8884; border-top-color:#087cf0; border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } } @keyframes pane-in { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } } @keyframes dialog-in { from { opacity:0; transform:scale(.99); } to { opacity:1; transform:scale(1); } }
+  @media(prefers-reduced-motion:reduce) { *,*::after { animation:none !important; transition:none !important; } } @media(prefers-reduced-transparency:reduce) { .buttons { background:light-dark(#f6f6f8,#28282b); backdrop-filter:none; -webkit-backdrop-filter:none; } .tabs button[aria-selected=true] { background:light-dark(#fff,#414145); backdrop-filter:none; -webkit-backdrop-filter:none; } }
+  @media(prefers-contrast:more) { small,.note,.usage p,.review dt,.heading + .summary { color:light-dark(#333,#eee); } input,select,button { border-color:light-dark(#555,#aaa); } }
+  @media(max-width:520px) { .backdrop { padding:12px; } .panel { --panel-padding:20px; max-height:calc(100vh - 24px); } .configuration-content { padding:18px 20px; } .configuration > .heading { padding:16px 20px 6px; } .tabs { padding:8px 12px 12px; gap:3px; } .tabs button { min-width:0; flex:1; padding:7px 5px; font-size:12px; } label,.review,.connection-row,.author-heading,.details-body label { grid-template-columns:minmax(0,1fr); gap:6px; } label > span,.review dt,.connection-row > .field-title,.author-heading > .field-title { text-align:left; } label > small { grid-column:1; } .author-help,.author-options,.authors { margin-left:0; } .review dd + dt { margin-top:6px; } .configuration > .usage { padding:10px 20px 12px; } .tab-stage { display:flow-root; } }
 `;
 
 export function form({ title, description, fields, submitLabel, note, validate, initial = {}, mount }) {
@@ -55,10 +76,10 @@ export function form({ title, description, fields, submitLabel, note, validate, 
     const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = tr('取消'); buttons.append(cancel);
     const submit = document.createElement('button'); submit.type = 'submit'; submit.className = 'primary'; submit.textContent = submitLabel; buttons.append(submit);
     const previousFocus = document.activeElement;
-    let closed = false;
-    const finish = value => { if (closed) return; closed = true; host.remove(); previousFocus?.focus(); resolve(value); };
+    let closed = false, dispose;
+    const finish = value => { if (closed) return; closed = true; dispose?.(); host.remove(); previousFocus?.focus(); resolve(value); };
     const getValues = () => Object.fromEntries(Object.entries(inputs).map(([key, input]) => [key, input.type === 'checkbox' ? input.checked : input.value]));
-    mount?.({ inputs, panel, finish, getValues, isClosed: () => closed, setError: text => { error.textContent = text; }, setLoading: value => { submit.disabled = value; } });
+    dispose = mount?.({ inputs, panel, finish, getValues, isClosed: () => closed, setError: text => { error.textContent = text; }, setLoading: value => { submit.disabled = value; } });
     cancel.onclick = () => finish(undefined);
     panel.addEventListener('submit', event => {
       event.preventDefault();
@@ -81,10 +102,49 @@ export function form({ title, description, fields, submitLabel, note, validate, 
   });
 }
 
+function fitConfiguration(panel, section, body) {
+  const view = panel.ownerDocument.defaultView;
+  const request = view.requestAnimationFrame?.bind(view) ?? (callback => view.setTimeout(callback, 0));
+  const cancel = view.cancelAnimationFrame?.bind(view) ?? view.clearTimeout.bind(view);
+  let frame, disposed = false;
+  function schedule() {
+    if (disposed || frame !== undefined) return;
+    frame = request(() => {
+      frame = undefined;
+      if (disposed || !panel.isConnected) return;
+      const style = view.getComputedStyle(section);
+      // Use layout dimensions so opening transforms do not shrink the measured frame.
+      const content = body.offsetHeight + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const chrome = [...panel.children].filter(child => child !== section).reduce((height, child) => height + child.offsetHeight, 4);
+      if (content + chrome <= 2) return;
+      const limit = Math.max(120, view.innerHeight - (view.innerWidth <= 520 ? 24 : 40));
+      panel.style.height = Math.ceil(Math.min(content + chrome, limit)) + 'px';
+    });
+  }
+  const observer = view.ResizeObserver ? new view.ResizeObserver(schedule) : undefined;
+  observer?.observe(body);
+  for (const child of panel.children) if (child !== section) observer?.observe(child);
+  view.addEventListener('resize', schedule);
+  schedule();
+  return () => { disposed = true; observer?.disconnect(); view.removeEventListener('resize', schedule); if (frame !== undefined) cancel(frame); };
+}
+
 function addHeading(panel, title) {
   const heading = document.createElement('div'); heading.className = 'heading'; panel.append(heading);
   const icon = document.createElement('img'); icon.src = 'data:image/png;base64,' + menuIcon; icon.alt = ''; heading.append(icon);
   const text = document.createElement('h2'); text.textContent = title; heading.append(text);
+}
+
+function tabIcon(index) {
+  const paths = [
+    ['M8 7H6a4 4 0 0 0 0 8h2', 'M16 7h2a4 4 0 0 1 0 8h-2', 'M7 11h10', 'M12 3v3', 'M12 18v3'],
+    ['M4 6h16', 'M4 12h16', 'M4 18h16', 'M8 3v6', 'M16 9v6', 'M10 15v6'],
+    ['M7 10V7a5 5 0 0 1 10 0v3', 'M5 10h14v11H5z', 'M12 14v3'],
+  ];
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); svg.setAttribute('fill', 'none'); svg.setAttribute('stroke', 'currentColor'); svg.setAttribute('stroke-width', '1.6'); svg.setAttribute('stroke-linecap', 'round'); svg.setAttribute('stroke-linejoin', 'round');
+  for (const d of paths[index]) { const path = document.createElementNS('http://www.w3.org/2000/svg', 'path'); path.setAttribute('d', d); svg.append(path); }
+  return svg;
 }
 
 export function configure(initial = {}, services = {}) {
@@ -114,21 +174,24 @@ export function configure(initial = {}, services = {}) {
     },
     mount: ({ inputs, panel, finish, getValues, isClosed, setError, setLoading }) => {
       panel.classList.add('configuration');
-      const section = document.createElement('div'); inputs.token.closest('label').after(section);
-      const tokenGroup = document.createElement('div'); tokenGroup.className = 'settings-group'; section.append(tokenGroup); tokenGroup.append(inputs.token.closest('label'));
+      const section = document.createElement('div'); section.className = 'configuration-content'; inputs.token.closest('label').after(section);
+      const body = document.createElement('div'); body.className = 'configuration-body'; section.append(body);
+      const tokenGroup = document.createElement('div'); tokenGroup.className = 'settings-group token-group'; body.append(tokenGroup); tokenGroup.append(inputs.token.closest('label'));
       const tokenHelp = document.createElement('small'); tokenHelp.className = 'token-help'; tokenGroup.append(tokenHelp);
       const tokenLink = document.createElement('a'); tokenLink.href = 'https://typlog.com/account/tokens'; tokenLink.textContent = tr('API 密钥页面'); tokenLink.target = '_blank'; tokenLink.rel = 'noopener noreferrer'; tokenLink.setAttribute('aria-label', tr('获取 API Token：') + tokenLink.href); tokenLink.onclick = event => { event.preventDefault(); window.open(tokenLink.href, '_blank'); };
       tokenHelp.append(document.createTextNode(tr('登录 Typlog 后，在 ')), tokenLink, document.createTextNode(tr('，点击「+ 新密钥」，输入名称，权限勾选 profile 和 site 复选框，可生成新 API Token，将其复制到这里。')));
-      const tabs = document.createElement('div'); tabs.className = 'tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', tr('配置方式')); section.append(tabs);
-      const automatic = document.createElement('div'); automatic.setAttribute('role', 'tabpanel'); automatic.id = 'typlog-auto-panel'; section.append(automatic);
-      const advancedBody = document.createElement('div'); advancedBody.className = 'settings-group'; advancedBody.setAttribute('role', 'tabpanel'); advancedBody.id = 'typlog-manual-panel'; advancedBody.hidden = true; section.append(advancedBody);
-      const security = document.createElement('div'); security.className = 'settings-group'; security.setAttribute('role', 'tabpanel'); security.id = 'typlog-storage-panel'; security.hidden = true; section.append(security);
+      const tabs = document.createElement('div'); tabs.className = 'tabs'; tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', tr('配置方式')); panel.querySelector('.heading').after(tabs);
+      const stage = document.createElement('div'); stage.className = 'tab-stage'; body.append(stage);
+      const automatic = document.createElement('div'); automatic.setAttribute('role', 'tabpanel'); automatic.id = 'typlog-auto-panel'; stage.append(automatic);
+      const advancedBody = document.createElement('div'); advancedBody.className = 'settings-group'; advancedBody.setAttribute('role', 'tabpanel'); advancedBody.id = 'typlog-manual-panel'; advancedBody.hidden = true; stage.append(advancedBody);
+      const security = document.createElement('div'); security.className = 'settings-group security-group'; security.setAttribute('role', 'tabpanel'); security.id = 'typlog-storage-panel'; security.hidden = true; stage.append(security);
       const panes = [automatic, advancedBody, security];
       const tabButtons = [tr('自动配置'), tr('手动配置'), tr('Token 保存')].map((title, index) => {
-        const tab = document.createElement('button'); tab.type = 'button'; tab.textContent = title; tab.setAttribute('role', 'tab'); tab.id = 'typlog-tab-' + index; tab.setAttribute('aria-controls', panes[index].id); tabs.append(tab); return tab;
+        const tab = document.createElement('button'); tab.type = 'button'; tab.append(tabIcon(index)); const caption = document.createElement('span'); caption.textContent = title; tab.append(caption); tab.setAttribute('role', 'tab'); tab.id = 'typlog-tab-' + index; tab.setAttribute('aria-controls', panes[index].id); tabs.append(tab); return tab;
       });
       panes.forEach((pane, index) => pane.setAttribute('aria-labelledby', tabButtons[index].id));
       function selectTab(index) {
+        section.scrollTop = 0;
         panes.forEach((pane, n) => { pane.hidden = n !== index; });
         tabButtons.forEach((tab, n) => { tab.setAttribute('aria-selected', String(n === index)); tab.tabIndex = n === index ? 0 : -1; });
       }
@@ -139,24 +202,28 @@ export function configure(initial = {}, services = {}) {
         };
       });
       selectTab(0);
-      const connectionRow = document.createElement('div'); connectionRow.className = 'row'; connectionRow.style.justifyContent = 'flex-end'; automatic.append(connectionRow);
-      const connect = document.createElement('button'); connect.type = 'button'; connect.textContent = tr('读取账号与站点'); connectionRow.append(connect);
-      const account = document.createElement('small'); account.className = 'status'; account.setAttribute('role', 'status'); connectionRow.prepend(account);
+      const connectionRow = document.createElement('div'); connectionRow.className = 'connection-row'; automatic.append(connectionRow);
+      const accountTitle = document.createElement('span'); accountTitle.className = 'field-title'; accountTitle.textContent = tr('账号'); connectionRow.append(accountTitle);
+      const connectionControls = document.createElement('div'); connectionControls.className = 'connection-controls'; connectionRow.append(connectionControls);
+      const connect = document.createElement('button'); connect.type = 'button'; connect.textContent = tr('读取账号与站点'); connectionControls.append(connect);
+      const account = document.createElement('small'); account.className = 'status'; account.setAttribute('role', 'status'); connectionControls.prepend(account);
       const blogGroup = document.createElement('div'); blogGroup.className = 'settings-group'; automatic.append(blogGroup);
       const siteLabel = document.createElement('label'); const siteTitle = document.createElement('span'); siteTitle.textContent = tr('站点'); siteLabel.append(siteTitle); blogGroup.append(siteLabel);
       const picker = document.createElement('select'); picker.setAttribute('aria-label', tr('站点')); siteLabel.append(picker);
       const siteNote = document.createElement('small'); siteLabel.append(siteNote);
       const authorSection = document.createElement('div'); authorSection.className = 'settings-group author-group'; automatic.append(authorSection);
-      const authorRow = document.createElement('div'); authorRow.className = 'row'; authorSection.append(authorRow);
+      const authorRow = document.createElement('div'); authorRow.className = 'row author-heading'; authorSection.append(authorRow);
       const authorTitle = document.createElement('span'); authorTitle.className = 'field-title'; authorTitle.textContent = tr('作者'); authorRow.append(authorTitle);
       const button = document.createElement('button'); button.type = 'button'; button.className = 'link'; button.textContent = tr('选择文章作者…'); authorRow.append(button);
-      const help = document.createElement('small'); help.textContent = tr('从本站作者中勾选。仅有一位时自动选中；留空可在后台添加。'); authorSection.append(help);
+      const help = document.createElement('small'); help.className = 'author-help'; help.textContent = tr('从本站作者中勾选。仅有一位时自动选中；留空可在后台添加。'); authorSection.append(help);
       const authorOptions = document.createElement('div'); authorOptions.className = 'row author-options'; authorSection.append(authorOptions);
       const noneLabel = document.createElement('label'); noneLabel.className = 'check';
       const none = document.createElement('input'); none.type = 'checkbox'; noneLabel.append(none, document.createTextNode(tr('不设作者'))); authorOptions.append(noneLabel);
       const selected = document.createElement('small'); selected.className = 'status'; selected.setAttribute('role', 'status'); authorOptions.append(selected);
       const box = document.createElement('div'); box.className = 'authors'; box.hidden = true; authorSection.append(box);
       for (const key of ['username', 'slug', 'siteId', 'authorIds']) advancedBody.append(inputs[key].closest('label'));
+      const siteFields = document.createElement('div'); siteFields.className = 'site-fields'; inputs.slug.closest('label').before(siteFields);
+      siteFields.append(inputs.slug.closest('label'), inputs.siteId.closest('label'));
       const instructions = document.createElement('div'); instructions.className = 'usage'; section.after(instructions);
       const instructionsTitle = document.createElement('h3'); instructionsTitle.textContent = tr('使用说明'); instructions.append(instructionsTitle);
       const instructionsText = document.createElement('p'); instructionsText.textContent = tr('站点需在 Settings → Integrations 启用 XML-RPC。首次读取图片，在 File → Grant Folder Access 授权图片目录。'); instructions.append(instructionsText);
@@ -247,9 +314,9 @@ export function configure(initial = {}, services = {}) {
           const warnings = [];
           if (userResult.status === 'fulfilled') {
             verifiedToken = requestedToken; inputs.username.value = userResult.value;
-            account.textContent = tr('账号：@{username}', { username: userResult.value });
+            account.textContent = tr('@{username}', { username: userResult.value });
           } else {
-            account.textContent = inputs.username.value ? tr('账号：@{username}（已保存）', { username: inputs.username.value }) : tr('账号用户名未获取，可切换到手动配置填写。');
+            account.textContent = inputs.username.value ? tr('@{username}（已保存）', { username: inputs.username.value }) : tr('账号用户名未获取，可切换到手动配置填写。');
             warnings.push(/HTTP (401|403)/.test(userResult.reason?.message) ? tr('读取 username 需要 profile 权限；也可在「手动配置」中填写。') : tr('账号读取失败：') + safeError(userResult.reason, { token: requestedToken }));
           }
           if (sitesResult.status === 'fulfilled') {
@@ -301,6 +368,7 @@ export function configure(initial = {}, services = {}) {
       });
       renderSites();
       if (initial.token) void discover();
+      return fitConfiguration(panel, section, body);
     },
   });
 }
