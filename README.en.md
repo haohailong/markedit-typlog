@@ -88,7 +88,7 @@ The next dialog lists the site, title, tags, local image count, and authors. It 
 
 Since v0.1.4, a draft association is keyed by **site slug, Site ID, and the saved document's full path**, with the remote Post ID stored locally. It does not use only the filename, title, or body to determine whether a post already exists. The first send calls `metaWeblog.newPost`; later changes to body, title, tags, or images call `metaWeblog.editPost` on the same post. Both use `post_status=draft` and `publish=false`. Unchanged images reuse uploaded URLs; changed image contents upload again. If local content and author settings are unchanged, the existing draft is reused without overwriting manual dashboard edits.
 
-Draft IDs and image progress are stored in local `document-*.json` records without Tokens. Published, deleted, or unverifiable posts stop the operation instead of creating replacement posts. Failed updates retry the same ID. Failed author assignment retains the saved draft. An uncertain creation result requires checking the dashboard before entering an existing ID or explicitly creating again. If the local record cannot be saved, creation stops.
+Draft IDs and image progress are stored in local `document-*.json` records without Tokens. Published or unverifiable posts stop the operation. If the linked post returns HTTP 404 and the account can access the configured site, **Linked Draft Not Found** offers to create a new draft from the current document. Successful creation links the document to the new Post ID, which later sends update; images are uploaded again. Cancelling this prompt or the subsequent creation confirmation keeps the original association without uploading or creating. Permission, network, and server errors are not treated as deletion. An uncertain creation still requires manual recovery rather than automatic duplication. Failed updates retry the same ID. Failed author assignment retains the saved draft. An uncertain creation result requires checking the dashboard before entering an existing ID or explicitly creating again. If the local record cannot be saved, creation stops.
 
 Older `push-*.json` records migrate when the current content matches. If you edited the body before upgrading, or renamed or moved the document, automatic matching may fail. Expand **Link an Existing Draft** in the first dialog and enter the draft's post ID to reconnect it. Another site has a separate association.
 
@@ -104,7 +104,7 @@ npm test
 npm run build
 ```
 
-72 automated tests cover the publishing flow and all three interface languages, translation completeness, placeholders, error classification, and comma-separated tags. They use simulated Typlog responses without reading real Tokens, accessing real accounts, or publishing articles.
+80 automated tests cover the publishing flow and all three interface languages, translation completeness, placeholders, error classification, and comma-separated tags. They use simulated Typlog responses without reading real Tokens, accessing real accounts, or publishing articles.
 
 References: [MarkEdit API](https://github.com/MarkEdit-app/MarkEdit-api), [MarkEdit customization](https://github.com/MarkEdit-app/MarkEdit/wiki/Customization), [Typlog XML-RPC](https://docs.typlog.com/en/article/marsedit/), [Typlog API](https://api.typlog.com/), [Typlog branding](https://typlog.com/brand).
 

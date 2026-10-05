@@ -465,6 +465,15 @@ export function confirmPublish(parsed, images, config, authors, postId) {
   });
 }
 
+export function confirmMissingDraft(config, postId) {
+  return form({
+    title: tr('原草稿不存在'),
+    description: tr('在站点 {site} 中找不到原草稿（ID {id}）。它可能已在后台删除。是否使用当前文档新建草稿？', { site: config.slug, id: postId }),
+    note: tr('新草稿创建成功后，将自动重新关联当前文档。取消则保留原关联。'),
+    fields: [], submitLabel: tr('新建草稿'), validate: () => true,
+  }).then(Boolean);
+}
+
 export function editMetadata(parsed, { openAfter = true, postId } = {}) {
   return form({
     title: postId ? tr('更新已有草稿') : tr('推送至草稿'),

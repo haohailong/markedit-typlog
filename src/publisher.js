@@ -46,6 +46,7 @@ export class Client {
         } catch { /* Do not display arbitrary server responses or credentials. */ }
         if (!detail) detail = [401, 403].includes(response.status) ? tr('请检查 Token 和 {scope} 权限。', { scope: new URL(url).pathname === '/v3/user' ? 'profile' : 'site' }) : tr('请检查站点配置及请求内容。');
         const error = new Error(tr('Typlog 请求失败（HTTP {status}）。', { status: response.status }) + detail);
+        error.httpStatus = response.status;
         error.safeToRetry = [400, 401, 403, 404, 405, 413, 415, 422, 429].includes(response.status);
         throw error;
       }
@@ -106,7 +107,18 @@ export class Client {
     return String(result);
   }
   async assertDraft(postId) {
-    const post = await this.apiGet('posts/' + encodeURIComponent(postId));
+    let post;
+    try { post = await this.apiGet('posts/' + encodeURIComponent(postId)); }
+    catch (error) {
+      if (error.httpStatus !== 404) throw error;
+      const sites = await this.listSites();
+      if (!sites.some(site => site.id === this.config.siteId && site.slug === this.config.slug)) {
+        throw new Error(tr('无法确认当前站点的访问权限，请检查站点配置。本次未更新，也未新建文章。'));
+      }
+      const missing = new Error(tr('当前站点中找不到关联草稿（ID {id}）。', { id: postId }));
+      missing.postMissing = true;
+      throw missing;
+    }
     const status = post.status ?? post.metadata?.status;
     if (status !== 'draft') throw new Error(status ? tr('关联文章（ID {id}）已不是草稿，请到后台编辑。本次未更新，也未新建文章。', { id: postId }) : tr('无法确认关联文章（ID {id}）的草稿状态，请到后台检查。本次未更新，也未新建文章。', { id: postId }));
   }
@@ -183,13 +195,30 @@ export async function publicationTarget(prepared, config, store) {
   return { name, record, contentHash };
 }
 
+export async function resolveDraftTarget(target, client, confirmMissing) {
+  const postId = target.record.postId;
+  if (!postId) return true;
+  try { await client.assertDraft(postId); }
+  catch (error) {
+    if (!error.postMissing || !confirmMissing) throw error;
+    if (!await confirmMissing(postId)) return false;
+    // Keep the saved association until publishing starts. Re-upload images for
+    // the replacement rather than relying on media from the missing post.
+    target.record = { stage: 'new', uploads: {}, replacesPostId: postId };
+  }
+  return true;
+}
+
 // One journal per saved document and site. An uncertain creation never starts a
 // second post automatically; update retries always use the recorded post ID.
 export async function publishPrepared(prepared, config, store, ui, client = new Client(config), target) {
   const { parsed, doc, assets } = prepared;
-  const { name, record, contentHash } = target ?? await publicationTarget(prepared, config, store);
+  const current = target ?? await publicationTarget(prepared, config, store);
+  const { name, contentHash } = current;
+  let record = current.record;
   if (!await ui.confirm(parsed, assets.length, config, record.postId)) return;
-  if (record.postId) await client.assertDraft(record.postId);
+  if (!await resolveDraftTarget(current, client, ui.confirmMissing)) return;
+  record = current.record;
   if (record.stage === 'complete' && record.contentHash === contentHash && (record.authorIds === config.authorIds || !config.authorIds)) {
     await store.write(name, record);
     await ui.complete(record.postId, adminUrl(config, record.postId), true);

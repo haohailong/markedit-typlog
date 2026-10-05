@@ -7,7 +7,7 @@ const bundle = (await build({ entryPoints: ['src/main.js'], bundle: true, format
 const config = { slug: 'sample-blog', siteId: '12', username: 'test-user', token: 'test-only-never-real', authorIds: '42' };
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
-async function scenario({ openAfter, cancel = false, invalid = false, initialFiles, source = '# Title\n\nBody', language = 'zh-CN', siteList } = {}) {
+async function scenario({ openAfter, cancel = false, invalid = false, initialFiles, source = '# Title\n\nBody', language = 'zh-CN', siteList, deletedPostId, createdPostId = '9876' } = {}) {
   const dom = new JSDOM('', { runScripts: 'outside-only', url: 'https://editor.invalid' });
   const w = dom.window, roots = [], requests = [], opened = [], alerts = [];
   Object.defineProperty(w.navigator, 'languages', { value: [language] });
@@ -23,9 +23,10 @@ async function scenario({ openAfter, cancel = false, invalid = false, initialFil
     requests.push({ url, ...options });
     if (url.endsWith('/user')) return new Response(JSON.stringify({ username: config.username }));
     if (url.endsWith('/sites')) return siteList === false ? new Response('{}', { status: 403 }) : new Response(JSON.stringify(siteList ?? [{ id: 12, slug: config.slug, name: 'Example Site' }]));
+    if (options.method === 'GET' && deletedPostId && url.endsWith('/posts/' + deletedPostId)) return new Response('{}', { status: 404 });
     const text = url.endsWith('/authors') ? JSON.stringify(invalid ? [] : [{ id: 42, name: '作者甲', username: 'alice' }])
       : options.body?.includes('metaWeblog.editPost') ? '<methodResponse><params><param><value><boolean>1</boolean></value></param></params></methodResponse>'
-      : options.method === 'POST' ? '<methodResponse><params><param><value><string>9876</string></value></param></params></methodResponse>'
+      : options.method === 'POST' ? '<methodResponse><params><param><value><string>' + createdPostId + '</string></value></param></params></methodResponse>'
       : options.method === 'PATCH' ? '{}' : '{"status":"draft","primary_authors":[{"id":42}]}';
     return new Response(text);
   };
@@ -62,11 +63,16 @@ async function scenario({ openAfter, cancel = false, invalid = false, initialFil
   const initialOpenAfter = metadata.querySelector('[name=openAfter]').checked;
   assert.equal(initialOpenAfter, JSON.parse(files.get('/app/Documents/typlog-publisher/preferences.json') || '{}').openAfter !== false);
   if (openAfter !== undefined) metadata.querySelector('[name=openAfter]').checked = openAfter;
-  let confirmationText;
+  let confirmationText, missingText;
   if (cancel === 'metadata') metadata.querySelector('button[type=button]').click();
   else {
     metadata.querySelector('form').dispatchEvent(new w.Event('submit', { cancelable: true }));
-    if (!invalid) {
+    if (deletedPostId) {
+      const missing = await findForm(['原草稿不存在', 'Linked Draft Not Found']); missingText = missing.textContent;
+      if (cancel === 'missing') missing.querySelector('button[type=button]').click();
+      else missing.querySelector('form').dispatchEvent(new w.Event('submit', { cancelable: true }));
+    }
+    if (!invalid && cancel !== 'missing') {
       const confirmation = await findForm(['新建草稿？', '更新已有草稿？', '建立草稿？', 'Create Draft?', 'Update Existing Draft?']);
       confirmationText = confirmation.textContent;
       assert.ok(confirmationText.includes('作者甲 (@alice)'));
@@ -76,8 +82,36 @@ async function scenario({ openAfter, cancel = false, invalid = false, initialFil
   }
   await pending;
   w.close();
-  return { requests, opened, alerts, files, initialOpenAfter, confirmationText, metadataText, menu };
+  return { requests, opened, alerts, files, initialOpenAfter, confirmationText, missingText, metadataText, menu };
 }
+
+test('missing-draft recovery is localized, creates one replacement, and reuses its ID', async () => {
+  const first = await scenario({ openAfter: false });
+  for (const language of ['en', 'zh-CN', 'zh-TW']) {
+    const replaced = await scenario({ initialFiles: new Map(first.files), language, deletedPostId: '9876', createdPostId: '1357' });
+    assert.ok(replaced.missingText.includes('9876') && replaced.missingText.includes(config.slug));
+    assert.ok(!/\{(?:id|site)\}/.test(replaced.missingText));
+    assert.ok(!replaced.confirmationText.includes('9876'));
+    assert.equal(replaced.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 1);
+    assert.equal(replaced.requests.filter(r => r.body?.includes('metaWeblog.editPost')).length, 0);
+    const journal = [...replaced.files].find(([path]) => path.includes('/document-'));
+    assert.equal(JSON.parse(journal[1]).postId, '1357');
+    const next = await scenario({ initialFiles: replaced.files, source: '# Title\n\nUpdated', language });
+    assert.equal(next.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 0);
+    assert.match(next.requests.find(r => r.body?.includes('metaWeblog.editPost')).body, /<string>1357<\/string>/);
+  }
+});
+
+test('cancelling missing-draft recovery or final creation confirmation retains the association', async () => {
+  const first = await scenario({ openAfter: false });
+  for (const cancel of ['missing', true]) {
+    const copy = new Map(first.files), journal = [...copy].find(([path]) => path.includes('/document-'));
+    const cancelled = await scenario({ initialFiles: copy, deletedPostId: '9876', cancel });
+    assert.equal(cancelled.files.get(journal[0]), journal[1]);
+    assert.ok(cancelled.requests.every(r => r.method === 'GET'));
+    assert.equal(cancelled.opened.length, 0);
+  }
+});
 
 test('installed entry point opens the draft directly only when checkbox is selected', async () => {
   for (const openAfter of [true, false]) {

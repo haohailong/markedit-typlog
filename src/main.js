@@ -1,8 +1,8 @@
 import { tr } from './i18n.js';
 import { menuIcon } from './icon.js';
 import { adminUrl, parseDocument, validateConfig } from './core.js';
-import { Client, documentRecord, prepare, publicationTarget, publishPrepared, safeError, selectedAuthorLabels, Store } from './publisher.js';
-import { configure, confirmPublish, editMetadata, progressPanel, protectToken, unlockToken, confirmPlaintext, confirmTokenRemoval } from './ui.js';
+import { Client, documentRecord, prepare, publicationTarget, publishPrepared, resolveDraftTarget, safeError, selectedAuthorLabels, Store } from './publisher.js';
+import { configure, confirmMissingDraft, confirmPublish, editMetadata, progressPanel, protectToken, unlockToken, confirmPlaintext, confirmTokenRemoval } from './ui.js';
 import { TokenVault } from './vault.js';
 
 (() => {
@@ -91,13 +91,21 @@ import { TokenVault } from './vault.js';
     const prepared = await prepare(host, source, { ...parsed, title: metadata.title, tags: metadata.tags });
     const target = await publicationTarget(prepared, config, store);
     if (metadata.existingPostId) target.record = { ...target.record, postId: metadata.existingPostId, stage: 'created', contentHash: undefined };
-    if (target.record.postId) { panel.update(tr('核对已有草稿…')); await client.assertDraft(target.record.postId); }
-    panel.remove(); panel = undefined;
+    const confirmMissing = async postId => {
+      panel?.remove(); panel = undefined;
+      return confirmMissingDraft(config, postId);
+    };
+    if (target.record.postId) {
+      panel.update(tr('核对已有草稿…'));
+      if (!await resolveDraftTarget(target, client, confirmMissing)) return;
+    }
+    panel?.remove(); panel = undefined;
     const confirmation = await confirmPublish(prepared.parsed, prepared.assets.length, config, authors, target.record.postId);
     if (!confirmation) return;
     const ui = {
       progress: text => { if (!panel) panel = progressPanel(); panel.update(text); },
       confirm: async () => true,
+      confirmMissing,
       recover: async config => {
         const choice = await host.showAlert({
           title: tr('上次创建请求的结果不确定'),

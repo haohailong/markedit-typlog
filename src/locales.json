@@ -540,8 +540,8 @@
     "更新草稿"
   ],
   "新建草稿": [
-    "Create Draft",
-    "建立草稿"
+    "Create New Draft",
+    "新建草稿"
   ],
   "文章标题": [
     "Post title",
@@ -902,5 +902,25 @@
   " 替换现有 Token。": [
     " to replace the existing Token.",
     " 替換現有 Token。"
+  ],
+  "无法确认当前站点的访问权限，请检查站点配置。本次未更新，也未新建文章。": [
+    "Cannot confirm access to the selected site. Check publishing settings. No post was updated or created.",
+    "無法確認目前網站的存取權限，請檢查網站設定。本次未更新，也未新建文章。"
+  ],
+  "当前站点中找不到关联草稿（ID {id}）。": [
+    "The linked draft (ID {id}) was not found in the selected site.",
+    "目前網站中找不到關聯草稿（ID {id}）。"
+  ],
+  "原草稿不存在": [
+    "Linked Draft Not Found",
+    "原草稿不存在"
+  ],
+  "在站点 {site} 中找不到原草稿（ID {id}）。它可能已在后台删除。是否使用当前文档新建草稿？": [
+    "The linked draft (ID {id}) was not found in {site}. It may have been deleted in the dashboard. Create a new draft from the current document?",
+    "在網站 {site} 中找不到原草稿（ID {id}）。它可能已在後台刪除。是否使用目前文件新建草稿？"
+  ],
+  "新草稿创建成功后，将自动重新关联当前文档。取消则保留原关联。": [
+    "After the new draft is created, this document will be linked to it automatically. Cancelling keeps the existing association.",
+    "新草稿建立成功後，將自動重新關聯目前文件。取消則保留原關聯。"
   ]
 }

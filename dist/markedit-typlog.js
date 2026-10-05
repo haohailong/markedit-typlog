@@ -1,4 +1,4 @@
-// MarkEdit Typlog Publisher v0.3.7 — credentials are configured in the app, never in this script.
+// MarkEdit Typlog Publisher v0.3.8 — credentials are configured in the app, never in this script.
 (() => {
   var __defProp = Object.defineProperty;
   var __export = (target, all) => {
@@ -549,8 +549,8 @@
       "\u66F4\u65B0\u8349\u7A3F"
     ],
     \u65B0\u5EFA\u8349\u7A3F: [
-      "Create Draft",
-      "\u5EFA\u7ACB\u8349\u7A3F"
+      "Create New Draft",
+      "\u65B0\u5EFA\u8349\u7A3F"
     ],
     \u6587\u7AE0\u6807\u9898: [
       "Post title",
@@ -911,6 +911,26 @@
     " \u66FF\u6362\u73B0\u6709 Token\u3002": [
       " to replace the existing Token.",
       " \u66FF\u63DB\u73FE\u6709 Token\u3002"
+    ],
+    "\u65E0\u6CD5\u786E\u8BA4\u5F53\u524D\u7AD9\u70B9\u7684\u8BBF\u95EE\u6743\u9650\uFF0C\u8BF7\u68C0\u67E5\u7AD9\u70B9\u914D\u7F6E\u3002\u672C\u6B21\u672A\u66F4\u65B0\uFF0C\u4E5F\u672A\u65B0\u5EFA\u6587\u7AE0\u3002": [
+      "Cannot confirm access to the selected site. Check publishing settings. No post was updated or created.",
+      "\u7121\u6CD5\u78BA\u8A8D\u76EE\u524D\u7DB2\u7AD9\u7684\u5B58\u53D6\u6B0A\u9650\uFF0C\u8ACB\u6AA2\u67E5\u7DB2\u7AD9\u8A2D\u5B9A\u3002\u672C\u6B21\u672A\u66F4\u65B0\uFF0C\u4E5F\u672A\u65B0\u5EFA\u6587\u7AE0\u3002"
+    ],
+    "\u5F53\u524D\u7AD9\u70B9\u4E2D\u627E\u4E0D\u5230\u5173\u8054\u8349\u7A3F\uFF08ID {id}\uFF09\u3002": [
+      "The linked draft (ID {id}) was not found in the selected site.",
+      "\u76EE\u524D\u7DB2\u7AD9\u4E2D\u627E\u4E0D\u5230\u95DC\u806F\u8349\u7A3F\uFF08ID {id}\uFF09\u3002"
+    ],
+    \u539F\u8349\u7A3F\u4E0D\u5B58\u5728: [
+      "Linked Draft Not Found",
+      "\u539F\u8349\u7A3F\u4E0D\u5B58\u5728"
+    ],
+    "\u5728\u7AD9\u70B9 {site} \u4E2D\u627E\u4E0D\u5230\u539F\u8349\u7A3F\uFF08ID {id}\uFF09\u3002\u5B83\u53EF\u80FD\u5DF2\u5728\u540E\u53F0\u5220\u9664\u3002\u662F\u5426\u4F7F\u7528\u5F53\u524D\u6587\u6863\u65B0\u5EFA\u8349\u7A3F\uFF1F": [
+      "The linked draft (ID {id}) was not found in {site}. It may have been deleted in the dashboard. Create a new draft from the current document?",
+      "\u5728\u7DB2\u7AD9 {site} \u4E2D\u627E\u4E0D\u5230\u539F\u8349\u7A3F\uFF08ID {id}\uFF09\u3002\u5B83\u53EF\u80FD\u5DF2\u5728\u5F8C\u53F0\u522A\u9664\u3002\u662F\u5426\u4F7F\u7528\u76EE\u524D\u6587\u4EF6\u65B0\u5EFA\u8349\u7A3F\uFF1F"
+    ],
+    "\u65B0\u8349\u7A3F\u521B\u5EFA\u6210\u529F\u540E\uFF0C\u5C06\u81EA\u52A8\u91CD\u65B0\u5173\u8054\u5F53\u524D\u6587\u6863\u3002\u53D6\u6D88\u5219\u4FDD\u7559\u539F\u5173\u8054\u3002": [
+      "After the new draft is created, this document will be linked to it automatically. Cancelling keeps the existing association.",
+      "\u65B0\u8349\u7A3F\u5EFA\u7ACB\u6210\u529F\u5F8C\uFF0C\u5C07\u81EA\u52D5\u91CD\u65B0\u95DC\u806F\u76EE\u524D\u6587\u4EF6\u3002\u53D6\u6D88\u5247\u4FDD\u7559\u539F\u95DC\u806F\u3002"
     ]
   };
 
@@ -6766,6 +6786,7 @@
           }
           if (!detail) detail = [401, 403].includes(response.status) ? tr("\u8BF7\u68C0\u67E5 Token \u548C {scope} \u6743\u9650\u3002", { scope: new URL(url).pathname === "/v3/user" ? "profile" : "site" }) : tr("\u8BF7\u68C0\u67E5\u7AD9\u70B9\u914D\u7F6E\u53CA\u8BF7\u6C42\u5185\u5BB9\u3002");
           const error2 = new Error(tr("Typlog \u8BF7\u6C42\u5931\u8D25\uFF08HTTP {status}\uFF09\u3002", { status: response.status }) + detail);
+          error2.httpStatus = response.status;
           error2.safeToRetry = [400, 401, 403, 404, 405, 413, 415, 422, 429].includes(response.status);
           throw error2;
         }
@@ -6844,7 +6865,19 @@
       return String(result);
     }
     async assertDraft(postId) {
-      const post = await this.apiGet("posts/" + encodeURIComponent(postId));
+      let post;
+      try {
+        post = await this.apiGet("posts/" + encodeURIComponent(postId));
+      } catch (error2) {
+        if (error2.httpStatus !== 404) throw error2;
+        const sites = await this.listSites();
+        if (!sites.some((site) => site.id === this.config.siteId && site.slug === this.config.slug)) {
+          throw new Error(tr("\u65E0\u6CD5\u786E\u8BA4\u5F53\u524D\u7AD9\u70B9\u7684\u8BBF\u95EE\u6743\u9650\uFF0C\u8BF7\u68C0\u67E5\u7AD9\u70B9\u914D\u7F6E\u3002\u672C\u6B21\u672A\u66F4\u65B0\uFF0C\u4E5F\u672A\u65B0\u5EFA\u6587\u7AE0\u3002"));
+        }
+        const missing = new Error(tr("\u5F53\u524D\u7AD9\u70B9\u4E2D\u627E\u4E0D\u5230\u5173\u8054\u8349\u7A3F\uFF08ID {id}\uFF09\u3002", { id: postId }));
+        missing.postMissing = true;
+        throw missing;
+      }
       const status = post.status ?? post.metadata?.status;
       if (status !== "draft") throw new Error(status ? tr("\u5173\u8054\u6587\u7AE0\uFF08ID {id}\uFF09\u5DF2\u4E0D\u662F\u8349\u7A3F\uFF0C\u8BF7\u5230\u540E\u53F0\u7F16\u8F91\u3002\u672C\u6B21\u672A\u66F4\u65B0\uFF0C\u4E5F\u672A\u65B0\u5EFA\u6587\u7AE0\u3002", { id: postId }) : tr("\u65E0\u6CD5\u786E\u8BA4\u5173\u8054\u6587\u7AE0\uFF08ID {id}\uFF09\u7684\u8349\u7A3F\u72B6\u6001\uFF0C\u8BF7\u5230\u540E\u53F0\u68C0\u67E5\u3002\u672C\u6B21\u672A\u66F4\u65B0\uFF0C\u4E5F\u672A\u65B0\u5EFA\u6587\u7AE0\u3002", { id: postId }));
     }
@@ -6917,11 +6950,26 @@
     record ??= { stage: "new", uploads: {} };
     return { name, record, contentHash };
   }
+  async function resolveDraftTarget(target, client, confirmMissing) {
+    const postId = target.record.postId;
+    if (!postId) return true;
+    try {
+      await client.assertDraft(postId);
+    } catch (error2) {
+      if (!error2.postMissing || !confirmMissing) throw error2;
+      if (!await confirmMissing(postId)) return false;
+      target.record = { stage: "new", uploads: {}, replacesPostId: postId };
+    }
+    return true;
+  }
   async function publishPrepared(prepared, config2, store, ui, client = new Client(config2), target) {
     const { parsed, doc, assets } = prepared;
-    const { name, record, contentHash } = target ?? await publicationTarget(prepared, config2, store);
+    const current = target ?? await publicationTarget(prepared, config2, store);
+    const { name, contentHash } = current;
+    let record = current.record;
     if (!await ui.confirm(parsed, assets.length, config2, record.postId)) return;
-    if (record.postId) await client.assertDraft(record.postId);
+    if (!await resolveDraftTarget(current, client, ui.confirmMissing)) return;
+    record = current.record;
     if (record.stage === "complete" && record.contentHash === contentHash && (record.authorIds === config2.authorIds || !config2.authorIds)) {
       await store.write(name, record);
       await ui.complete(record.postId, adminUrl(config2, record.postId), true);
@@ -7839,6 +7887,16 @@
       }
     });
   }
+  function confirmMissingDraft(config2, postId) {
+    return form({
+      title: tr("\u539F\u8349\u7A3F\u4E0D\u5B58\u5728"),
+      description: tr("\u5728\u7AD9\u70B9 {site} \u4E2D\u627E\u4E0D\u5230\u539F\u8349\u7A3F\uFF08ID {id}\uFF09\u3002\u5B83\u53EF\u80FD\u5DF2\u5728\u540E\u53F0\u5220\u9664\u3002\u662F\u5426\u4F7F\u7528\u5F53\u524D\u6587\u6863\u65B0\u5EFA\u8349\u7A3F\uFF1F", { site: config2.slug, id: postId }),
+      note: tr("\u65B0\u8349\u7A3F\u521B\u5EFA\u6210\u529F\u540E\uFF0C\u5C06\u81EA\u52A8\u91CD\u65B0\u5173\u8054\u5F53\u524D\u6587\u6863\u3002\u53D6\u6D88\u5219\u4FDD\u7559\u539F\u5173\u8054\u3002"),
+      fields: [],
+      submitLabel: tr("\u65B0\u5EFA\u8349\u7A3F"),
+      validate: () => true
+    }).then(Boolean);
+  }
   function editMetadata(parsed, { openAfter = true, postId } = {}) {
     return form({
       title: postId ? tr("\u66F4\u65B0\u5DF2\u6709\u8349\u7A3F") : tr("\u63A8\u9001\u81F3\u8349\u7A3F"),
@@ -8213,11 +8271,16 @@
       const prepared = await prepare(host, source, { ...parsed, title: metadata.title, tags: metadata.tags });
       const target = await publicationTarget(prepared, config2, store);
       if (metadata.existingPostId) target.record = { ...target.record, postId: metadata.existingPostId, stage: "created", contentHash: void 0 };
+      const confirmMissing = async (postId) => {
+        panel?.remove();
+        panel = void 0;
+        return confirmMissingDraft(config2, postId);
+      };
       if (target.record.postId) {
         panel.update(tr("\u6838\u5BF9\u5DF2\u6709\u8349\u7A3F\u2026"));
-        await client.assertDraft(target.record.postId);
+        if (!await resolveDraftTarget(target, client, confirmMissing)) return;
       }
-      panel.remove();
+      panel?.remove();
       panel = void 0;
       const confirmation = await confirmPublish(prepared.parsed, prepared.assets.length, config2, authors, target.record.postId);
       if (!confirmation) return;
@@ -8227,6 +8290,7 @@
           panel.update(text2);
         },
         confirm: async () => true,
+        confirmMissing,
         recover: async (config3) => {
           const choice = await host.showAlert({
             title: tr("\u4E0A\u6B21\u521B\u5EFA\u8BF7\u6C42\u7684\u7ED3\u679C\u4E0D\u786E\u5B9A"),

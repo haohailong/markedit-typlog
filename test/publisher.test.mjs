@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import { collectImages, decodeXmlResponse, digest, parseDocument, renderDocument, resolveImagePath, validateConfig, xmlCall } from '../src/core.js';
-import { authorLabel, Client, prepare, publicationTarget, publishPrepared, safeError, selectedAuthorLabels, Store } from '../src/publisher.js';
+import { authorLabel, Client, prepare, publicationTarget, publishPrepared, resolveDraftTarget, safeError, selectedAuthorLabels, Store } from '../src/publisher.js';
 import { configure, confirmPublish, editMetadata } from '../src/ui.js';
 import { setLocale } from '../src/i18n.js';
 setLocale('zh-Hans');
@@ -573,6 +573,119 @@ test('published or unknown-state associated posts are never overwritten or silen
     await assert.rejects(publishPrepared(await prepare(f.host, sample + '\nNew body'), config, f.store, f.ui, new Client(config, published)), /本次未更新，也未新建/);
     assert.deepEqual(requests.map(r => r.method), ['GET']);
   }
+});
+
+test('a missing draft requires confirmation, creates one replacement, and links later sends to the new ID', async () => {
+  const f = fixture();
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  const missing = async (url, options) => {
+    if (options.method === 'GET' && url.endsWith('/posts/9876')) return new Response('{}', { status: 404 });
+    if (url.endsWith('/sites')) return new Response(JSON.stringify([{ id: 12, slug: config.slug }]));
+    if (options.body?.includes('metaWeblog.newPost')) { f.requests.push({ url, ...options }); return new Response(response('<string>1357</string>')); }
+    return f.fetcher(url, options);
+  };
+  const prompts = []; f.ui.confirmMissing = async id => { prompts.push(id); return true; };
+  const id = await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, missing));
+  assert.equal(id, '1357'); assert.deepEqual(prompts, ['9876']);
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 2);
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newMediaObject')).length, 2);
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.editPost')).length, 0);
+  assert.equal((await publicationTarget(await prepare(f.host, sample), config, f.store)).record.postId, '1357');
+  assert.equal(f.completed.at(-1)[2], false);
+  await publishPrepared(await prepare(f.host, sample + '\nChange'), config, f.store, f.ui, new Client(config, missing));
+  assert.deepEqual(prompts, ['9876']);
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 2);
+  assert.match(f.requests.find(r => r.body?.includes('metaWeblog.editPost')).body, /<string>1357<\/string>/);
+});
+
+test('cancelling replacement preserves the old association and has no uploads or writes', async () => {
+  const f = fixture();
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  const before = new Map(f.files), requests = [];
+  const missing = async (url, options) => {
+    requests.push({ url, ...options });
+    return url.endsWith('/sites') ? new Response(JSON.stringify([{ id: 12, slug: config.slug }])) : new Response('{}', { status: 404 });
+  };
+  f.ui.confirmMissing = async () => false;
+  assert.equal(await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, missing)), undefined);
+  assert.deepEqual(f.files, before); assert.deepEqual(requests.map(r => r.method), ['GET', 'GET']);
+});
+
+test('deletion between preflight and publishing is checked again and requires replacement confirmation', async () => {
+  const f = fixture();
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  const prepared = await prepare(f.host, sample), target = await publicationTarget(prepared, config, f.store);
+  let checks = 0, prompts = 0;
+  const deletedLater = async (url, options) => {
+    if (options.method === 'GET' && url.endsWith('/posts/9876') && ++checks > 1) return new Response('{}', { status: 404 });
+    if (url.endsWith('/sites')) return new Response(JSON.stringify([{ id: 12, slug: config.slug }]));
+    if (options.body?.includes('metaWeblog.newPost')) { f.requests.push({ url, ...options }); return new Response(response('<string>1357</string>')); }
+    return f.fetcher(url, options);
+  };
+  const client = new Client(config, deletedLater);
+  f.ui.confirmMissing = async () => { prompts++; return true; };
+  assert.equal(await resolveDraftTarget(target, client, f.ui.confirmMissing), true);
+  assert.equal(prompts, 0);
+  assert.equal(await publishPrepared(prepared, config, f.store, f.ui, client, target), '1357');
+  assert.equal(prompts, 1); assert.equal(checks, 2);
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.editPost')).length, 0);
+});
+
+test('author failure after replacement retains the new ID and retries it without another creation', async () => {
+  const f = fixture();
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  f.ui.confirmMissing = async () => true;
+  const failedAuthors = async (url, options) => {
+    if (options.method === 'GET' && url.endsWith('/posts/9876')) return new Response('{}', { status: 404 });
+    if (url.endsWith('/sites')) return new Response(JSON.stringify([{ id: 12, slug: config.slug }]));
+    if (options.body?.includes('metaWeblog.newPost')) { f.requests.push({ url, ...options }); return new Response(response('<string>1357</string>')); }
+    if (options.method === 'PATCH') return new Response('{}', { status: 403 });
+    return f.fetcher(url, options);
+  };
+  await assert.rejects(publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, failedAuthors)), /ID 1357/);
+  assert.equal((await publicationTarget(await prepare(f.host, sample), config, f.store)).record.postId, '1357');
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 2);
+  assert.match(f.requests.findLast(r => r.method === 'PATCH').url, /posts\/1357$/);
+});
+
+test('permissions, server errors, and unverified sites never offer draft replacement', async () => {
+  for (const failure of [401, 403, 500, 'sites-denied', 'other-site', 'network']) {
+    const f = fixture();
+    await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+    const before = new Map(f.files), requests = []; let prompts = 0;
+    f.ui.confirmMissing = async () => { prompts++; return true; };
+    const failed = async (url, options) => {
+      requests.push({ url, ...options });
+      if (failure === 'network') throw new TypeError('offline');
+      if (url.endsWith('/sites')) return failure === 'sites-denied' ? new Response('{}', { status: 403 }) : new Response(JSON.stringify([{ id: 13, slug: 'other-site' }]));
+      return new Response('{}', { status: typeof failure === 'number' ? failure : 404 });
+    };
+    await assert.rejects(publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, failed)));
+    assert.equal(prompts, 0); assert.deepEqual(f.files, before);
+    assert.ok(requests.every(r => r.method === 'GET'));
+  }
+});
+
+test('an uncertain replacement creation retains recovery state and never creates again automatically', async () => {
+  const f = fixture();
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  f.ui.confirmMissing = async () => true;
+  const lost = async (url, options) => {
+    if (options.method === 'GET' && url.endsWith('/posts/9876')) return new Response('{}', { status: 404 });
+    if (url.endsWith('/sites')) return new Response(JSON.stringify([{ id: 12, slug: config.slug }]));
+    if (options.body?.includes('metaWeblog.newPost')) { f.requests.push({ url, ...options }); throw new TypeError('lost replacement response'); }
+    return f.fetcher(url, options);
+  };
+  await assert.rejects(publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, lost)), /lost replacement response/);
+  const pending = (await publicationTarget(await prepare(f.host, sample), config, f.store)).record;
+  assert.equal(pending.stage, 'creating'); assert.equal(pending.replacesPostId, '9876'); assert.equal(pending.postId, undefined);
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 2);
+  f.ui.recover = async () => ({ postId: '1357' });
+  await publishPrepared(await prepare(f.host, sample), config, f.store, f.ui, new Client(config, f.fetcher));
+  assert.equal((await publicationTarget(await prepare(f.host, sample), config, f.store)).record.postId, '1357');
+  assert.equal(f.requests.filter(r => r.body?.includes('metaWeblog.newPost')).length, 2);
 });
 
 test('a lost update response retries the same post ID and never starts a new creation', async () => {
